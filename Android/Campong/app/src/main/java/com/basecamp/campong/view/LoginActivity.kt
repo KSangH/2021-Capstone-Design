@@ -1,13 +1,11 @@
-package com.basecamp.campong
+package com.basecamp.campong.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
+import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityLoginBinding
-import com.basecamp.campong.databinding.ActivityMainBinding
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityLoginBinding

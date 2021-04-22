@@ -10,16 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong">
         <activity
-            android:name=".SignupActivity"
-            android:parentActivityName=".LoginActivity" />
-        <activity android:name=".LoginActivity">
+            android:name=".view.SignupActivity"
+            android:parentActivityName=".view.LoginActivity" />
+        <activity android:name=".view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".view.MainActivity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.basecamp.campong
+package com.basecamp.campong.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.basecamp.campong.databinding.FragmentRentalDetailBinding
 
-class RentalState4Fragment : Fragment() {
-
+class RentalState2Fragment : Fragment() {
     private var mBinding: FragmentRentalDetailBinding? = null
 
     override fun onCreateView(

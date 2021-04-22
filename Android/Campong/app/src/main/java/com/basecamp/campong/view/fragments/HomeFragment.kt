@@ -1,4 +1,4 @@
-package com.basecamp.campong
+package com.basecamp.campong.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

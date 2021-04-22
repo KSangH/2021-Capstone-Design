@@ -1,22 +1,21 @@
-package com.basecamp.campong
+package com.basecamp.campong.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.basecamp.campong.databinding.FragmentRentalDetailBinding
+import com.basecamp.campong.databinding.FragmentCommunityBinding
 
-class RentalState0Fragment : Fragment() {
-
-    private var mBinding: FragmentRentalDetailBinding? = null
+class CommunityFragment : Fragment() {
+    private var mBinding: FragmentCommunityBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentRentalDetailBinding.inflate(inflater, container, false)
+        val binding = FragmentCommunityBinding.inflate(inflater, container, false)
 
         mBinding = binding
 
@@ -27,5 +26,4 @@ class RentalState0Fragment : Fragment() {
         mBinding = null
         super.onDestroyView()
     }
-
 }

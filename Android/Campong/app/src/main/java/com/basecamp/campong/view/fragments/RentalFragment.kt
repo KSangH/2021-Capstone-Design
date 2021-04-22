@@ -1,10 +1,11 @@
-package com.basecamp.campong
+package com.basecamp.campong.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.basecamp.campong.RentalPagerAdapter
 import com.basecamp.campong.databinding.FragmentRentalBinding
 import com.google.android.material.tabs.TabLayoutMediator
 

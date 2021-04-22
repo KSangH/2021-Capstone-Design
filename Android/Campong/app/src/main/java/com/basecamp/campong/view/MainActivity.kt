@@ -1,9 +1,10 @@
-package com.basecamp.campong
+package com.basecamp.campong.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
