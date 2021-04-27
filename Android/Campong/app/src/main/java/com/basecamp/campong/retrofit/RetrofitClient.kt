@@ -1,5 +1,6 @@
 package com.basecamp.campong.retrofit
 
+import com.basecamp.campong.utils.API
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -8,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     // baseURL
-    val baseUrl = ""
+    val baseUrl = API.BASE_URL
 
     private var retrofitClient: Retrofit? = null
 
