@@ -8,9 +8,14 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     // 닉네임으로 검색
-    User findByUsernick(String usernick);
+    int countByUsernick(String usernick);
 
     // 이메일로 검색
-    User findByEmail(String email);
+    int countByEmail(String email);
+
+    // ID랑 패스워드로 검색
+    int countByEmailAndUserpassword(String email, String passworkd);
+
+    User findByUserid(long userid);
 
 }

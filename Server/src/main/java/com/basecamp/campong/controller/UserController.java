@@ -39,8 +39,13 @@ public class UserController {
         return userService.checknick(userBody);
     }
 
-    @PostMapping("/login")
-    public String login(){
-        return "로그인";
+    @PostMapping(value = "/login")
+    public HashMap<String, Object> login(@RequestBody RequestDTO.UserBody userBody){
+        return userService.login(userBody);
+    }
+
+    @PostMapping(value = "/updatenick")
+    public HashMap<String, Object> updatenick(@RequestBody RequestDTO.UserBody userBody){
+        return userService.updatenick(userBody);
     }
 }
