@@ -14,12 +14,8 @@ import java.util.HashMap;
 @RequestMapping("/user")
 public class UserController {
 
-    UserService userService;
-
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    UserService userService;
 
     // 회원 가입
     @PostMapping(value = "/signup")
@@ -40,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(){
+    public String login(@RequestBody RequestDTO.UserBody userBody){
         return "로그인";
     }
 }
