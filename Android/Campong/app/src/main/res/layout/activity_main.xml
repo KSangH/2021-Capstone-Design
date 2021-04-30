@@ -21,6 +21,10 @@
         android:id="@+id/myBottomNav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/background_main_color"
+        android:padding="5dp"
+        app:itemIconTint="@drawable/bottom_nav_selector"
+        app:itemTextColor="@drawable/bottom_nav_selector"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
 </LinearLayout>
