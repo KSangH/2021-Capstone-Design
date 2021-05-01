@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.FilterActivity"
+    android:background="#f0f0f0"
+    >
+    <androidx.appcompat.widget.Toolbar
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/filtertoolbar"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/white"
+        android:elevation="20dp"
+        android:paddingHorizontal="10dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/search_button_lay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="#00FFFFFF"
+                app:srcCompat="@drawable/ic_arrow" />
+
+        <LinearLayout
+            android:id="@+id/search_input_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp">
+
+            <EditText
+                android:layout_marginLeft="25dp"
+                android:layout_width="220dp"
+                android:layout_height="40dp"
+                android:background="@drawable/searchbox"
+                android:textSize="15dp"
+                android:textColor="#979797"
+                android:gravity="center"
+                android:hint="검색어를 입력하세요"
+                />
+            <Button
+                android:id="@+id/button_filter"
+                android:layout_width="95dp"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="7dp"
+                android:textSize="12dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:text="필터 지정"
+                android:background="@drawable/button_main_color"
+                app:backgroundTint="#979797"
+                />
+
+        </LinearLayout>
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginHorizontal="25dp"
+                android:textSize="12dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:text="검색하기"
+                android:background="@drawable/button_main_color"
+                app:backgroundTint="@null"
+                app:layout_constraintStart_toStartOf="@id/search_field"
+                />
+
+        </LinearLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
