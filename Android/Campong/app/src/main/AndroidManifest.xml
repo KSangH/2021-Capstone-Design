@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong">
+        <activity android:name=".view.FilterActivity"></activity>
         <activity
             android:name=".view.SignupActivity"
             android:parentActivityName=".view.LoginActivity" />
@@ -19,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity"></activity>
+        <activity android:name=".view.MainActivity" />
     </application>
 
 </manifest>
