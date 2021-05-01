@@ -1,7 +1,9 @@
 package com.basecamp.campong.retrofit
 
 import android.util.Log
+import com.basecamp.campong.model.ReqSignUp
 import com.basecamp.campong.model.ResultSignup
+import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import retrofit2.Call
 import retrofit2.Response
@@ -14,13 +16,14 @@ class RetrofitManager {
 
     // 레트로핏 인터페이스 가져오기
     private val service: RetrofitService? =
-        RetrofitClient.getClient("")?.create(RetrofitService::class.java)
+        RetrofitClient.getClient(API.BASE_URL)?.create(RetrofitService::class.java)
 
     fun requestSignup(
         email: String, password: String, usernick: String, phone: String, username: String
     ) {
+        val req = ReqSignUp(email, password, usernick, phone, username)
         val call = service?.requestSignup(
-            email, password, usernick, phone, username
+            req
         ) ?: return
 
         call.enqueue(

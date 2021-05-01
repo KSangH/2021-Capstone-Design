@@ -5,7 +5,7 @@ object Constants {
 }
 
 object API {
-    const val BASE_URL: String = ""
+    const val BASE_URL: String = "http://192.168.43.139:8080"
 
     /* 회원관리 */
     // 회원가입

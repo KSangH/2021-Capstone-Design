@@ -1,12 +1,11 @@
 package com.basecamp.campong.retrofit
 
+import com.basecamp.campong.model.ReqLogin
+import com.basecamp.campong.model.ReqSignUp
 import com.basecamp.campong.model.ResultSignup
 import com.basecamp.campong.utils.API
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface RetrofitService {
 
@@ -22,14 +21,15 @@ interface RetrofitService {
 //        @Query("dataType") dataType: String = "JSON"
 //    ): Call<>
 
-    // @POST()
-    @FormUrlEncoded
+    @Headers("content-type: application/json")
     @POST(API.USER_SIGN_UP)
     fun requestSignup(
-        @Field("email") email: String,
-        @Field("password") password: String,
-        @Field("usernick") usernick: String,
-        @Field("phone") phone: String,
-        @Field("username") username: String
+    @Body body: ReqSignUp
     ): Call<ResultSignup>
+
+    @Headers("content-type: application/json")
+    @POST(API.USER_LOGIN)
+    fun requestLogin(
+        @Body body: ReqLogin
+    ):Call<ResultSignup> // TODO 세션 관련
 }

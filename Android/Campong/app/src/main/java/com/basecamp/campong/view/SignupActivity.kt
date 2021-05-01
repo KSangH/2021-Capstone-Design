@@ -28,15 +28,19 @@ class SignupActivity : AppCompatActivity() {
 
     fun signup(view: View) {
 
-//        Log.d(Constants.TAG, "signup!")
-//
-//        val ddd = mBinding.emailEditText.text.toString()
-//        Log.d(Constants.TAG, ddd)
-//        Toast.makeText(applicationContext, ddd, Toast.LENGTH_SHORT)
-//
-//        RetrofitManager.instance.requestSignup(
-//            mBinding.emailEditText.text.toString()
-//        )
+        Log.d(Constants.TAG, "signup!")
+
+        val ddd = mBinding.emailEditText.text.toString()
+        Log.d(Constants.TAG, ddd)
+        Toast.makeText(applicationContext, ddd, Toast.LENGTH_SHORT)
+
+        RetrofitManager.instance.requestSignup(
+            mBinding.emailEditText.text.toString(),
+            mBinding.passwordEditText.text.toString(),
+            mBinding.usernickEditText.text.toString(),
+            mBinding.phoneEditText.text.toString(),
+            mBinding.usernameEditText.text.toString()
+        )
 
         val intent = Intent(applicationContext, MainActivity::class.java)
         startActivity(intent)
