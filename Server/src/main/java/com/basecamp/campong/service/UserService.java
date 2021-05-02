@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 @Service
@@ -25,7 +28,7 @@ public class UserService {
         var checkemail = checkemail(userBody);
         var checknick = checknick(userBody);
 
-        if(checkemail || checknick){
+        if (checkemail || checknick) {
             return true;
         }
 
@@ -35,66 +38,70 @@ public class UserService {
 
     // 이메일 체크 서비스
     public boolean checkemail(User userBody) {
-        boolean check;
         int count = userRepository.countByEmail(userBody.getEmail());
         if (count == 0) {
-            check = false;
+            return false;
         } else {
-            check = true;
+            return true;
         }
-        return check;
     }
 
     // 닉네임 체크 서비스
     public boolean checknick(User userBody) {
-        boolean check;
         int count = userRepository.countByUsernick(userBody.getUsernick());
         if (count == 0) {
-            check = false;
+            return false;
         } else {
-            check = true;
+            return true;
         }
-        return check;
     }
 
     // 로그인 서비스
-    public HashMap<String, Object> login(RequestDTO.UserBody userBody) {
-        var result = new HashMap<String, Object>();
-        try {
-            int count = userRepository.countByEmailAndPassword(userBody.getEmail(), userBody.getPassword());
-            if (count > 0) {
-                result.put("error", false);
-                // 아래는 세션 관련 정보가 추가되어야 합니다.
-                result.put("session", "정보");
-            } else {
-                result.put("error", true);
-                result.put("errorcode", 1002);
-                result.put("message", "아이디와 비밀번호를 확인해주세요.");
-            }
-        } catch (Exception e) {
-            result.put("error", true);
-            result.put("errorcode", 1002);
-            result.put("message", "잠시 후 다시 시도해주세요.");
+    public boolean login(User userBody, HttpSession session) {
+        User user = userRepository.findByEmailAndPassword(userBody.getEmail(), userBody.getPassword());
+        if (user == null) {
+            return true;
         }
-        return result;
+        user.setSession(session.getId());
+        session.setAttribute("user", user);
+        return false;
     }
 
-    // 닉네임 변경
-    public HashMap<String, Object> updatenick(RequestDTO.UserBody userBody) {
-        var result = new HashMap<String, Object>();
-        try {
-            // 세션이나 토큰 방식으로 본인인증 되어 조회한다. 아래는 수정이 필요합니다.
-            User user = userRepository.findByUserid(1);
-            if (user != null) {
-                user.setUsernick(userBody.getUsernick());
-                userRepository.save(user);
-            }
 
-        } catch (Exception e) {
-            result.put("error", true);
-            result.put("errorcode", 1002);
-            result.put("message", "잠시 후 다시 시도해주세요.");
+    // 닉네임 변경
+    public boolean updatenick(long userID, User userBody) {
+        User user = userRepository.findByUserid(userID);
+        if (user == null) {
+            return true;
         }
-        return result;
+        user.setUsernick(userBody.getUsernick());
+        return false;
+    }
+
+    // 세션, 쿠키로 유저 인증
+    public long auth(HttpSession session, Cookie cookie, HttpServletResponse res) {
+        // 세션 체크
+
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            return user.getUserid();
+        }
+
+        // 쿠키 체크
+        if (cookie == null) {
+            return -1;
+        }
+
+        user = userRepository.findBySession(cookie.getValue());
+        if (user == null) {
+            return -1;
+        }
+
+        user.setSession(session.getId());
+
+        cookie.setValue(session.getId());
+        res.addCookie(cookie);
+
+        return user.getUserid();
     }
 }

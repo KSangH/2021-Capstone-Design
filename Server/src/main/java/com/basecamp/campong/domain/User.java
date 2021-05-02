@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Table
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class User {
+public class User implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userid;
@@ -41,4 +42,6 @@ public class User {
     @CreationTimestamp
     @Column(nullable = false)
     private LocalDateTime date;
+
+    private String session;
 }
