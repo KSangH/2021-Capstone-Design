@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     int countByEmail(String email);
 
     // ID랑 패스워드로 검색
-    int countByEmailAndUserpassword(String email, String passworkd);
+    int countByEmailAndPassword(String email, String passworkd);
 
     User findByUserid(long userid);
 
