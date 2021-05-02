@@ -14,6 +14,9 @@ object API {
     // 이메일 중복확인
     const val USER_CHECK_EMAIL: String = "/user/checkemail"
 
+    // 닉네임 중복확인
+    const val USER_CHECK_NICK: String = "/user/checknick"
+
     // 로그인
     const val USER_LOGIN: String = "/user/login"
 
