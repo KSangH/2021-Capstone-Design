@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".view.SendRequestActivity"
+            android:background="@color/white">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/sendrequesttoolbar"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/white"
+                app:contentInsetStart="0dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:background="#00FFFFFF"
+                    app:srcCompat="@drawable/ic_arrow" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/sendrequesttoolbar"
+                android:background="@color/white"
+                >
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="400dp"
+                    android:layout_height="250dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="15dp"
+                    android:background="@color/black"
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/camping"
+                        app:layout_constraintTop_toBottomOf="@id/sendrequesttoolbar" />
+                </androidx.cardview.widget.CardView>
+
+                <RelativeLayout
+                    android:id="@+id/fortext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginVertical="5dp"
+                    android:layout_below="@id/cardView">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="편히 쉴 수 있는 의자 공유해요!"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="24dp"
+                        android:layout_alignParentTop="true"/>
+
+                    <TextView
+                        android:id="@+id/town"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="노원구 중계동"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/title"/>
+                    <TextView
+                        android:id="@+id/townelse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="2dp"
+                        android:text="에서 거래"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:layout_below="@id/title"
+                        android:layout_toRightOf="@id/town"
+                        />
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:text="50,000원"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_toLeftOf="@id/priceelse"
+                        android:layout_below="@id/town"/>
+                    <TextView
+                        android:id="@+id/priceelse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:text="(/일)"
+                        android:textColor="#818181"
+                        android:textSize="19dp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/town"
+                        android:layout_alignParentRight="true" />
+
+                </RelativeLayout>
+
+                <CalendarView
+                    android:id="@+id/calendarView"
+                    android:layout_width="400dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fortext"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp"
+                    android:background="#f0f0f0"/>
+
+                <Button
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="40dp"
+                    android:id="@+id/button1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="필터 지정 완료"
+                    android:background="@drawable/button_main_color"
+                    app:backgroundTint="@null"
+                    android:layout_below="@id/calendarView"
+                    />
+
+            </RelativeLayout>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>
