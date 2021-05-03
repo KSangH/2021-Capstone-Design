@@ -43,5 +43,11 @@ interface RetrofitService {
     @POST(API.USER_LOGIN)
     fun requestLogin(
         @Body body: ReqLogin
-    ): Call<ResultSignup> // TODO 세션 관련
+    ): Call<ResultLogin>
+
+    @Headers("content-type: application/json")
+    @POST(API.USER_UPDATE_NICK)
+    fun requestUpdateNick(
+        @Body body: ReqUpdateNick
+    ): Call<ResultUpdateNick>
 }

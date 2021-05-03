@@ -179,4 +179,44 @@ class RetrofitManager {
         })
     }
 
+    // 닉네임 변경
+    fun requestUpdateNick(usernick: String, completion: (Int) -> Unit) {
+        val req = ReqUpdateNick(usernick)
+        val call = service?.requestUpdateNick(
+            req
+        ) ?: return
+
+        call.enqueue(
+            object : Callback<ResultUpdateNick> {
+                override fun onResponse(
+                    call: Call<ResultUpdateNick>,
+                    response: Response<ResultUpdateNick>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            Log.d(TAG, response.raw().toString())
+                            if (response.body()?.error == false) { // 성공
+                                completion(0)
+                            } else {
+                                if (response.body()?.errCode == 1007) {
+                                    completion(1) // 닉네임 변경 중 오류
+                                } else {
+                                    completion(2)
+                                }
+                            }
+                        }
+                        else -> {
+                            Log.d(TAG, response.code().toString())
+                            completion(-1)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResultUpdateNick>, t: Throwable) {
+                    Log.d(TAG, t.toString())
+                    completion(-1)
+                }
+            }
+        )
+    }
 }
