@@ -72,7 +72,7 @@ data class ReqLogin(
 )
 
 /* 로그인 결과 */
-data class ResultLogin( // TODO : 세션
+data class ResultLogin(
     @SerializedName("error")
     val error: Boolean,
     @SerializedName("message")
