@@ -62,7 +62,9 @@ public class UserService {
         if (user == null) {
             return true;
         }
+        //해당 user table에 세션 id 저장
         user.setSession(session.getId());
+        //세션에 user 객체 저장
         session.setAttribute("user", user);
         return false;
     }
@@ -96,9 +98,9 @@ public class UserService {
         if (user == null) {
             return -1;
         }
-
+        
+        //변경된 세션으로 쿠키 업데이트
         user.setSession(session.getId());
-
         cookie.setValue(session.getId());
         res.addCookie(cookie);
 

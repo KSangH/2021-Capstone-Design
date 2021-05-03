@@ -28,7 +28,7 @@ public class UserController {
         JsonMap result = new JsonMap();
         try {
             if (userService.signup(userBody)) {
-                result.setError(1000, "이메일이나 닉네임이 중복되었습니다.");
+                result.setError(1002, "이메일이나 닉네임이 중복되었습니다.");
             }
         } catch (UnexpectedRollbackException e) {
             result.setError(1001, "회원가입에 실패하였습니다.");
@@ -43,10 +43,10 @@ public class UserController {
         JsonMap result = new JsonMap();
         try {
             if (userService.checkemail(userBody)) {
-                result.setError(1000, "이메일이 중복되었습니다.");
+                result.setError(1002, "이메일이 중복되었습니다.");
             }
         } catch (UnexpectedRollbackException e) {
-            result.setError(1001, "잠시 후 다시 시도해주세요.");
+            result.setError(1002, "잠시 후 다시 시도해주세요.");
         } finally {
             return result;
         }
@@ -58,10 +58,10 @@ public class UserController {
         JsonMap result = new JsonMap();
         try {
             if (userService.checknick(userBody)) {
-                result.setError(1000, "닉네임이 중복되었습니다.");
+                result.setError(1003, "닉네임이 중복되었습니다.");
             }
         } catch (UnexpectedRollbackException e) {
-            result.setError(1001, "잠시 후 다시 시도해주세요.");
+            result.setError(1003, "잠시 후 다시 시도해주세요.");
         } finally {
             return result;
         }
@@ -74,7 +74,7 @@ public class UserController {
         JsonMap result = new JsonMap();
         try {
             if (userService.login(userBody, session)) {
-                result.setError(1000, "아이디랑 비밀번호를 확인해주세요");
+                result.setError(1005, "아이디랑 비밀번호를 확인해주세요");
             }
 
             // 쿠키 생성
@@ -83,7 +83,7 @@ public class UserController {
             res.addCookie(cookie);
 
         } catch (UnexpectedRollbackException e) {
-            result.setError(1001, "잠시 후 다시 시도해주세요.");
+            result.setError(1005, "잠시 후 다시 시도해주세요.");
         } finally {
             return result;
         }
@@ -98,12 +98,12 @@ public class UserController {
         try {
             long id = userService.auth(session, cookie, res);
             if (id < 0) {
-                result.setError(1003, "인증 실패");
+                result.setError(1006, "인증 실패");
                 return result;
             }
             userService.updatenick(id, userBody);
         } catch (UnexpectedRollbackException e) {
-            result.setError(1001, "잠시 후 다시 시도해주세요.");
+            result.setError(1007, "잠시 후 다시 시도해주세요.");
         } finally {
             return result;
         }

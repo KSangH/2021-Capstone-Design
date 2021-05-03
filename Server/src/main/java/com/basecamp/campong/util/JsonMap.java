@@ -2,6 +2,9 @@ package com.basecamp.campong.util;
 
 import java.util.HashMap;
 
+/**
+ * 에러코드와 메세지를 저장하는 HashMap
+ */
 public class JsonMap extends HashMap<String, Object> {
 
     public JsonMap(){
