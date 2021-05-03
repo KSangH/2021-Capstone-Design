@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.SendRequestActivity"></activity>
+        <activity android:name=".view.SaveMyPostActivity"></activity>
+        <activity android:name=".view.SaveMyPost" />
+        <activity android:name=".view.SendRequestActivity" />
         <activity android:name=".view.SearchActivity" />
         <activity android:name=".view.FilterActivity" />
         <activity
