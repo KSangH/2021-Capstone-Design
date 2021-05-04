@@ -98,8 +98,7 @@ public class UserController {
         try {
             long id = userService.auth(session, cookie, res);
             if (id < 0) {
-                result.setError(1006, "인증 실패");
-                return result;
+                return result.setAuthFailed();
             }
             userService.updatenick(id, userBody);
         } catch (UnexpectedRollbackException e) {

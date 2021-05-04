@@ -25,4 +25,11 @@ public class JsonMap extends HashMap<String, Object> {
         put("message", message);
     }
 
+    public JsonMap setAuthFailed(){
+        put("error", true);
+        put("errorcode", 1006);
+        put("message", "인증 실패");
+        return this;
+    }
+
 }

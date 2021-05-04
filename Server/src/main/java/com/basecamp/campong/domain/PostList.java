@@ -21,11 +21,11 @@ public class PostList {
     private long postid;
 
     @ManyToOne
-    @JoinColumn(name = "cateid")
+    @JoinColumn(name = "cateid", nullable = false)
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "userid", nullable = false)
     private User user;
 
     @Column(nullable = false)
@@ -38,9 +38,9 @@ public class PostList {
     @Column(nullable = false)
     private LocalDateTime uploaddate;
 
-    @Lob
-    @Column
-    private byte[] itemphoto;
+    @ManyToOne
+    @JoinColumn(name = "imageid", nullable = false)
+    private Image itemphoto;
 
     @Column(nullable = false)
     private long fee;
