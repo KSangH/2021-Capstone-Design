@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.ShowMyPostActivity"></activity>
+        <activity android:name=".view.QrViewActivity"></activity>
+        <activity android:name=".view.ShowMyPostActivity" />
         <activity android:name=".view.SaveMyPostActivity" />
         <activity android:name=".view.SaveMyPost" />
         <activity android:name=".view.SendRequestActivity" />
