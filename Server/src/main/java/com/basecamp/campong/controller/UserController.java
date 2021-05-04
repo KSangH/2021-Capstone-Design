@@ -73,21 +73,49 @@ public class UserController {
                          HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
         try {
-            if (userService.login(userBody, session)) {
-                result.setError(1005, "아이디랑 비밀번호를 확인해주세요");
-            }
-
-            // 쿠키 생성
-            Cookie cookie = new Cookie(Config.COOKIE_SESSIONID, session.getId());
-            cookie.setMaxAge(Config.COOKIE_MAXAGE);
-            res.addCookie(cookie);
+            return userService.login(userBody, session, res);
 
         } catch (UnexpectedRollbackException e) {
-            result.setError(1005, "잠시 후 다시 시도해주세요.");
-        } finally {
-            return result;
+            return result.setError(1005, "잠시 후 다시 시도해주세요.");
         }
     }
+
+    // 로그아웃
+    @PostMapping(value = "/logout")
+    public JsonMap logout(@CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                          HttpSession session, HttpServletResponse res) {
+        JsonMap result = new JsonMap();
+        try {
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+            // 로그아웃 서비스 실행
+            return userService.logout(id, session, res);
+
+        } catch (UnexpectedRollbackException e) {
+            return result.setError(1008, "잠시 후 다시 시도해주세요.");
+        }
+    }
+
+    // 유저 정보
+    @PostMapping(value = "/userinfo")
+    public JsonMap userinfo(@RequestBody User userBody,
+                              @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                              HttpSession session, HttpServletResponse res) {
+        JsonMap result = new JsonMap();
+        try {
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+            return userService.userinfo(id);
+        } catch (UnexpectedRollbackException e) {
+            return result.setError(1007, "잠시 후 다시 시도해주세요.");
+        }
+    }
+
+
 
     // 닉네임 변경
     @PostMapping(value = "/updatenick")
@@ -100,11 +128,11 @@ public class UserController {
             if (id < 0) {
                 return result.setAuthFailed();
             }
-            userService.updatenick(id, userBody);
+            return userService.updatenick(id, userBody);
         } catch (UnexpectedRollbackException e) {
-            result.setError(1007, "잠시 후 다시 시도해주세요.");
-        } finally {
-            return result;
+            return result.setError(1007, "잠시 후 다시 시도해주세요.");
         }
     }
+
+
 }
