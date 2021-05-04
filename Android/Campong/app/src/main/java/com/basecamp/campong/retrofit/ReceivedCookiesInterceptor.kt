@@ -1,6 +1,8 @@
 package com.basecamp.campong.retrofit
 
 import android.content.SharedPreferences
+import android.util.Log
+import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Preference
 import com.basecamp.campong.utils.SharedPreferenceManager
 import okhttp3.Interceptor
@@ -18,6 +20,7 @@ class ReceivedCookiesInterceptor : Interceptor {
 
             for (header in originalResponse.headers("Set-Cookie")) {
                 cookies.add(header)
+                Log.d(Constants.TAG, header)
             }
 
             // Preference에 쿠키 저장

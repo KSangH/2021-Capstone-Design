@@ -1,5 +1,7 @@
 package com.basecamp.campong.retrofit
 
+import android.util.Log
+import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Preference
 import com.basecamp.campong.utils.SharedPreferenceManager
 import okhttp3.Interceptor
@@ -23,6 +25,7 @@ class AddCookiesInterceptor : Interceptor {
 
         // header에 쿠키 넣어주기
         for (cookie in getCookies) {
+            Log.d(Constants.TAG, cookie)
             builder.addHeader("Cookie", cookie)
         }
 

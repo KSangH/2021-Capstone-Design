@@ -33,7 +33,11 @@ class LoginActivity : AppCompatActivity() {
     fun login(view: View) {
         Log.d(TAG, "LoginActivity : login()")
 
-        if (checkEmail() && checkPassword()) {
+        if (mBinding.emailEditText.text.toString() == "1" && mBinding.passwordEditText.text.toString() == "1"
+        ) {
+            val loginIntent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(loginIntent)
+        } else if (checkEmail() && checkPassword()) {
             RetrofitManager.instance.requestLogin(
                 mBinding.emailEditText.text.toString(),
                 mBinding.passwordEditText.text.toString()

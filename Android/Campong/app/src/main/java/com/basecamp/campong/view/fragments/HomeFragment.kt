@@ -1,5 +1,6 @@
 package com.basecamp.campong.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -8,9 +9,10 @@ import com.basecamp.campong.R
 import com.basecamp.campong.RecyclerAdapter
 import com.basecamp.campong.databinding.FragmentHomeBinding
 import com.basecamp.campong.utils.postList
+import com.basecamp.campong.view.SaveMyPostActivity
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), View.OnClickListener {
 
     private var mBinding: FragmentHomeBinding? = null
     lateinit var mAdapter: RecyclerAdapter
@@ -39,6 +41,8 @@ class HomeFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
         }
 
+        binding.addButton.setOnClickListener(this)
+
         return mBinding?.root
     }
 
@@ -51,5 +55,18 @@ class HomeFragment : Fragment() {
         inflater.inflate(R.menu.main_toolbar_menu, menu)
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun goToSendRequest(view: View) {
+        val intent = Intent(context, SaveMyPostActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.addButton -> {
+                goToSendRequest(v)
+            }
+        }
     }
 }
