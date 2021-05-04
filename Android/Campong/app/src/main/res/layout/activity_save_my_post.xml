@@ -80,6 +80,7 @@
                         android:text="텐트"
                         android:textAlignment="center"
                         android:textSize="15dp"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         app:textEndPadding="15dp"
                         app:textStartPadding="15dp" />
@@ -92,6 +93,7 @@
                         android:text="카테고리 2"
                         android:textAlignment="center"
                         android:textSize="15dp"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         app:textEndPadding="15dp"
                         app:textStartPadding="15dp" />
@@ -104,6 +106,7 @@
                         android:text="카테고리 3"
                         android:textAlignment="center"
                         android:textSize="15dp"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         app:textEndPadding="15dp"
                         app:textStartPadding="15dp" />
@@ -116,6 +119,7 @@
                         android:text="기타등등 장비"
                         android:textAlignment="center"
                         android:textSize="15dp"
+                        android:textColor="@color/black"
                         android:textStyle="bold"
                         app:textEndPadding="15dp"
                         app:textStartPadding="15dp" />
