@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.ShowMyPostActivity">
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/posttoolbar"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:background="@color/white"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:contentInsetStart="0dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/scannerButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_alignParentLeft="true"
+                        android:background="#00FFFFFF"
+                        app:srcCompat="@drawable/ic_arrow" />
+
+                    <ImageView
+                        android:id="@+id/CampongLogo"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_campong_logo" />
+
+                    <ImageButton
+                        android:id="@+id/imageButton"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_alignParentRight="true"
+                        android:background="#00FFFFFF"
+                        app:srcCompat="@drawable/ic_more_vert" />
+
+                </RelativeLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/posttoolbar"
+                android:background="@color/white">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="400dp"
+                    android:layout_height="220dp"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="15dp"
+                    android:background="@color/black"
+                    android:layout_centerHorizontal="true">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/camping"
+                        app:layout_constraintTop_toBottomOf="@id/sendrequesttoolbar" />
+                </androidx.cardview.widget.CardView>
+
+                <RelativeLayout
+                    android:id="@+id/fortext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="35dp"
+                    android:layout_marginVertical="5dp"
+                    android:layout_below="@id/cardView">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/camping" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:text="Jangtang2"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:gravity="center_vertical"
+                        android:layout_toRightOf="@id/profile"/>
+                    <TextView
+                        android:id="@+id/categoryTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:paddingHorizontal="15dp"
+                        android:background="@drawable/rounded_text_view"
+                        android:layout_alignParentEnd="true"
+                        android:text="취사도구"
+                        android:textStyle="bold"
+                        android:textSize="15dp"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/white"/>
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/categoryTextView"
+                        android:layout_marginTop="15dp"
+                        android:text="라면이 맛있게 끓여지는 화로"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:id="@+id/content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/title"
+                        android:layout_marginTop="15dp"
+                        android:text="이 화로로 라면 끓여먹으면 시력이 좋아지고 아이큐가 더 높아지며 성인도 키가 자랍니다. \n\n네, 맞아요. 뻥이죠."
+                        android:textSize="20dp"
+                        android:textColor="@color/black"/>
+                    <TextView
+                        android:id="@+id/dateinfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="2021-05-04"
+                        android:textSize="15dp"
+                        android:textColor="#818181"/>
+                    <TextView
+                        android:id="@+id/town"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="2dp"
+                        android:text="노원구 중계동"
+                        android:textColor="@color/black"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/dateinfo"
+                        android:layout_toLeftOf="@id/townelse"/>
+                    <TextView
+                        android:id="@+id/townelse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="에서 거래"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:layout_below="@id/dateinfo"
+                        android:layout_alignParentEnd="true"
+                        />
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginHorizontal="5dp"
+                        android:text="50,000원"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:layout_toLeftOf="@id/priceelse"
+                        android:layout_below="@id/town"/>
+                    <TextView
+                        android:id="@+id/priceelse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="5dp"
+                        android:text="(/일)"
+                        android:textColor="#818181"
+                        android:textSize="19dp"
+                        android:textStyle="bold"
+                        android:layout_below="@id/town"
+                        android:layout_alignParentRight="true" />
+
+                </RelativeLayout>
+
+                <Button
+                    android:layout_marginHorizontal="50dp"
+                    android:layout_marginTop="40dp"
+                    android:id="@+id/button1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    android:textSize="16dp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="예약내역 보기"
+                    android:background="@drawable/button_main_color"
+                    app:backgroundTint="@null"
+                    android:layout_below="@id/fortext"
+                    />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
