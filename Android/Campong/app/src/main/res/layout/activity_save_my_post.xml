@@ -73,6 +73,7 @@
                     android:layout_marginHorizontal="30dp">
 
                     <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:id="@+id/chip1"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
@@ -84,6 +85,7 @@
                         app:textStartPadding="15dp" />
 
                     <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:id="@+id/chip2"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
@@ -95,6 +97,7 @@
                         app:textStartPadding="15dp" />
 
                     <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:id="@+id/chip3"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
@@ -106,6 +109,7 @@
                         app:textStartPadding="15dp" />
 
                     <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:id="@+id/chip4"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
