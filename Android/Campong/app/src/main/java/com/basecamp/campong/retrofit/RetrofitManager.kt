@@ -5,6 +5,7 @@ import com.basecamp.campong.model.*
 import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants.TAG
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class RetrofitManager {
@@ -28,7 +29,7 @@ class RetrofitManager {
         ) ?: return
 
         call.enqueue(
-            object : retrofit2.Callback<ResultSignup> {
+            object : Callback<ResultSignup> {
                 override fun onResponse(
                     call: Call<ResultSignup>,
                     response: Response<ResultSignup>
@@ -66,7 +67,7 @@ class RetrofitManager {
         ) ?: return
 
         call.enqueue(
-            object : retrofit2.Callback<ResultCheckEmail> {
+            object : Callback<ResultCheckEmail> {
                 override fun onResponse(
                     call: Call<ResultCheckEmail>,
                     response: Response<ResultCheckEmail>
@@ -108,7 +109,7 @@ class RetrofitManager {
         ) ?: return
 
         call.enqueue(
-            object : retrofit2.Callback<ResultCheckNick> {
+            object : Callback<ResultCheckNick> {
                 override fun onResponse(
                     call: Call<ResultCheckNick>,
                     response: Response<ResultCheckNick>
@@ -141,5 +142,81 @@ class RetrofitManager {
         )
     }
 
+    // 로그인
+    fun requestLogin(email: String, password: String, completion: (Int) -> Unit) {
+        val req = ReqLogin(email, password)
+        val call = service?.requestLogin(
+            req
+        ) ?: return
 
+        call.enqueue(object : Callback<ResultLogin> {
+            override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1005) { // 로그인 오류
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
+    }
+
+    // 닉네임 변경
+    fun requestUpdateNick(usernick: String, completion: (Int) -> Unit) {
+        val req = ReqUpdateNick(usernick)
+        val call = service?.requestUpdateNick(
+            req
+        ) ?: return
+
+        call.enqueue(
+            object : Callback<ResultUpdateNick> {
+                override fun onResponse(
+                    call: Call<ResultUpdateNick>,
+                    response: Response<ResultUpdateNick>
+                ) {
+                    when (response.code()) {
+                        200 -> {
+                            Log.d(TAG, response.raw().toString())
+                            if (response.body()?.error == false) { // 성공
+                                completion(0)
+                            } else {
+                                if (response.body()?.errCode == 1007) {
+                                    completion(1) // 닉네임 변경 중 오류
+                                } else {
+                                    completion(2)
+                                }
+                            }
+                        }
+                        else -> {
+                            Log.d(TAG, response.code().toString())
+                            completion(-1)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ResultUpdateNick>, t: Throwable) {
+                    Log.d(TAG, t.toString())
+                    completion(-1)
+                }
+            }
+        )
+    }
 }

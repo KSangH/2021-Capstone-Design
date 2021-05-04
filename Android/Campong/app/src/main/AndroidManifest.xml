@@ -15,6 +15,7 @@
         <activity android:name=".view.SaveMyPostActivity"></activity>
         <activity android:name=".view.SaveMyPost" />
         <activity android:name=".view.SendRequestActivity" />
+        <activity android:name=".view.EditProfileActivity"></activity>
         <activity android:name=".view.SearchActivity" />
         <activity android:name=".view.FilterActivity" />
         <activity
@@ -23,11 +24,9 @@
         <activity android:name=".view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".view.MainActivity" />
     </application>
-
 </manifest>

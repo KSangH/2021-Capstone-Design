@@ -5,7 +5,7 @@ object Constants {
 }
 
 object API {
-    const val BASE_URL: String = "http://192.168.43.139:8080"
+    const val BASE_URL: String = "http://20.41.75.198:8080"
 
     /* 회원관리 */
     // 회원가입
@@ -69,4 +69,14 @@ object API {
 
     // 취소
     const val STATE_CANCEL: String = "/state/cancel"
+}
+
+object Preference {
+
+    // Preference 이름
+    const val SHARED_PREFERENCE_FILE = "camponog_preference"
+
+    // Preference Key 값
+    const val SHARED_PREFERENCE_NAME_COOKIE = "cookies"
+
 }

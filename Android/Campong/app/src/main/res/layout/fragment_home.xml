@@ -43,7 +43,6 @@
                 android:layout_height="70dp"
                 android:layout_alignParentRight="true"
                 android:background="#00FFFFFF"
-                app:layout_constraintEnd_toOf="par뚱ent"
                 app:srcCompat="@drawable/ic_search_black" />
 
         </RelativeLayout>

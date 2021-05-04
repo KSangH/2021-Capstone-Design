@@ -1,15 +1,11 @@
 package com.basecamp.campong.retrofit
 
-import com.basecamp.campong.utils.API
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-
-    // baseURL
-    val baseUrl = API.BASE_URL
 
     private var retrofitClient: Retrofit? = null
 
@@ -24,6 +20,8 @@ object RetrofitClient {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         client.addInterceptor(interceptor)
+        client.interceptors().add(ReceivedCookiesInterceptor()) // 쿠키 Preference에 저장
+        client.interceptors().add(AddCookiesInterceptor()) // 저장된 쿠키 가져옴
 
         if (retrofitClient == null) {
 
