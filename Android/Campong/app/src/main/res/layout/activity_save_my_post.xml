@@ -106,6 +106,7 @@
                         app:textStartPadding="15dp" />
 
                     <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:id="@+id/chip4"
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
