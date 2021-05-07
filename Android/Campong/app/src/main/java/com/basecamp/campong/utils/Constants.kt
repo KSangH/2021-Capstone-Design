@@ -74,6 +74,26 @@ object API {
     const val UPLOAD_IMAGE: String = "/image/upload"
 }
 
+object Keyword {
+
+    const val EMAIL = "email"
+
+    const val PASSWORD = "password"
+
+    const val USERNICK = "usernick"
+
+    const val PHONE = "phone"
+
+    const val USERNAME = "username"
+
+    const val ERROR = "error"
+
+    const val ERROR_MESSAGE = "message"
+
+    const val ERROR_CODE = "errcode"
+
+}
+
 object Preference {
 
     // Preference 이름

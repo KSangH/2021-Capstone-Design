@@ -34,10 +34,10 @@ class RetrofitManager {
         ) ?: return
 
         call.enqueue(
-            object : Callback<ResultSignup> {
+            object : Callback<ResultBase> {
                 override fun onResponse(
-                    call: Call<ResultSignup>,
-                    response: Response<ResultSignup>
+                    call: Call<ResultBase>,
+                    response: Response<ResultBase>
                 ) {
                     when (response.code()) {
                         200 -> {  // 통신 성공
@@ -55,7 +55,7 @@ class RetrofitManager {
                     }
                 }
 
-                override fun onFailure(call: Call<ResultSignup>, t: Throwable) {
+                override fun onFailure(call: Call<ResultBase>, t: Throwable) {
                     Log.d(TAG, t.toString())
                     completion(-1)
                 }
@@ -72,10 +72,10 @@ class RetrofitManager {
         ) ?: return
 
         call.enqueue(
-            object : Callback<ResultCheckEmail> {
+            object : Callback<ResultBase> {
                 override fun onResponse(
-                    call: Call<ResultCheckEmail>,
-                    response: Response<ResultCheckEmail>
+                    call: Call<ResultBase>,
+                    response: Response<ResultBase>
                 ) {
                     when (response.code()) {
                         200 -> {
@@ -97,7 +97,7 @@ class RetrofitManager {
                     }
                 }
 
-                override fun onFailure(call: Call<ResultCheckEmail>, t: Throwable) {
+                override fun onFailure(call: Call<ResultBase>, t: Throwable) {
                     Log.d(TAG, t.toString())
                     completion(-1)
                 }
@@ -114,10 +114,10 @@ class RetrofitManager {
         ) ?: return
 
         call.enqueue(
-            object : Callback<ResultCheckNick> {
+            object : Callback<ResultBase> {
                 override fun onResponse(
-                    call: Call<ResultCheckNick>,
-                    response: Response<ResultCheckNick>
+                    call: Call<ResultBase>,
+                    response: Response<ResultBase>
                 ) {
                     when (response.code()) {
                         200 -> {
@@ -139,7 +139,7 @@ class RetrofitManager {
                     }
                 }
 
-                override fun onFailure(call: Call<ResultCheckNick>, t: Throwable) {
+                override fun onFailure(call: Call<ResultBase>, t: Throwable) {
                     Log.d(TAG, t.toString())
                     completion(-1)
                 }
@@ -154,8 +154,8 @@ class RetrofitManager {
             req
         ) ?: return
 
-        call.enqueue(object : Callback<ResultLogin> {
-            override fun onResponse(call: Call<ResultLogin>, response: Response<ResultLogin>) {
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
                 when (response.code()) {
                     200 -> {
                         Log.d(TAG, response.raw().toString())
@@ -176,7 +176,7 @@ class RetrofitManager {
                 }
             }
 
-            override fun onFailure(call: Call<ResultLogin>, t: Throwable) {
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
                 Log.d(TAG, t.toString())
                 completion(-1)
             }
@@ -192,10 +192,10 @@ class RetrofitManager {
         ) ?: return
 
         call.enqueue(
-            object : Callback<ResultUpdateNick> {
+            object : Callback<ResultBase> {
                 override fun onResponse(
-                    call: Call<ResultUpdateNick>,
-                    response: Response<ResultUpdateNick>
+                    call: Call<ResultBase>,
+                    response: Response<ResultBase>
                 ) {
                     when (response.code()) {
                         200 -> {
@@ -217,7 +217,7 @@ class RetrofitManager {
                     }
                 }
 
-                override fun onFailure(call: Call<ResultUpdateNick>, t: Throwable) {
+                override fun onFailure(call: Call<ResultBase>, t: Throwable) {
                     Log.d(TAG, t.toString())
                     completion(-1)
                 }

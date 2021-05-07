@@ -1,98 +1,59 @@
 package com.basecamp.campong.model
 
+import com.basecamp.campong.utils.Keyword
 import com.google.gson.annotations.SerializedName
 
 /* 회원가입 요청 */
 data class ReqSignup(
-    @SerializedName("email")
+    @SerializedName(Keyword.EMAIL)
     val email: String,
 
-    @SerializedName("password")
+    @SerializedName(Keyword.PASSWORD)
     val password: String,
 
-    @SerializedName("usernick")
+    @SerializedName(Keyword.USERNICK)
     val usernick: String,
 
-    @SerializedName("phone")
+    @SerializedName(Keyword.PHONE)
     val phone: String,
 
-    @SerializedName("username")
+    @SerializedName(Keyword.USERNAME)
     val username: String
 )
 
-/* 회원가입 결과 */
-data class ResultSignup(
-    @SerializedName("error")
+/* 결과 (기본형) */
+data class ResultBase(
+    @SerializedName(Keyword.ERROR)
     val error: Boolean,
-    @SerializedName("message")
+    @SerializedName(Keyword.ERROR_MESSAGE)
     val errInfo: String,
-    @SerializedName("errorcode")
+    @SerializedName(Keyword.ERROR_CODE)
     val errCode: Int
 )
 
 /* 이메일 중복확인 요청 */
 data class ReqCheckEmail(
-    @SerializedName("email")
+    @SerializedName(Keyword.EMAIL)
     val email: String
-)
-
-/* 이메일 중복확인 결과 */
-data class ResultCheckEmail(
-    @SerializedName("error")
-    val error: Boolean,
-    @SerializedName("message")
-    val errInfo: String,
-    @SerializedName("errorcode")
-    val errCode: Int
 )
 
 /* 닉네임 중복확인 요청*/
 data class ReqCheckNick(
-    @SerializedName("usernick")
+    @SerializedName(Keyword.USERNICK)
     val usernick: String
-)
-
-/* 닉네임 중복확인 결과*/
-data class ResultCheckNick(
-    @SerializedName("error")
-    val error: Boolean,
-    @SerializedName("message")
-    val errInfo: String,
-    @SerializedName("errorcode")
-    val errCode: Int
 )
 
 /* 로그인 요청 */
 data class ReqLogin(
-    @SerializedName("email")
+    @SerializedName(Keyword.EMAIL)
     val email: String,
 
-    @SerializedName("password")
+    @SerializedName(Keyword.PASSWORD)
     val password: String
-)
-
-/* 로그인 결과 */
-data class ResultLogin(
-    @SerializedName("error")
-    val error: Boolean,
-    @SerializedName("message")
-    val errInfo: String,
-    @SerializedName("errorcode")
-    val errCode: Int
 )
 
 /* 닉네임 변경 요청*/
 data class ReqUpdateNick(
-    @SerializedName("usernick")
+    @SerializedName(Keyword.USERNICK)
     val usernick: String
-)
-
-/* 닉네임 변경 결과*/
-data class ResultUpdateNick(
-    @SerializedName("error")
-    val error: Boolean,
-    @SerializedName("message")
-    val errInfo: String,
-    @SerializedName("errorcode")
-    val errCode: Int
 )

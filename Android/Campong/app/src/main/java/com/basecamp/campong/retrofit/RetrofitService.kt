@@ -24,31 +24,31 @@ interface RetrofitService {
     @POST(API.USER_SIGN_UP)
     fun requestSignup(
         @Body body: ReqSignup
-    ): Call<ResultSignup>
+    ): Call<ResultBase>
 
     @Headers("content-type: application/json")
     @POST(API.USER_CHECK_EMAIL)
     fun requestCheckEmail(
         @Body body: ReqCheckEmail
-    ): Call<ResultCheckEmail>
+    ): Call<ResultBase>
 
     @Headers("content-type: application/json")
     @POST(API.USER_CHECK_NICK)
     fun requestCheckNick(
         @Body body: ReqCheckNick
-    ): Call<ResultCheckNick>
+    ): Call<ResultBase>
 
     @Headers("content-type: application/json")
     @POST(API.USER_LOGIN)
     fun requestLogin(
         @Body body: ReqLogin
-    ): Call<ResultLogin>
+    ): Call<ResultBase>
 
     @Headers("content-type: application/json")
     @POST(API.USER_UPDATE_NICK)
     fun requestUpdateNick(
         @Body body: ReqUpdateNick
-    ): Call<ResultUpdateNick>
+    ): Call<ResultBase>
 
     @Multipart
     @POST(API.UPLOAD_IMAGE)
