@@ -2,10 +2,9 @@ package com.basecamp.campong.retrofit
 
 import com.basecamp.campong.model.*
 import com.basecamp.campong.utils.API
+import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface RetrofitService {
 
@@ -50,4 +49,10 @@ interface RetrofitService {
     fun requestUpdateNick(
         @Body body: ReqUpdateNick
     ): Call<ResultUpdateNick>
+
+    @Multipart
+    @POST(API.UPLOAD_IMAGE)
+    fun requestUploadImage(
+        @Part file: MultipartBody.Part
+    ): Call<ResultUploadImage>
 }

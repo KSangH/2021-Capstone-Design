@@ -34,3 +34,31 @@ data class Post(
     @SerializedName("fee")
     val fee: String
 )
+
+data class ReqUploadPost(
+    @SerializedName("catename")
+    val catename: String,
+
+    @SerializedName("title")
+    val title: String,
+
+    @SerializedName("contents")
+    val contents: String,
+
+    @SerializedName("fee")
+    val fee: String,
+
+    @SerializedName("lat")
+    val lat: String,
+
+    @SerializedName("lon")
+    val lon: String,
+
+    @SerializedName("location")
+    val location: String
+)
+
+data class ResultUploadPost(
+    @SerializedName("postid")
+    val postid: String
+)

@@ -3,6 +3,7 @@
     package="com.basecamp.campong">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,10 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.SaveMyPostActivity"></activity>
-        <activity android:name=".view.SaveMyPost" />
+        <activity android:name=".view.SaveMyPostActivity" />
         <activity android:name=".view.SendRequestActivity" />
-        <activity android:name=".view.EditProfileActivity"></activity>
+        <activity android:name=".view.EditProfileActivity" />
         <activity android:name=".view.SearchActivity" />
         <activity android:name=".view.FilterActivity" />
         <activity

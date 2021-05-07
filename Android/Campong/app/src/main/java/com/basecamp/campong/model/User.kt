@@ -23,11 +23,11 @@ data class ReqSignup(
 /* 회원가입 결과 */
 data class ResultSignup(
     @SerializedName("error")
-    val error: Boolean
-//    @SerializedName("message")
-//    val errInfo : String,
-//    @SerializedName("errorcode")
-//    val errCode : Int
+    val error: Boolean,
+    @SerializedName("message")
+    val errInfo: String,
+    @SerializedName("errorcode")
+    val errCode: Int
 )
 
 /* 이메일 중복확인 요청 */

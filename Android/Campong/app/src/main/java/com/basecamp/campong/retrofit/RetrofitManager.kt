@@ -4,9 +4,14 @@ import android.util.Log
 import com.basecamp.campong.model.*
 import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants.TAG
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+
 
 class RetrofitManager {
 
@@ -218,5 +223,47 @@ class RetrofitManager {
                 }
             }
         )
+    }
+
+    fun requestUploadImage(file: File, completion: (Int) -> Unit) {
+
+        val fileBody = MultipartBody.Part.createFormData(
+            "photo", file.name, file.asRequestBody("image/*".toMediaType())
+        )
+
+        val call = service?.requestUploadImage(
+            fileBody
+        ) ?: return
+
+        call.enqueue(object : Callback<ResultUploadImage> {
+            override fun onResponse(
+                call: Call<ResultUploadImage>,
+                response: Response<ResultUploadImage>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1) // 닉네임 변경 중 오류
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultUploadImage>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+        })
     }
 }

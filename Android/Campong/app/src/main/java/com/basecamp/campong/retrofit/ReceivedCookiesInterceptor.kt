@@ -19,8 +19,8 @@ class ReceivedCookiesInterceptor : Interceptor {
             val cookies: HashSet<String> = HashSet()
 
             for (header in originalResponse.headers("Set-Cookie")) {
+                Log.d(Constants.TAG, "ReceivedCookies : $header")
                 cookies.add(header)
-                Log.d(Constants.TAG, header)
             }
 
             // Preference에 쿠키 저장

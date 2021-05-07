@@ -69,6 +69,9 @@ object API {
 
     // 취소
     const val STATE_CANCEL: String = "/state/cancel"
+
+    // 이미지 업로드
+    const val UPLOAD_IMAGE: String = "/image/upload"
 }
 
 object Preference {

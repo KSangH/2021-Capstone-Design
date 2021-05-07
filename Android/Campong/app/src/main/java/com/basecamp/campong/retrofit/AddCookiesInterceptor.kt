@@ -25,7 +25,7 @@ class AddCookiesInterceptor : Interceptor {
 
         // header에 쿠키 넣어주기
         for (cookie in getCookies) {
-            Log.d(Constants.TAG, cookie)
+            Log.d(Constants.TAG, "AddCookies: $cookie")
             builder.addHeader("Cookie", cookie)
         }
 
