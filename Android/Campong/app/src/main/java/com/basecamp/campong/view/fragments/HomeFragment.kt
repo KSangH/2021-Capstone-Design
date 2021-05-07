@@ -9,7 +9,7 @@ import com.basecamp.campong.R
 import com.basecamp.campong.RecyclerAdapter
 import com.basecamp.campong.databinding.FragmentHomeBinding
 import com.basecamp.campong.utils.postList
-import com.basecamp.campong.view.SaveMyPostActivity
+import com.basecamp.campong.view.WritePostActivity
 
 
 class HomeFragment : Fragment(), View.OnClickListener {
@@ -57,15 +57,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun goToSendRequest(view: View) {
-        val intent = Intent(context, SaveMyPostActivity::class.java)
+    private fun goToWritePost(view: View) {
+        val intent = Intent(context, WritePostActivity::class.java)
         startActivity(intent)
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.addButton -> {
-                goToSendRequest(v)
+                goToWritePost(v)
             }
         }
     }
