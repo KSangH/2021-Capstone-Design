@@ -225,6 +225,7 @@ class RetrofitManager {
         )
     }
 
+    // 이미지 업로드
     fun requestUploadImage(file: File, completion: (Int) -> Unit) {
 
         val fileBody = MultipartBody.Part.createFormData(
@@ -247,7 +248,7 @@ class RetrofitManager {
                             completion(0)
                         } else {
                             if (response.body()?.errCode == 1007) {
-                                completion(1) // 닉네임 변경 중 오류
+                                completion(1)
                             } else {
                                 completion(2)
                             }
