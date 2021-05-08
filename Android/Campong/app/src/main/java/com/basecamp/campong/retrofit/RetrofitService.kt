@@ -53,6 +53,12 @@ interface RetrofitService {
     @Multipart
     @POST(API.UPLOAD_IMAGE)
     fun requestUploadImage(
-        @Part file: MultipartBody.Part
+        @Part image: MultipartBody.Part
     ): Call<ResultUploadImage>
+
+    @Headers("content-type: application/json")
+    @POST(API.POST_UPLOAD)
+    fun requestUploadPost(
+        @Body body: ReqUploadPost
+    ): Call<ResultUploadPost>
 }

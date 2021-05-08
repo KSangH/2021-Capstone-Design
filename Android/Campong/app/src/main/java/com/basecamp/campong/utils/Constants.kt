@@ -92,6 +92,37 @@ object Keyword {
 
     const val ERROR_CODE = "errcode"
 
+    const val POST_ID = "postid"
+
+    const val CATENAME = "catename"
+
+    const val TITLE = "title"
+
+    const val CONTENTS = "contents"
+
+    const val FEE = "fee"
+
+    const val LAT = "lat"
+
+    const val LON = "lon"
+
+    const val LOCATION = "location"
+
+    const val ITEM_PHOTO = "itemphoto"
+
+    const val UPLOAD_DATE = "uploaddate"
+
+    const val RENTAL_DATE = "rentaldate"
+
+    const val RETURN_DATE = "returndate"
+
+    const val STATE = "STATE"
+
+    const val RESERVE_ID = "reserveid"
+
+    const val QRCODE = "qrcode"
+
+    const val IMAGE_ID = "imageid"
 }
 
 object Preference {

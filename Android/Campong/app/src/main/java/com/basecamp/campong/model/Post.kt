@@ -1,5 +1,6 @@
 package com.basecamp.campong.model
 
+import com.basecamp.campong.utils.Keyword
 import com.google.gson.annotations.SerializedName
 
 data class ResultPostList(
@@ -10,55 +11,64 @@ data class ResultPostList(
 )
 
 data class Post(
-    @SerializedName("postid")
+    @SerializedName(Keyword.POST_ID)
     val postid: String,
 
-    @SerializedName("catename")
+    @SerializedName(Keyword.CATENAME)
     val catename: String,
 
-    @SerializedName("usernick")
+    @SerializedName(Keyword.USERNICK)
     val usernick: String,
 
-    @SerializedName("title")
+    @SerializedName(Keyword.TITLE)
     val title: String,
 
-    @SerializedName("location")
+    @SerializedName(Keyword.LOCATION)
     val location: String,
 
-    @SerializedName("itemphoto")
+    @SerializedName(Keyword.ITEM_PHOTO)
     val itemphoto: String,
 
-    @SerializedName("uploaddate")
+    @SerializedName(Keyword.UPLOAD_DATE)
     val uploaddate: String,
 
-    @SerializedName("fee")
+    @SerializedName(Keyword.FEE)
     val fee: String
 )
 
 data class ReqUploadPost(
-    @SerializedName("catename")
+    @SerializedName(Keyword.CATENAME)
     val catename: String,
 
-    @SerializedName("title")
+    @SerializedName(Keyword.TITLE)
     val title: String,
 
-    @SerializedName("contents")
+    @SerializedName(Keyword.CONTENTS)
     val contents: String,
 
-    @SerializedName("fee")
+    @SerializedName(Keyword.FEE)
     val fee: String,
 
-    @SerializedName("lat")
+    @SerializedName(Keyword.LAT)
     val lat: String,
 
-    @SerializedName("lon")
+    @SerializedName(Keyword.LON)
     val lon: String,
 
-    @SerializedName("location")
+    @SerializedName(Keyword.LOCATION)
     val location: String
 )
 
 data class ResultUploadPost(
-    @SerializedName("postid")
-    val postid: String
+    @SerializedName(Keyword.POST_ID)
+    val postid: String,
+
+    @SerializedName(Keyword.ERROR)
+    val error: Boolean,
+
+    @SerializedName(Keyword.ERROR_MESSAGE)
+    val errInfo: String,
+
+    @SerializedName(Keyword.ERROR_CODE)
+    val errCode: Int
 )

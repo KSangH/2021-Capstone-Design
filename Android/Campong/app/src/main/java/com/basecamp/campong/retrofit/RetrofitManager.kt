@@ -229,7 +229,7 @@ class RetrofitManager {
     fun requestUploadImage(file: File, completion: (Int) -> Unit) {
 
         val fileBody = MultipartBody.Part.createFormData(
-            "photo", file.name, file.asRequestBody("image/*".toMediaType())
+            "image", file.name, file.asRequestBody("image/jpeg".toMediaType())
         )
 
         val call = service?.requestUploadImage(
@@ -265,6 +265,52 @@ class RetrofitManager {
                 Log.d(TAG, t.toString())
                 completion(-1)
             }
+        })
+    }
+
+    // 게시물 등록
+    fun requestUploadPost(
+        catename: String,
+        title: String,
+        contents: String,
+        fee: String,
+        lat: String,
+        lon: String,
+        location: String, completion: (Int) -> Unit
+    ) {
+        val req = ReqUploadPost(catename, title, contents, fee, lat, lon, location)
+        val call = service?.requestUploadPost(req) ?: return
+
+        call.enqueue(object : Callback<ResultUploadPost> {
+            override fun onResponse(
+                call: Call<ResultUploadPost>,
+                response: Response<ResultUploadPost>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultUploadPost>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
         })
     }
 }

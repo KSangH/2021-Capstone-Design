@@ -1,17 +1,18 @@
 package com.basecamp.campong.model
 
+import com.basecamp.campong.utils.Keyword
 import com.google.gson.annotations.SerializedName
 
 data class ResultUploadImage(
-    @SerializedName("imageid")
+    @SerializedName(Keyword.IMAGE_ID)
     val imageid: String,
 
-    @SerializedName("error")
+    @SerializedName(Keyword.ERROR)
     val error: Boolean,
 
-    @SerializedName("message")
+    @SerializedName(Keyword.ERROR_MESSAGE)
     val errInfo: String,
 
-    @SerializedName("errorcode")
+    @SerializedName(Keyword.ERROR_CODE)
     val errCode: Int
 )

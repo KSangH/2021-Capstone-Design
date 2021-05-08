@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,11 +13,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import com.basecamp.campong.databinding.ActivityEditProfileBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
 
@@ -100,30 +101,21 @@ class EditProfileActivity : AppCompatActivity() {
                 val selectedImageUri: Uri? = data?.data
                 if (selectedImageUri != null) {
 
+                    Log.d(Constants.TAG, "uri not null")
                     Toast.makeText(this, selectedImageUri.path, Toast.LENGTH_SHORT).show()
-                    val file = selectedImageUri.toFile()
 
-//                    try {
-//                        val inputStream = contentResolver.openInputStream(data.data!!)
-//                        val bitmap = BitmapFactory.decodeStream(inputStream)
-//                        uploadImage(bitmap)
-//                    } catch (e: FileNotFoundException) {
-//                        e.printStackTrace()
-//                    }
+                    try {
+                        val inputStream = contentResolver.openInputStream(data.data!!)
+                        val bitmap = BitmapFactory.decodeStream(inputStream)
+                        uploadImage(bitmap)
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
+                    }
                     mBinding.profileImageView.setImageURI(selectedImageUri)
 
-                    RetrofitManager.instance.requestUploadImage(file) {
-                        when (it) {
-                            0 -> {
-                                Toast.makeText(this, "서버에 업로드 하였습니다.", Toast.LENGTH_SHORT).show()
-                            }
-                            else -> {
-                                Toast.makeText(this, "업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                    }
 
                 } else {
+                    Log.d(Constants.TAG, "uri is null")
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -150,7 +142,7 @@ class EditProfileActivity : AppCompatActivity() {
         return imageFile
     }
 
-    fun uploadImage(bitmap: Bitmap) {
+    private fun uploadImage(bitmap: Bitmap) {
         val imageFile = getImageFile(bitmap, "profile")
 
         RetrofitManager.instance.requestUploadImage(imageFile) {
