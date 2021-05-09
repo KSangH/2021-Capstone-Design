@@ -37,7 +37,8 @@ public class PostController {
                 return result.setAuthFailed();
             }
 
-            //
+            //게시물목록조회
+            
 
 
         } catch (UnexpectedRollbackException e){

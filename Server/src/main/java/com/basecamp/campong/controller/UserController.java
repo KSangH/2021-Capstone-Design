@@ -96,10 +96,12 @@ public class UserController {
                               HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
         try {
+            // 사용자 인증
             long id = userService.auth(session, cookie, res);
             if (id < 0) {
                 return result.setAuthFailed();
             }
+            //닉네임 변경
             userService.updatenick(id, userBody);
         } catch (UnexpectedRollbackException e) {
             result.setError(1007, "잠시 후 다시 시도해주세요.");
