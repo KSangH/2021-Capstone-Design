@@ -45,4 +45,7 @@ public class User implements Serializable {
     private LocalDateTime date;
 
     private String session;
+
+    @Transient
+    private long imageid;
 }

@@ -2,7 +2,6 @@ package com.basecamp.campong.controller;
 
 import com.basecamp.campong.config.Config;
 import com.basecamp.campong.util.JsonMap;
-import com.basecamp.campong.RequestDTO;
 import com.basecamp.campong.domain.User;
 import com.basecamp.campong.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +9,8 @@ import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/user")
@@ -74,7 +71,6 @@ public class UserController {
         JsonMap result = new JsonMap();
         try {
             return userService.login(userBody, session, res);
-
         } catch (UnexpectedRollbackException e) {
             return result.setError(1005, "잠시 후 다시 시도해주세요.");
         }
@@ -100,9 +96,9 @@ public class UserController {
 
     // 유저 정보
     @PostMapping(value = "/userinfo")
-    public JsonMap userinfo(@RequestBody User userBody,
-                              @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+    public JsonMap userinfo(@CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                               HttpSession session, HttpServletResponse res) {
+
         JsonMap result = new JsonMap();
         try {
             long id = userService.auth(session, cookie, res);
@@ -118,8 +114,8 @@ public class UserController {
 
 
     // 닉네임 변경
-    @PostMapping(value = "/updatenick")
-    public JsonMap updatenick(@RequestBody User userBody,
+    @PostMapping(value = "/updateuser")
+    public JsonMap updateuser(@RequestBody User userBody,
                               @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                               HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
@@ -130,12 +126,10 @@ public class UserController {
                 return result.setAuthFailed();
             }
 
-            return userService.updatenick(id, userBody);
+            return userService.updateuser(id, userBody);
 
         } catch (UnexpectedRollbackException e) {
             return result.setError(1007, "잠시 후 다시 시도해주세요.");
         }
     }
-
-
 }
