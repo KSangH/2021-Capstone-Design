@@ -28,7 +28,7 @@ public class UserService {
 
     // 회원 가입 서비스
     public boolean signup(User userBody) {
-        System.out.println("회원가입# 시작하였습니다.");
+        System.out.println("USER-SIGN# START");
         User user = User.builder().email(userBody.getEmail())
                 .password(userBody.getPassword()).phone(userBody.getPhone())
                 .username(userBody.getUsername()).usernick(userBody.getUsernick()).build();
@@ -38,20 +38,20 @@ public class UserService {
 
 
         if (checkemail || checknick) {
-            System.out.println("회원가입# 중복발생 하였습니다.");
+            System.out.println("USER-SIGN# ERROR-DUPLICATE");
             return true;
         }
 
         user = userRepository.save(user);
-        System.out.println("회원가입# 종료하였습니다.");
+        System.out.println("USER-SIGN# END");
         return false;
     }
 
     // 이메일 체크 서비스
     public boolean checkemail(User userBody) {
-        System.out.println("이메일중복# 시작하였습니다.");
+        System.out.println("USER-CHECKEMAIL# START");
         int count = userRepository.countByEmail(userBody.getEmail());
-        System.out.println("이메일중복# 종료하였습니다.");
+        System.out.println("USER-CHECKEMAIL# END");
         if (count == 0) {
             return false;
         } else {
@@ -61,9 +61,9 @@ public class UserService {
 
     // 닉네임 체크 서비스
     public boolean checknick(User userBody) {
-        System.out.println("닉네임중복# 시작하였습니다.");
+        System.out.println("USER-CHECKNICK# START");
         int count = userRepository.countByUsernick(userBody.getUsernick());
-        System.out.println("닉네임중복# 종료하였습니다.");
+        System.out.println("USER-CHECKNICK# END");
         if (count == 0) {
             return false;
         } else {
@@ -73,12 +73,12 @@ public class UserService {
 
     // 로그인 서비스
     public JsonMap login(User userBody, HttpSession session, HttpServletResponse res) {
-        System.out.println("로그인# 시작하였습니다.");
+        System.out.println("USER-LOGIN# START");
         JsonMap result = new JsonMap();
 
         User user = userRepository.findByEmailAndPassword(userBody.getEmail(), userBody.getPassword());
         if (user == null) {
-            System.out.println("로그인# 실패하였습니다. 틀림");
+            System.out.println("USER-LOGIN# ERROR - MISMATCH");
             return result.setError(1005, "아이디랑 비밀번호를 확인해주세요");
         }
 
@@ -91,20 +91,20 @@ public class UserService {
         user.setSession(session.getId());
 
         //세션에 user 객체 저장
-        session.setAttribute("user", user);
-        System.out.println("로그인# 성공하였습니다.");
+        session.setAttribute("user", user.getUserid());
+        System.out.println("USER-LOGIN# END");
         return result;
     }
 
     // 로그아웃 서비스
     public JsonMap logout(long id, HttpSession session, HttpServletResponse res) {
-        System.out.println("로그아웃# 시작하였습니다.");
+        System.out.println("USER-LOGOUT# START");
         JsonMap result = new JsonMap();
 
         User user = userRepository.findByUserid(id);
 
         if (user == null) {
-            System.out.println("로그아웃# 실패하였습니다. 유저없음");
+            System.out.println("USER-LOGOUT# ERROR- NOUSER");
             return result.setError(1009, "유저 정보가 없습니다.");
         }
 
@@ -119,62 +119,62 @@ public class UserService {
         //해당 user table에 세션 초기화
         user.setSession(null);
 
-        System.out.println("로그아웃# 성공하였습니다.");
+        System.out.println("USER-LOGOUT# END");
         return result;
     }
 
 
     // 닉네임 변경
     public JsonMap userinfo(long userID) {
-        System.out.println("유저정보# 시작하였습니다.");
+        System.out.println("USER-USERINFO# START");
         JsonMap result = new JsonMap();
         User user = userRepository.findByUserid(userID);
         if (user == null) {
-            System.out.println("유저정보# 유저가 없습니다.");
+            System.out.println("USER-USERINFO# ERROR-NO USER");
             return result.setError(1009, "유저 정보가 없습니다.");
         }
         result.put("usernick", user.getUsernick());
         Image image = user.getProfile();
         result.put("imageid", image == null ? null : image.getImageid());
-        System.out.println("유저정보# 종료되었습니다.");
+        System.out.println("USER-USERINFO# END");
         return result;
     }
 
 
     // 닉네임 변경
     public JsonMap updateuser(long userID, User userBody) {
-        System.out.println("유저정보업데이트# 시작하였습니다.");
+        System.out.println("USER-UPDATEUSER# START");
         JsonMap result = new JsonMap();
         User user = userRepository.findByUserid(userID);
         if (user == null) {
-            System.out.println("유저정보업데이트# 실패하였습니다. 없음");
+            System.out.println("USER-UPDATEUSER# ERROR-NO USER");
             return result.setError(1009, "유저 정보가 없습니다.");
         }
         user.setUsernick(userBody.getUsernick());
         user.setProfile(imageRepository.findById(userBody.getImageid()).orElse(null));
-        System.out.println("유저정보업데이트# 성공하였습니다.");
+        System.out.println("USER-UPDATEUSER# END");
         return result;
     }
 
     // 세션, 쿠키로 유저 인증
     public long auth(HttpSession session, Cookie cookie, HttpServletResponse res) {
         // 세션 체크
-        System.out.println("사용자인증# 시작하였습니다.");
-        User user = (User) session.getAttribute("user");
-        if (user != null) {
-            System.out.println("사용자인증# 세션에서 성공하였습니다");
-            return user.getUserid();
+        System.out.println("USER-AUTH# START");
+        Long userid = (Long) session.getAttribute("user");
+        if (userid != null) {
+            System.out.println("USER-AUTH# END SESSION FIND");
+            return userid;
         }
 
         // 쿠키 체크
         if (cookie == null) {
-            System.out.println("사용자인증# 실패하였습니다(1)");
+            System.out.println("USER-AUTH# ERROR NOCOOKIE");
             return -1;
         }
 
-        user = userRepository.findBySession(cookie.getValue());
+        User user = userRepository.findBySession(cookie.getValue());
         if (user == null) {
-            System.out.println("사용자인증# 실패하였습니다(2)");
+            System.out.println("USER-AUTH# ERROR NOUSER");
             return -1;
         }
         
@@ -182,7 +182,7 @@ public class UserService {
         user.setSession(session.getId());
         cookie.setValue(session.getId());
         res.addCookie(cookie);
-        System.out.println("사용자인증# 성공하였습니다");
+        System.out.println("USER-AUTH# SESSION CHANGE END");
         return user.getUserid();
     }
 }
