@@ -11,18 +11,21 @@ public class JsonMap extends HashMap<String, Object> {
         put("error", false);
     }
 
-    public void setMessage(String data){
+    public JsonMap setMessage(String data){
         put("data", data);
+        return this;
     }
 
-    public void setMessage(JsonMap data){
+    public JsonMap setMessage(JsonMap data){
         put("data", data);
+        return this;
     }
 
-    public void setError(long errorcode, String message){
+    public JsonMap setError(long errorcode, String message){
         put("error", true);
         put("errorcode", errorcode);
         put("message", message);
+        return this;
     }
 
     public JsonMap setAuthFailed(){
