@@ -52,19 +52,10 @@ public class testController {
                          HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
         try {
-            if (userService.login(userBody, session)) {
-                result.setError(1005, "아이디랑 비밀번호를 확인해주세요");
-            }
-
-            // 쿠키 생성
-            Cookie cookie = new Cookie(Config.COOKIE_SESSIONID, session.getId());
-            cookie.setMaxAge(Config.COOKIE_MAXAGE);
-            res.addCookie(cookie);
+            System.out.println(userService.login(userBody, session, res));
 
         } catch (UnexpectedRollbackException e) {
-            result.setError(1005, "잠시 후 다시 시도해주세요.");
-        } finally {
-            System.out.println(result);
+            System.out.println(result.setError(1005, "잠시 후 다시 시도해주세요."));
         }
     }
 
