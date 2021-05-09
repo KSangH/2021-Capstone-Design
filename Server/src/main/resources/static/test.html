@@ -5,7 +5,26 @@
     <title>Title</title>
 </head>
 <body>
-    <form method="post" action="/image/upload" enctype="multipart/form-data">
+    <h1>회원가입</h1>
+    <form method="post" action="/test/signup">
+        이메일 <input type="text" name="email"><br>
+        패스워드 <input type="text" name="password"><br>
+        이름 <input type="text" name="username"><br>
+        닉네임 <input type="text" name="usernick"><br>
+        전화번호 <input type="text" name="phone">
+        <input type="submit" name="submit"/>
+    </form>
+
+    <h1>로그인</h1>
+    <form method="post" action="/test/login">
+        이메일 <input type="text" name="email"><br>
+        패스워드 <input type="text" name="password"><br>
+
+        <input type="submit" name="submit"/>
+    </form>
+
+    <h1>파일업로드 테스트</h1>
+    <form method="post" action="test/image/upload" enctype="multipart/form-data">
         <input type="file" name="image"/>
         <input type="submit" name="submit"/>
     </form>
