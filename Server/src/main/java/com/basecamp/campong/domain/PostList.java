@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table
@@ -55,6 +54,7 @@ public class PostList {
     private String location;
 
     @Column
+    @Builder.Default
     private int deletestate = 0;
 
     @Column
