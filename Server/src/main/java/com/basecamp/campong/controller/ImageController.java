@@ -38,7 +38,7 @@ public class ImageController {
             if (id < 0) {
                 return result.setAuthFailed();
             }
-            result.setMessage(imageService.imageUpload(file)+"");
+            result.put("imageid", imageService.imageUpload(file));
         } catch (UnexpectedRollbackException e) {
             result.setError(3001, "이미지 업로드에 실패하였습니다.");
         } finally {
