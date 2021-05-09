@@ -60,4 +60,9 @@ public class PostList {
     @Column
     private LocalDateTime deletedate;
 
+    @Transient //임시로 받을 카테고리명
+    private String catename;
+
+    @Transient //임시로 받을 imageid
+    private long imageid;
 }
