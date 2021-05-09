@@ -184,10 +184,47 @@ class RetrofitManager {
         })
     }
 
-    // 닉네임 변경
-    fun requestUpdateNick(usernick: String, completion: (Int) -> Unit) {
-        val req = ReqUpdateNick(usernick)
-        val call = service?.requestUpdateNick(
+    // 사용자 정보 요청
+    fun requestUserInfo(completion: (Int, usernick: String?, imageid: Long?) -> Unit) {
+        val call = service?.requestUserInfo() ?: return
+
+        call.enqueue(object : Callback<ResultUserInfo> {
+            override fun onResponse(
+                call: Call<ResultUserInfo>,
+                response: Response<ResultUserInfo>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0, response.body()!!.usernick, response.body()!!.image_id)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null, null)
+                            } else {
+                                completion(2, null, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultUserInfo>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null, null)
+            }
+
+        })
+    }
+
+    // 프로필 변경
+    fun requestUpdateUser(usernick: String, image_id: Long?, completion: (Int) -> Unit) {
+        val req = ReqUpdateUser(usernick, image_id)
+        val call = service?.requestUpdateUser(
             req
         ) ?: return
 
@@ -226,7 +263,7 @@ class RetrofitManager {
     }
 
     // 이미지 업로드
-    fun requestUploadImage(file: File, completion: (Int) -> Unit) {
+    fun requestUploadImage(file: File, completion: (Int, image_id: Long?) -> Unit) {
 
         val fileBody = MultipartBody.Part.createFormData(
             "image", file.name, file.asRequestBody("image/jpeg".toMediaType())
@@ -245,25 +282,25 @@ class RetrofitManager {
                     200 -> {
                         Log.d(TAG, response.raw().toString())
                         if (response.body()?.error == false) { // 성공
-                            completion(0)
+                            completion(0, response.body()!!.imageid)
                         } else {
                             if (response.body()?.errCode == 1007) {
-                                completion(1)
+                                completion(1, null)
                             } else {
-                                completion(2)
+                                completion(2, null)
                             }
                         }
                     }
                     else -> {
                         Log.d(TAG, response.code().toString())
-                        completion(-1)
+                        completion(-1, null)
                     }
                 }
             }
 
             override fun onFailure(call: Call<ResultUploadImage>, t: Throwable) {
                 Log.d(TAG, t.toString())
-                completion(-1)
+                completion(-1, null)
             }
         })
     }

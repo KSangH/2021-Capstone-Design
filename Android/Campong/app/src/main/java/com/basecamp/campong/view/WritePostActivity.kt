@@ -94,8 +94,8 @@ class WritePostActivity : AppCompatActivity() {
 //                    }
                     mBinding.selectImageButton.setImageURI(selectedImageUri)
 
-                    RetrofitManager.instance.requestUploadImage(file) {
-                        when (it) {
+                    RetrofitManager.instance.requestUploadImage(file) { code, image_id ->
+                        when (code) {
                             0 -> {
                                 Toast.makeText(this, "서버에 업로드 하였습니다.", Toast.LENGTH_SHORT).show()
                             }
@@ -135,8 +135,8 @@ class WritePostActivity : AppCompatActivity() {
     fun uploadImage(bitmap: Bitmap) {
         val imageFile = getImageFile(bitmap, "profile")
 
-        RetrofitManager.instance.requestUploadImage(imageFile) {
-            when (it) {
+        RetrofitManager.instance.requestUploadImage(imageFile) { code, image_id ->
+            when (code) {
                 0 -> {
                     Toast.makeText(this, "서버에 업로드 하였습니다.", Toast.LENGTH_SHORT).show()
                 }

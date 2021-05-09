@@ -52,8 +52,28 @@ data class ReqLogin(
     val password: String
 )
 
-/* 닉네임 변경 요청*/
-data class ReqUpdateNick(
+/* 프로필 변경 요청*/
+data class ReqUpdateUser(
     @SerializedName(Keyword.USERNICK)
-    val usernick: String
+    val usernick: String,
+
+    @SerializedName(Keyword.IMAGE_ID)
+    val image_id: Long?
+)
+
+data class ResultUserInfo(
+    @SerializedName(Keyword.USERNICK)
+    val usernick: String,
+
+    @SerializedName(Keyword.IMAGE_ID)
+    val image_id: Long?,
+
+    @SerializedName(Keyword.ERROR)
+    val error: Boolean,
+
+    @SerializedName(Keyword.ERROR_MESSAGE)
+    val errInfo: String,
+
+    @SerializedName(Keyword.ERROR_CODE)
+    val errCode: Int
 )

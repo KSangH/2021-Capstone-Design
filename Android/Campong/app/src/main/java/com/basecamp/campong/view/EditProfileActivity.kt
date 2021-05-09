@@ -15,7 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.basecamp.campong.databinding.ActivityEditProfileBinding
 import com.basecamp.campong.retrofit.RetrofitManager
+import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
+import com.bumptech.glide.Glide
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -23,19 +25,46 @@ import java.io.OutputStream
 
 class EditProfileActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityEditProfileBinding
+    private var image_id: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         mBinding = ActivityEditProfileBinding.inflate(layoutInflater)
 
+        getUserInfo()
+
         initAddPhotoButton()
 
         setContentView(mBinding.root)
     }
 
+    fun getUserInfo() {
+        RetrofitManager.instance.requestUserInfo { code, usernick, imageid ->
+            when (code) {
+                0 -> {
+                    if (usernick != null) {
+                        mBinding.usernickEditText.setText(usernick)
+                    }
+                    if (imageid != null) {
+                        image_id = imageid
+                        val url = "${API.BASE_URL}/image/$image_id"
+
+                        Glide.with(this)
+                            .load(url)
+                            .centerCrop()
+                            .into(mBinding.profileImageView)
+                    }
+                }
+            }
+        }
+    }
+
     fun editProfile(view: View) {
-        RetrofitManager.instance.requestUpdateNick(mBinding.usernickEditText.text.toString()) {
+        RetrofitManager.instance.requestUpdateUser(
+            mBinding.usernickEditText.text.toString(),
+            image_id
+        ) {
             when (it) {
                 0 -> {
                     Toast.makeText(applicationContext, "닉네임이 변경되었습니다.", Toast.LENGTH_SHORT)
@@ -108,11 +137,10 @@ class EditProfileActivity : AppCompatActivity() {
                         val inputStream = contentResolver.openInputStream(data.data!!)
                         val bitmap = BitmapFactory.decodeStream(inputStream)
                         uploadImage(bitmap)
+                        mBinding.profileImageView.setImageURI(selectedImageUri)
                     } catch (e: FileNotFoundException) {
                         e.printStackTrace()
                     }
-                    mBinding.profileImageView.setImageURI(selectedImageUri)
-
 
                 } else {
                     Log.d(Constants.TAG, "uri is null")
@@ -145,12 +173,19 @@ class EditProfileActivity : AppCompatActivity() {
     private fun uploadImage(bitmap: Bitmap) {
         val imageFile = getImageFile(bitmap, "profile")
 
-        RetrofitManager.instance.requestUploadImage(imageFile) {
-            when (it) {
+        RetrofitManager.instance.requestUploadImage(imageFile) { code, id ->
+            when (code) {
                 0 -> {
+                    if (id != null) {
+                        Log.d(Constants.TAG, "uploadImage(): Result - image_id is not null!!")
+                        image_id = id
+                    } else {
+                        Log.d(Constants.TAG, "uploadImage(): Result - image_id is null!!")
+                    }
                     Toast.makeText(this, "서버에 업로드 하였습니다.", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
+                    Log.d(Constants.TAG, "uploadImage(): Result code is not 0")
                     Toast.makeText(this, "업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
                 }
             }

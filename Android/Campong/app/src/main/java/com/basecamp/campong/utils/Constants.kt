@@ -20,8 +20,11 @@ object API {
     // 로그인
     const val USER_LOGIN: String = "/user/login"
 
-    // 닉네임 변경
-    const val USER_UPDATE_NICK: String = "/user/updatenick"
+    // 프로필 변경
+    const val USER_UPDATE_USER: String = "/user/updateuser"
+
+    // 유저 정보
+    const val USER_INFO: String = "/user/userinfo"
 
     // 로그아웃
     const val USER_LOGOUT: String = "/user/logout"

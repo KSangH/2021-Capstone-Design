@@ -45,10 +45,13 @@ interface RetrofitService {
     ): Call<ResultBase>
 
     @Headers("content-type: application/json")
-    @POST(API.USER_UPDATE_NICK)
-    fun requestUpdateNick(
-        @Body body: ReqUpdateNick
+    @POST(API.USER_UPDATE_USER)
+    fun requestUpdateUser(
+        @Body body: ReqUpdateUser
     ): Call<ResultBase>
+
+    @POST(API.USER_INFO)
+    fun requestUserInfo(): Call<ResultUserInfo>
 
     @Multipart
     @POST(API.UPLOAD_IMAGE)

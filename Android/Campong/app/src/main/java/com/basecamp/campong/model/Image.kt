@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ResultUploadImage(
     @SerializedName(Keyword.IMAGE_ID)
-    val imageid: String,
+    val imageid: Long?,
 
     @SerializedName(Keyword.ERROR)
     val error: Boolean,
