@@ -131,7 +131,7 @@ class EditProfileActivity : AppCompatActivity() {
                 if (selectedImageUri != null) {
 
                     Log.d(Constants.TAG, "uri not null")
-                    Toast.makeText(this, selectedImageUri.path, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, selectedImageUri.path, Toast.LENGTH_SHORT).show()
 
                     try {
                         val inputStream = contentResolver.openInputStream(data.data!!)
