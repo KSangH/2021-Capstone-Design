@@ -182,11 +182,9 @@ class EditProfileActivity : AppCompatActivity() {
                     } else {
                         Log.d(Constants.TAG, "uploadImage(): Result - image_id is null!!")
                     }
-                    Toast.makeText(this, "서버에 업로드 하였습니다.", Toast.LENGTH_SHORT).show()
                 }
                 else -> {
                     Log.d(Constants.TAG, "uploadImage(): Result code is not 0")
-                    Toast.makeText(this, "업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
