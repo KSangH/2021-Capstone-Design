@@ -40,7 +40,10 @@ class SignupActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // text가 바뀔 때마다 호출된다.
-                correctEmail()
+                if (s != null) {
+                    if (s.length > 2)
+                        correctEmail()
+                }
             }
         })
     }
@@ -98,9 +101,12 @@ class SignupActivity : AppCompatActivity() {
             ) {
                 when (it) {
                     0 -> {
-                        val intent = Intent(applicationContext, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        Toast.makeText(applicationContext, "회원가입 성공!.", Toast.LENGTH_SHORT)
+                            .show()
+                        login(
+                            mBinding.emailEditText.text.toString(),
+                            mBinding.passwordEditText.text.toString()
+                        )
                     }
                     else -> {
                         Toast.makeText(applicationContext, "회원가입에 실패하였습니다.", Toast.LENGTH_SHORT)
@@ -117,17 +123,36 @@ class SignupActivity : AppCompatActivity() {
         }
     }
 
-    fun correctEmail(): Boolean{
+    private fun login(email: String, password: String) {
+        RetrofitManager.instance.requestLogin(email, password) {
+            when (it) {
+                0 -> {
+                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
+                else -> {
+                    Toast.makeText(applicationContext, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
+    }
 
-        val emailValidation = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+    fun correctEmail(): Boolean {
+
+        val emailValidation =
+            "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
         var email = mBinding.emailEditText.text.toString().trim() //공백제거
         val p = Pattern.matches(emailValidation, email) // 서로 패턴이 맞는가?
         if (p) {
             //이메일 형태가 정상일 경우
             mBinding.emailEditText.setTextColor(Color.BLACK)
+            mBinding.emailTextInput.error = null
             return true
         } else {
-            mBinding.emailEditText.setTextColor(Color.RED)
+            //mBinding.emailEditText.setTextColor(Color.RED)
+            mBinding.emailTextInput.error = "이메일 형식이 아닙니다."
             return false
         }
 

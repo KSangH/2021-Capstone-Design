@@ -93,7 +93,7 @@ object Keyword {
 
     const val ERROR_MESSAGE = "message"
 
-    const val ERROR_CODE = "errcode"
+    const val ERROR_CODE = "errorcode"
 
     const val POST_ID = "postid"
 
