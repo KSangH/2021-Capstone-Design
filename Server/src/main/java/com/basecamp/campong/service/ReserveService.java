@@ -60,7 +60,7 @@ public class ReserveService {
         body.setUser(user);
         body = reserveRepository.save(body);
 
-        ReserveState state = ReserveState.builder().reserve(body).build();
+        ReserveState state = ReserveState.builder().state(1).reserve(body).build();
         reserveStateRepository.save(state);
 
         System.out.println("RESERVE-REQUEST: END");
@@ -68,6 +68,60 @@ public class ReserveService {
     }
 
 
+    public JsonMap reserveState(long userid, Reservelist body, int statecode){
+        System.out.println("RESERVE-STATE: START");
+        JsonMap result = new JsonMap();
 
+        User user = userRepository.findByUserid(userid);
+
+        // 예약 내역 확인
+        Reservelist reserve = reserveRepository.findById(body.getReserveid()).orElse(null);
+        if(reserve == null) {
+            System.out.println("RESERVE-STATE: ERROR - NO-RESERVE");
+            return result.setError(3001, "예약내역을 찾을 수 없습니다");
+        }
+
+        // 유저 확인
+        if(reserve.getPost().getUser().getUserid() != user.getUserid()){
+            System.out.println("RESERVE-STATE: ERROR - NO-AUTH - POST WRITER IS NOT USER");
+            return result.setError(3001, "권한이 없는 유저입니다.");
+        }
+
+        // 이전 상태 확인
+        ReserveState recent = reserveStateRepository.findTopByReserveOrderByStateidDesc(reserve).get();
+
+        switch(recent.getState()){
+            case 0:
+                System.out.println("RESERVE-STATE: ERROR - ALREADY CANCEL");
+                return result.setError(3005, "이미 취소된 예약입니다.");
+            case 1:
+                if(statecode != 2 && statecode != 0){
+                    System.out.println("RESERVE-STATE: ERROR - ALREADY REQUEST");
+                    return result.setError(3005, "현재 예약 요청 상태입니다. (예약확정과 취소만 가능)");
+                }
+                break;
+            case 2:
+                if(statecode != 3 && statecode != 0){
+                    System.out.println("RESERVE-STATE: ERROR - ALREADY GRANT");
+                    return result.setError(3005, "현재 예약 확정 상태입니다. (대여와 취소만 가능)");
+                }
+                break;
+            case 3:
+                if(statecode != 4){
+                    System.out.println("RESERVE-STATE: ERROR - ALREADY RENTAL");
+                    return result.setError(3005, "현재 대여 상태입니다. (반납만 가능)");
+                }
+                break;
+            case 4:
+                System.out.println("RESERVE-STATE: ERROR - ALREADY RETURN");
+                return result.setError(3005, "이미 반납이 완료되었습니다.");
+        }
+
+        ReserveState state = ReserveState.builder().state(statecode).reserve(reserve).build();
+        reserveStateRepository.save(state);
+
+        System.out.println("RESERVE-STATE: END");
+        return result;
+    }
 
 }

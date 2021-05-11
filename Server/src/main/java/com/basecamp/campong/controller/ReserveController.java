@@ -57,4 +57,77 @@ public class ReserveController {
             return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
         }
     }
+
+    // 대여
+    @PostMapping(value = "/state/rental")
+    public JsonMap stateRental(@RequestBody Reservelist body,
+                                  @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                                  HttpSession session, HttpServletResponse res) {
+        JsonMap result = new JsonMap();
+        try {
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+            return reserveService.reserveState(id, body, 3);
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+            return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
+        }
+    }
+
+    // 반납
+    @PostMapping(value = "/state/return")
+    public JsonMap stateReturn(@RequestBody Reservelist body,
+                               @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                               HttpSession session, HttpServletResponse res) {
+        JsonMap result = new JsonMap();
+        try {
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+            return reserveService.reserveState(id, body, 4);
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+            return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
+        }
+    }
+
+    // 취소
+    @PostMapping(value = "/state/cancel")
+    public JsonMap stateCancel(@RequestBody Reservelist body,
+                               @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                               HttpSession session, HttpServletResponse res) {
+        JsonMap result = new JsonMap();
+        try {
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+            return reserveService.reserveState(id, body, 0);
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+            return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
+        }
+    }
+
+    // 확정
+    @PostMapping(value = "/state/grant")
+    public JsonMap stateGrant(@RequestBody Reservelist body,
+                               @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                               HttpSession session, HttpServletResponse res) {
+        JsonMap result = new JsonMap();
+        try {
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+            return reserveService.reserveState(id, body, 2);
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+            return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
+        }
+    }
+
 }
