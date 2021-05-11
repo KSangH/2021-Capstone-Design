@@ -10,5 +10,10 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<PostList, Long> {
 
     //deletestate가 0인 post 목록 조회
-    List<PostList> findAllByDeletestateOrderByUploaddate(int state);
+    List<PostList> findAllByDeletestateOrderByUploaddateDesc(int state);
+
+    //게시물 삭제(deletestate 변경)
+
+    //게시물 조회
+    PostList findByPostid(long postid);
 }

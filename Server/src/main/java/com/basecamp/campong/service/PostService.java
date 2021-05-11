@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -66,11 +68,30 @@ public class PostService {
     }
 
     //게시물조회
+    //미완
     public void readList(){
         System.out.println("readList START");
         JsonMap result = new JsonMap();
 
         //List<PostList> postList = postRepository.findAllByDeletestate(0);
         //System.out.println(postList);
+    }
+
+    //게시물 삭제
+    public JsonMap deletePost(long postid){
+        System.out.println("deletePost START");
+        JsonMap result = new JsonMap();
+
+        //postid로 삭제할 게시글 조회
+        PostList post = postRepository.findByPostid(postid);
+        if(post == null){
+            //삭제할 게시글이 없는 경우
+            return result.setError(2005, "해당 게시물이 존재하지 않습니다.");
+        }
+        post.setDeletestate((int) 1);
+        post.setDeletedate(LocalDateTime.now());
+
+        System.out.println("deletePost END");
+        return result;
     }
 }

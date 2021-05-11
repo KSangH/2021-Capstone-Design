@@ -68,6 +68,28 @@ public class PostController {
             System.out.println("ERROR : " + e.getMessage());
             return result.setError(2002, "게시물 등록 오류(" + e.getLocalizedMessage() + ")");
         }
+    }
+
+    //게시물 삭제
+    @PostMapping(value = "delete")
+    public JsonMap deletePost(@RequestBody PostList post,
+                              @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                              HttpSession session, HttpServletResponse res){
+        JsonMap result = new JsonMap();
+        try{
+            // 사용자 인증
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+
+            //게시물삭제 서비스 실행
+            return postService.deletePost(post.getPostid());
+
+        } catch (Exception e){
+            System.out.println("ERROR : " + e.getMessage());
+            return result.setError(2004, "게시물 삭제 오류(" + e.getLocalizedMessage() + ")");
+        }
 
     }
 }
