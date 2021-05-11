@@ -2,15 +2,20 @@ package com.basecamp.campong.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.basecamp.campong.R
 import com.basecamp.campong.databinding.FragmentMypageBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.API
+import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.view.EditProfileActivity
+import com.basecamp.campong.view.LoginActivity
+import com.basecamp.campong.view.MainActivity
 import com.bumptech.glide.Glide
 
 class MypageFragment : Fragment(), View.OnClickListener {
@@ -30,6 +35,7 @@ class MypageFragment : Fragment(), View.OnClickListener {
         getUserInfo()
 
         binding.goToEditProfileButton.setOnClickListener(this)
+        binding.logoutButton.setOnClickListener(this)
 
         return mBinding?.root
     }
@@ -48,6 +54,9 @@ class MypageFragment : Fragment(), View.OnClickListener {
         when (v.id) {
             R.id.goToEditProfileButton -> {
                 goToEditProfile(v)
+            }
+            R.id.logoutButton -> {
+                logout(v)
             }
         }
     }
@@ -75,4 +84,23 @@ class MypageFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+
+    fun logout(view: View) {
+        Log.d(Constants.TAG, "MypageFragment : logout()")
+
+            RetrofitManager.instance.requestLogout(
+            ) {
+                when (it) {
+                    0 -> {
+                        val loginIntent = Intent(context, LoginActivity::class.java)
+                        startActivity(loginIntent)
+                    }
+                    else -> {
+                        Toast.makeText(context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                }
+            }
+    }
+
 }
