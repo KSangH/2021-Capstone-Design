@@ -184,6 +184,40 @@ class RetrofitManager {
         })
     }
 
+    fun requestLogout(completion: (Int) -> Unit) {
+        val call = service?.requestLogout(
+        ) ?: return
+
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1005) { // 로그인 오류
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
+    }
+
     // 사용자 정보 요청
     fun requestUserInfo(completion: (Int, usernick: String?, imageid: Long?) -> Unit) {
         val call = service?.requestUserInfo() ?: return

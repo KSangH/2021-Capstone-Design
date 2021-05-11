@@ -45,6 +45,11 @@ interface RetrofitService {
     ): Call<ResultBase>
 
     @Headers("content-type: application/json")
+    @POST(API.USER_LOGOUT)
+    fun requestLogout(
+    ): Call<ResultBase>
+
+    @Headers("content-type: application/json")
     @POST(API.USER_UPDATE_USER)
     fun requestUpdateUser(
         @Body body: ReqUpdateUser
