@@ -4,29 +4,58 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
+import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityWritePostBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
 
 class WritePostActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityWritePostBinding
+    private var image_id: Long? = null
+    private var category: String? = null
+
+    private val mTextWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityWritePostBinding.inflate(layoutInflater)
 
         initAddPhotoButton()
+
+        val chipGroup = mBinding.chipGroup
+
+        chipGroup.setOnCheckedChangeListener { _, checkedId ->
+            category = getCategory(checkedId)
+        }
 
         setContentView(mBinding.root)
     }
@@ -82,27 +111,13 @@ class WritePostActivity : AppCompatActivity() {
                 val selectedImageUri: Uri? = data?.data
                 if (selectedImageUri != null) {
 
-                    Toast.makeText(this, selectedImageUri.path, Toast.LENGTH_SHORT).show()
-                    val file = selectedImageUri.toFile()
-
-//                    try {
-//                        val inputStream = contentResolver.openInputStream(data.data!!)
-//                        val bitmap = BitmapFactory.decodeStream(inputStream)
-//                        uploadImage(bitmap)
-//                    } catch (e: FileNotFoundException) {
-//                        e.printStackTrace()
-//                    }
-                    mBinding.selectImageButton.setImageURI(selectedImageUri)
-
-                    RetrofitManager.instance.requestUploadImage(file) { code, image_id ->
-                        when (code) {
-                            0 -> {
-                                Toast.makeText(this, "서버에 업로드 하였습니다.", Toast.LENGTH_SHORT).show()
-                            }
-                            else -> {
-                                Toast.makeText(this, "업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                    try {
+                        val inputStream = contentResolver.openInputStream(data.data!!)
+                        val bitmap = BitmapFactory.decodeStream(inputStream)
+                        uploadImage(bitmap)
+                        mBinding.selectImageButton.setImageURI(selectedImageUri)
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
                     }
 
                 } else {
@@ -132,19 +147,97 @@ class WritePostActivity : AppCompatActivity() {
         return imageFile
     }
 
-    fun uploadImage(bitmap: Bitmap) {
-        val imageFile = getImageFile(bitmap, "profile")
+    private fun uploadImage(bitmap: Bitmap) {
+        val imageFile = getImageFile(bitmap, "itemphoto")
 
-        RetrofitManager.instance.requestUploadImage(imageFile) { code, image_id ->
+        RetrofitManager.instance.requestUploadImage(imageFile) { code, id ->
             when (code) {
                 0 -> {
-                    Toast.makeText(this, "서버에 업로드 하였습니다.", Toast.LENGTH_SHORT).show()
+                    if (id != null) {
+                        Log.d(Constants.TAG, "uploadImage(): Result - image_id is not null!!")
+                        image_id = id
+                    } else {
+                        Log.d(Constants.TAG, "uploadImage(): Result - image_id is null!!")
+                    }
                 }
                 else -> {
-                    Toast.makeText(this, "업로드에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                    Log.d(Constants.TAG, "uploadImage(): Result code is not 0")
                 }
             }
         }
     }
 
+    private fun getCategory(checkedId: Int): String? {
+        return when (checkedId) {
+            R.id.chip0 -> "텐트/타프"
+            R.id.chip1 -> "침낭/매트리스"
+            R.id.chip2 -> "캠핑퍼니처"
+            R.id.chip3 -> "화로/오븐/바베큐"
+            R.id.chip4 -> "취사도구"
+            R.id.chip5 -> "난로/난방/전기"
+            R.id.chip6 -> "트레일러/카라반/차량용품"
+            R.id.chip7 -> "기타"
+            else -> null
+        }
+    }
+
+    private fun checkNoBlank(): Boolean {
+        val msg = "필수 항목입니다."
+        var result: Boolean = true
+
+        if (category.isNullOrBlank()) {
+            Toast.makeText(this, "카테고리를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            result = false
+        }
+        if (mBinding.titleEditText.text.isNullOrBlank()) {
+            mBinding.titleTextInput.error = msg
+            result = false
+        }
+        if (mBinding.contentEditText.text.isNullOrBlank()) {
+            mBinding.contentTextInput.error = msg
+            result = false
+        }
+        if (mBinding.locationEditText.text.isNullOrBlank()) {
+            mBinding.locationTextInput.error = msg
+            result = false
+        }
+        if (mBinding.feeEditText.text.isNullOrBlank()) {
+            mBinding.feeTextInput.error = msg
+            result = false
+        }
+        return result
+    }
+
+    fun uploadPost(view: View) {
+        if (checkNoBlank()) {
+            RetrofitManager.instance.requestUploadPost(
+                category!!,
+                mBinding.titleEditText.text.toString(),
+                mBinding.contentEditText.text.toString(),
+                mBinding.feeEditText.text.toString(),
+                "37.541", "126.986", "종로구 종로2가", // TODO
+                image_id
+            ) { code, id ->
+                when (code) {
+                    0 -> {
+                        if (id != null) { // post id가 null이 아니면
+                            Toast.makeText(this, "장비 등록 완료!", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(applicationContext, ShowMyPostActivity::class.java)
+                            intent.putExtra("post_id", id)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Log.d(
+                                Constants.TAG,
+                                "WritePostActivity : uploadPost() - Result : post id is null"
+                            )
+                        }
+                    }
+                    else -> {
+                        Toast.makeText(this, "게시물 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 }

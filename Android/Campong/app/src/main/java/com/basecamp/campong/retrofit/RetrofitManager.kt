@@ -347,9 +347,10 @@ class RetrofitManager {
         fee: String,
         lat: String,
         lon: String,
-        location: String, completion: (Int) -> Unit
+        location: String,
+        imageid: Long?, completion: (Int, postid: String?) -> Unit
     ) {
-        val req = ReqUploadPost(catename, title, contents, fee, lat, lon, location)
+        val req = ReqUploadPost(catename, title, contents, fee, lat, lon, location, imageid)
         val call = service?.requestUploadPost(req) ?: return
 
         call.enqueue(object : Callback<ResultUploadPost> {
@@ -361,25 +362,25 @@ class RetrofitManager {
                     200 -> {
                         Log.d(TAG, response.raw().toString())
                         if (response.body()?.error == false) { // 성공
-                            completion(0)
+                            completion(0, response.body()!!.postid)
                         } else {
                             if (response.body()?.errCode == 1007) {
-                                completion(1)
+                                completion(1, null)
                             } else {
-                                completion(2)
+                                completion(2, null)
                             }
                         }
                     }
                     else -> {
                         Log.d(TAG, response.code().toString())
-                        completion(-1)
+                        completion(-1, null)
                     }
                 }
             }
 
             override fun onFailure(call: Call<ResultUploadPost>, t: Throwable) {
                 Log.d(TAG, t.toString())
-                completion(-1)
+                completion(-1, null)
             }
 
         })

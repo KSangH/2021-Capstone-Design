@@ -56,7 +56,10 @@ data class ReqUploadPost(
     val lon: String,
 
     @SerializedName(Keyword.LOCATION)
-    val location: String
+    val location: String,
+
+    @SerializedName(Keyword.IMAGE_ID)
+    val imageid: Long?
 )
 
 data class ResultUploadPost(

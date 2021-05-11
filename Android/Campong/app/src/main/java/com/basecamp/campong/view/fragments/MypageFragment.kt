@@ -47,7 +47,11 @@ class MypageFragment : Fragment(), View.OnClickListener {
 
     private fun goToEditProfile(view: View) {
         val intent = Intent(context, EditProfileActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, 0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        getUserInfo()
     }
 
     override fun onClick(v: View) {
