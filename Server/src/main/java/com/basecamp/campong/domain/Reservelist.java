@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table
 @Getter
@@ -22,16 +24,23 @@ public class Reservelist { //예약정보 테이블
 
     @ManyToOne
     @JoinColumn(name = "postid", nullable = false)
-    private PostList postid; //예약게시물
+    private PostList post; //예약게시물
 
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
-    private User userid; //대여자
+    private User user; //대여자
 
-    @CreationTimestamp
     @Column(nullable = false)
-    private LocalDateTime rentaldate; //대여자의 대여요청날짜
+    private String rentaldate; //대여자의 대여요청날짜
 
-    @Column
-    private LocalDateTime returndate; //대여자의 반납요청날짜
+    @Column(nullable = false)
+    private String returndate; //대여자의 반납요청날짜
+
+    @Builder.Default
+    @OneToMany(mappedBy = "reserve")
+    private List<ReserveState> posts = new ArrayList<ReserveState>();
+
+    @Transient
+    private long postid;
+
 }
