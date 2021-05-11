@@ -38,7 +38,7 @@ public class Reservelist { //예약정보 테이블
 
     @Builder.Default
     @OneToMany(mappedBy = "reserve")
-    private List<ReserveState> posts = new ArrayList<ReserveState>();
+    private List<ReserveState> reserveStates = new ArrayList<ReserveState>();
 
     @Transient
     private long postid;

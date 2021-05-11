@@ -6,7 +6,6 @@ import com.basecamp.campong.service.ReserveService;
 import com.basecamp.campong.service.UserService;
 import com.basecamp.campong.util.JsonMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -52,6 +51,23 @@ public class ReserveController {
                 return result.setAuthFailed();
             }
             return reserveService.reserveRequest(id, body);
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+            return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
+        }
+    }
+
+    @PostMapping(value = "/list")
+    public JsonMap reserveList(@RequestBody Reservelist body,
+                                  @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                                  HttpSession session, HttpServletResponse res) {
+        JsonMap result = new JsonMap();
+        try {
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+            return reserveService.reserveList(id, body);
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
             return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
@@ -105,7 +121,7 @@ public class ReserveController {
             if (id < 0) {
                 return result.setAuthFailed();
             }
-            return reserveService.reserveState(id, body, 0);
+            return reserveService.reserveState(id, body, 5);
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
             return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");

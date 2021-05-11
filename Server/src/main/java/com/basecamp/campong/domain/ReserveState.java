@@ -23,9 +23,8 @@ public class ReserveState {
     @JoinColumn(name = "reserveid", nullable = false)
     private Reservelist reserve;
 
-    @Builder.Default
     @Column(nullable = false)
-    private int state = 0;
+    private int state;
 
     @CreationTimestamp
     @Column(nullable = false)

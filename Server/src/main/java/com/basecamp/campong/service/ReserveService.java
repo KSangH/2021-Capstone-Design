@@ -1,17 +1,18 @@
 package com.basecamp.campong.service;
 
-import com.basecamp.campong.domain.PostList;
-import com.basecamp.campong.domain.ReserveState;
-import com.basecamp.campong.domain.Reservelist;
-import com.basecamp.campong.domain.User;
+import com.basecamp.campong.domain.*;
 import com.basecamp.campong.repository.PostRepository;
 import com.basecamp.campong.repository.ReserveRepository;
 import com.basecamp.campong.repository.ReserveStateRepository;
 import com.basecamp.campong.repository.UserRepository;
 import com.basecamp.campong.util.JsonMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -67,6 +68,29 @@ public class ReserveService {
         return result;
     }
 
+    public JsonMap reserveList(long userid, Reservelist body){
+        System.out.println("RESERVE-LIST: START");
+        JsonMap result = new JsonMap();
+
+        User user = userRepository.findByUserid(userid);
+        List<Reservelist> reservelist = reserveRepository
+                .findAllByUserOrderByReserveidDesc(user, PageRequest.of(0,10))
+                .getContent();
+
+        result.put("num", reservelist.size());
+
+        ArrayList<Reserve> reserveArrayList = new ArrayList<>();
+        for(Reservelist reserve : reservelist){
+            int state = reserveStateRepository.findTopByReserveOrderByStateidDesc(reserve).get().getState();
+            reserveArrayList.add(new Reserve(reserve, state));
+        }
+
+        result.put("data", reserveArrayList);
+
+        System.out.println("RESERVE-LIST: END");
+        return result;
+    }
+
 
     public JsonMap reserveState(long userid, Reservelist body, int statecode){
         System.out.println("RESERVE-STATE: START");
@@ -91,17 +115,14 @@ public class ReserveService {
         ReserveState recent = reserveStateRepository.findTopByReserveOrderByStateidDesc(reserve).get();
 
         switch(recent.getState()){
-            case 0:
-                System.out.println("RESERVE-STATE: ERROR - ALREADY CANCEL");
-                return result.setError(3005, "이미 취소된 예약입니다.");
             case 1:
-                if(statecode != 2 && statecode != 0){
+                if(statecode != 2 && statecode != 5){
                     System.out.println("RESERVE-STATE: ERROR - ALREADY REQUEST");
                     return result.setError(3005, "현재 예약 요청 상태입니다. (예약확정과 취소만 가능)");
                 }
                 break;
             case 2:
-                if(statecode != 3 && statecode != 0){
+                if(statecode != 3 && statecode != 5){
                     System.out.println("RESERVE-STATE: ERROR - ALREADY GRANT");
                     return result.setError(3005, "현재 예약 확정 상태입니다. (대여와 취소만 가능)");
                 }
@@ -115,6 +136,9 @@ public class ReserveService {
             case 4:
                 System.out.println("RESERVE-STATE: ERROR - ALREADY RETURN");
                 return result.setError(3005, "이미 반납이 완료되었습니다.");
+            case 5:
+                System.out.println("RESERVE-STATE: ERROR - ALREADY CANCEL");
+                return result.setError(3005, "이미 취소된 예약입니다.");
         }
 
         ReserveState state = ReserveState.builder().state(statecode).reserve(reserve).build();
