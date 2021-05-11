@@ -64,62 +64,119 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_add" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chip_group"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                app:singleSelection="true">
+                android:paddingHorizontal="10dp"
+                android:scrollbars="none">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip1"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="텐트"
-                    android:textAlignment="center"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:textEndPadding="15dp"
-                    app:textStartPadding="15dp" />
+                    android:layout_marginHorizontal="10dp"
+                    app:singleLine="true"
+                    app:singleSelection="true">
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip2"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="카테고리 2"
-                    android:textAlignment="center"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:textEndPadding="15dp"
-                    app:textStartPadding="15dp" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip0"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="텐트/타프"
+                        android:textAlignment="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:textEndPadding="15dp"
+                        app:textStartPadding="15dp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip3"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="카테고리 3"
-                    android:textAlignment="center"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:textEndPadding="15dp"
-                    app:textStartPadding="15dp" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip1"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="침낭/매트리스"
+                        android:textAlignment="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:textEndPadding="15dp"
+                        app:textStartPadding="15dp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip4"
-                    style="@style/Widget.MaterialComponents.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:text="기타등등 장비"
-                    android:textAlignment="center"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:textEndPadding="15dp"
-                    app:textStartPadding="15dp" />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip2"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="캠핑퍼니처"
+                        android:textAlignment="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:textEndPadding="15dp"
+                        app:textStartPadding="15dp" />
 
-            </com.google.android.material.chip.ChipGroup>
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip3"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="화로/오븐/바베큐"
+                        android:textAlignment="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:textEndPadding="15dp"
+                        app:textStartPadding="15dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip4"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="취사도구"
+                        android:textAlignment="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:textEndPadding="15dp"
+                        app:textStartPadding="15dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip5"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="난로/난방/전기"
+                        android:textAlignment="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:textEndPadding="15dp"
+                        app:textStartPadding="15dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip6"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="트레일러/카라반/차량용품"
+                        android:textAlignment="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:textEndPadding="15dp"
+                        app:textStartPadding="15dp" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip7"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:text="기타"
+                        android:textAlignment="center"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:textEndPadding="15dp"
+                        app:textStartPadding="15dp" />
+
+                </com.google.android.material.chip.ChipGroup>
+
+            </HorizontalScrollView>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/titleTextInput"
