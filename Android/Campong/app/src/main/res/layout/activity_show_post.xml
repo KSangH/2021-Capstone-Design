@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="postItem"
+            type="com.basecamp.campong.model.ResultPostView" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".view.ShowPostActivity">
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/posttoolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@color/white"
+                    app:contentInsetStart="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageButton
+                            android:id="@+id/scannerButton"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_alignParentLeft="true"
+                            android:background="#00FFFFFF"
+                            app:srcCompat="@drawable/ic_arrow" />
+
+                        <ImageView
+                            android:id="@+id/CampongLogo"
+                            android:layout_width="120dp"
+                            android:layout_height="50dp"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_campong_logo" />
+
+                        <ImageButton
+                            android:id="@+id/imageButton"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_alignParentRight="true"
+                            android:background="#00FFFFFF"
+                            app:srcCompat="@drawable/ic_more_vert" />
+
+                    </RelativeLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/posttoolbar"
+                    android:background="@color/white">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardView"
+                        android:layout_width="400dp"
+                        android:layout_height="220dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginHorizontal="30dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/black"
+                        app:cardCornerRadius="15dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/camping"
+                            app:layout_constraintTop_toBottomOf="@id/sendrequesttoolbar" />
+                    </androidx.cardview.widget.CardView>
+
+                    <RelativeLayout
+                        android:id="@+id/fortext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/cardView"
+                        android:layout_marginHorizontal="35dp"
+                        android:layout_marginVertical="5dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/profile"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/camping" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:layout_toRightOf="@id/profile"
+                            android:gravity="center_vertical"
+                            android:text="@{postItem.usernick}"
+                            android:textColor="@color/black"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/categoryTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/rounded_text_view"
+                            android:gravity="center_vertical"
+                            android:paddingHorizontal="15dp"
+                            android:text="@{postItem.catename}"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/categoryTextView"
+                            android:layout_marginTop="15dp"
+                            android:text="@{postItem.title}"
+                            android:textColor="@color/black"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/content"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/title"
+                            android:layout_marginTop="15dp"
+                            android:text="@{postItem.contents}"
+                            android:textColor="@color/black"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/dateinfo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="20dp"
+                            android:text="@{postItem.uploaddate}"
+                            android:textColor="#818181"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/town"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/dateinfo"
+                            android:layout_marginHorizontal="2dp"
+                            android:layout_toLeftOf="@id/townelse"
+                            android:text="@{postItem.location}"
+                            android:textColor="@color/black"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/townelse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/dateinfo"
+                            android:layout_alignParentEnd="true"
+                            android:text="에서 거래"
+                            android:textColor="@color/black"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/town"
+                            android:layout_marginHorizontal="5dp"
+                            android:layout_marginVertical="5dp"
+                            android:layout_toLeftOf="@id/priceelse"
+                            android:text="@{postItem.fee}"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/priceelse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/town"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginVertical="5dp"
+                            android:text="(/일)"
+                            android:textColor="#818181"
+                            android:textSize="19sp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/button1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/fortext"
+                        android:layout_marginHorizontal="50dp"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginBottom="60dp"
+                        android:background="@drawable/button_main_color"
+                        android:text="예약내역 보기"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:backgroundTint="@null" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
