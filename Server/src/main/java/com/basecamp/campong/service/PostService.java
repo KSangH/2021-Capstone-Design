@@ -36,14 +36,21 @@ public class PostService {
         //id로 user객체 받아서 post에 넣기
         User user = userRepository.findByUserid(id);
         post.setUser(user);
+
         //category 객체 받아서 post에 넣기
         Category category = categoryRepository.findByCatename(post.getCatename());
         post.setCategory(category);
+
         //image 객체 받아서 post에 넣기
         Image img = imageRepository.findByImageid(post.getImageid());
-        post.setItemphoto(img);
+        if(img == null){
+            //사용자가 게시물 등록 시 이미지를 등록하지 않은 경우
+            post.setItemphoto(null);
+        }else{
+            post.setItemphoto(img);
+        }
 
-        if(user == null || category == null || img == null){
+        if(user == null || category == null){
             System.out.println("uploadPost error");
             return result.setError(2003, "유효하지 않은 정보");
         }
