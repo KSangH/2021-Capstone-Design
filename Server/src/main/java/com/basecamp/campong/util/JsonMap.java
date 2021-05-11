@@ -35,4 +35,8 @@ public class JsonMap extends HashMap<String, Object> {
         return this;
     }
 
+    public boolean isError(){
+        return (boolean) get("error");
+    }
+
 }

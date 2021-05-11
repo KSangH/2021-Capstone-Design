@@ -24,8 +24,10 @@ public class ImageService {
      * @throws IOException
      */
     public long imageUpload(MultipartFile file) throws IOException {
+        System.out.println("IMAGE-UPLOAD: START");
         Image image = Image.builder().mediatype(file.getContentType()).imagefile(file.getBytes()).build();
         image = imageRepository.save(image);
+        System.out.println("IMAGE-UPLOAD: END");
         return image.getImageid();
     }
 
@@ -36,7 +38,9 @@ public class ImageService {
      * @return 이미지파일
      */
     public Image getImageFile(long imageid) {
+        System.out.println("IMAGE-DOWNLOAD: START");
         Image image = imageRepository.findById(imageid).get();
+        System.out.println("IMAGE-DOWNLOAD: END");
         return image;
     }
 
