@@ -26,7 +26,8 @@ public class PostController {
     //게시물목록조회(1) - 기본 : 예약가능한 장비만
     //미완
     @GetMapping(value = "list")
-    public JsonMap readList(@CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+    public JsonMap readList(@RequestParam int pagenum,
+            @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                             HttpSession session, HttpServletResponse res){
         JsonMap result = new JsonMap();
         try{
@@ -37,14 +38,11 @@ public class PostController {
             }
 
             //게시물목록조회
-            postService.readList();
-
+            return postService.readList(pagenum);
 
         } catch (Exception e){
             System.out.println("ERROR : " + e.getMessage());
-            result.setError(2001, "게시물 목록 조회 오류(" + e.getLocalizedMessage() + ")");
-        } finally {
-            return result;
+            return result.setError(2001, "게시물 목록 조회 오류(" + e.getLocalizedMessage() + ")");
         }
     }
 
@@ -92,4 +90,6 @@ public class PostController {
         }
 
     }
+
+
 }

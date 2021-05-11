@@ -1,19 +1,18 @@
 package com.basecamp.campong.service;
 
-import com.basecamp.campong.domain.Category;
-import com.basecamp.campong.domain.Image;
-import com.basecamp.campong.domain.PostList;
-import com.basecamp.campong.domain.User;
+import com.basecamp.campong.domain.*;
 import com.basecamp.campong.repository.CategoryRepository;
 import com.basecamp.campong.repository.ImageRepository;
 import com.basecamp.campong.repository.PostRepository;
 import com.basecamp.campong.repository.UserRepository;
 import com.basecamp.campong.util.JsonMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,13 +67,24 @@ public class PostService {
     }
 
     //게시물조회
-    //미완
-    public void readList(){
+    public JsonMap readList(int pagenum){
         System.out.println("readList START");
         JsonMap result = new JsonMap();
 
-        //List<PostList> postList = postRepository.findAllByDeletestate(0);
-        //System.out.println(postList);
+        List<PostList> postLists = postRepository.findAllByDeletestateOrderByPostidDesc(0, PageRequest.of(pagenum,10)).getContent();
+
+        // 사이즈 입력
+        result.put("num", postLists.size());
+
+        // 보낼 데이터 편집
+        ArrayList<Post> postArrayList = new ArrayList<>();
+        for(PostList post : postLists){
+            postArrayList.add(new Post(post));
+        }
+        result.put("data", postArrayList);
+
+        System.out.println("readList END");
+        return result;
     }
 
     //게시물 삭제
