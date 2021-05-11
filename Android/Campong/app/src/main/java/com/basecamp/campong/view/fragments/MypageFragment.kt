@@ -15,7 +15,6 @@ import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.view.EditProfileActivity
 import com.basecamp.campong.view.LoginActivity
-import com.basecamp.campong.view.MainActivity
 import com.bumptech.glide.Glide
 
 class MypageFragment : Fragment(), View.OnClickListener {
@@ -96,11 +95,12 @@ class MypageFragment : Fragment(), View.OnClickListener {
             ) {
                 when (it) {
                     0 -> {
+                        Toast.makeText(context, "로그아웃", Toast.LENGTH_SHORT).show()
                         val loginIntent = Intent(context, LoginActivity::class.java)
                         startActivity(loginIntent)
                     }
                     else -> {
-                        Toast.makeText(context, "로그인에 실패하였습니다.", Toast.LENGTH_SHORT)
+                        Toast.makeText(context, "로그아웃에 실패하였습니다.", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }

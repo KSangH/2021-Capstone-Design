@@ -65,8 +65,22 @@ interface RetrofitService {
     ): Call<ResultUploadImage>
 
     @Headers("content-type: application/json")
+    @GET(API.POST_LIST)
+    fun requestPostList(
+        @Query("pagenum") pagenum: Int
+    ): Call<ResultPostList>
+
+    @Headers("content-type: application/json")
     @POST(API.POST_UPLOAD)
     fun requestUploadPost(
         @Body body: ReqUploadPost
     ): Call<ResultUploadPost>
+
+    @Headers("content-type: application/json")
+    @POST(API.POST_VIEW)
+    fun requestPostView(
+        @Body body: ReqPostView
+    ): Call<ResultPostView>
+
+
 }
