@@ -37,11 +37,12 @@ public class PostController {
             }
 
             //게시물목록조회
-            
+            postService.readList();
 
 
-        } catch (UnexpectedRollbackException e){
-            result.setError(2001, "게시물 목록 조회 오류");
+        } catch (Exception e){
+            System.out.println("ERROR : " + e.getMessage());
+            result.setError(2001, "게시물 목록 조회 오류(" + e.getLocalizedMessage() + ")");
         } finally {
             return result;
         }
@@ -63,8 +64,9 @@ public class PostController {
             //게시물등록 서비스 실행
             return postService.uploadPost(id,post);
 
-        } catch (UnexpectedRollbackException e){
-            return result.setError(2002, "게시물 등록 오류");
+        } catch (Exception e){
+            System.out.println("ERROR : " + e.getMessage());
+            return result.setError(2002, "게시물 등록 오류(" + e.getLocalizedMessage() + ")");
         }
 
     }

@@ -37,7 +37,7 @@ public class PostList {
     @Column(nullable = false)
     private LocalDateTime uploaddate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "imageid")
     private Image itemphoto;
 

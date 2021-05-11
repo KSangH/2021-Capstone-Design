@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class PostService {
@@ -29,6 +31,7 @@ public class PostService {
     @Autowired
     ImageRepository imageRepository;
 
+    //게시물등록
     public JsonMap uploadPost(long id, PostList post){
         System.out.println("uploadPost START");
         JsonMap result = new JsonMap();
@@ -54,12 +57,20 @@ public class PostService {
             System.out.println("uploadPost error");
             return result.setError(2003, "유효하지 않은 정보");
         }
-
-        postRepository.save(post);
+        //데이터베이스 저장
+        post =  postRepository.save(post);
         System.out.println("uploadPost END");
+        result.put("postid", post.getPostid());
         return result;
 
     }
 
+    //게시물조회
+    public void readList(){
+        System.out.println("readList START");
+        JsonMap result = new JsonMap();
 
+        //List<PostList> postList = postRepository.findAllByDeletestate(0);
+        //System.out.println(postList);
+    }
 }
