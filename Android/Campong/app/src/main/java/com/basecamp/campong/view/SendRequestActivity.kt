@@ -1,12 +1,23 @@
 package com.basecamp.campong.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.basecamp.campong.R
+import androidx.appcompat.app.AppCompatActivity
+import com.basecamp.campong.databinding.ActivitySendRequestBinding
 
 class SendRequestActivity : AppCompatActivity() {
+
+    private lateinit var mBinding: ActivitySendRequestBinding
+    private var postid: Long? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_send_request)
+
+        mBinding = ActivitySendRequestBinding.inflate(layoutInflater)
+
+        postid = intent.getLongExtra("postid", -1)
+
+
+
+
+        setContentView(mBinding.root)
     }
 }

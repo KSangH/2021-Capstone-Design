@@ -184,6 +184,7 @@ class RetrofitManager {
         })
     }
 
+    // 로그아웃
     fun requestLogout(completion: (Int) -> Unit) {
         val call = service?.requestLogout(
         ) ?: return
@@ -339,6 +340,7 @@ class RetrofitManager {
         })
     }
 
+    // 게시물 목록 조회
     fun requestPostList(
         pagenum: Int,
         completion: (Int, postList: List<Post>?) -> Unit
@@ -426,6 +428,7 @@ class RetrofitManager {
         })
     }
 
+    // 게시물 조회
     fun requestPostView(postid: Long, completion: (Int, post: ResultPostView?) -> Unit) {
         val req = ReqPostView(postid)
         val call = service?.requestPostView(req) ?: return
@@ -460,5 +463,51 @@ class RetrofitManager {
                 completion(-1, null)
             }
         })
+    }
+
+    // 게시물 수정
+    fun requestUpdatePost() {
+
+    }
+
+    // 게시물 삭제
+    fun requestDeletePost() {
+
+    }
+
+    /* 예약/대여/반납 */
+    // 예약하기 화면 조회
+    fun requestReserveInit() {
+
+    }
+
+    // 예약하기
+    fun requestReserveRequest() {
+
+    }
+
+    // 예약내역
+    fun requestReserveList() {
+
+    }
+
+    // 예약내역 상세
+    fun requestReserveView() {
+
+    }
+
+    // 대여하기
+    fun requestReserveStateRental() {
+
+    }
+
+    // 반납하기
+    fun requestReserveStateReturn() {
+
+    }
+
+    // 승인하기
+    fun requestReserveStateCancel() {
+
     }
 }
