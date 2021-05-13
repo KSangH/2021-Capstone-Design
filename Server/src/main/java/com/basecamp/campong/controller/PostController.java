@@ -24,9 +24,12 @@ public class PostController {
     PostService postService;
 
     //게시물목록조회(1) - 기본 : 예약가능한 장비만
-    //미완
+    //게시물목록조회(2) - 필터링
     @GetMapping(value = "list")
-    public JsonMap readList(@RequestParam int pagenum,
+    public JsonMap readList(@RequestParam(value = "pagenum") int pagenum,
+                            @RequestParam(value = "catename", required = false) String catename,
+                            @RequestParam(value = "location", required = false) String location,
+                            @RequestParam(value = "keyword", required = false) String keyword,
             @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                             HttpSession session, HttpServletResponse res){
         JsonMap result = new JsonMap();
@@ -38,7 +41,7 @@ public class PostController {
             }
 
             //게시물목록조회
-            return postService.readList(pagenum);
+            return postService.readList(pagenum, catename, location, keyword);
 
         } catch (Exception e){
             System.out.println("ERROR : " + e.getMessage());

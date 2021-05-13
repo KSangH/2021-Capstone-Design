@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class Post {
+public class Post { //게시글 목록 조회시 반환할 객체
     private long postid;
 
     private String catename;
