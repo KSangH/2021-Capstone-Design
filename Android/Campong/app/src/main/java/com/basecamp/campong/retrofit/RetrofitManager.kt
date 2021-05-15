@@ -184,6 +184,7 @@ class RetrofitManager {
         })
     }
 
+    // 로그아웃
     fun requestLogout(completion: (Int) -> Unit) {
         val call = service?.requestLogout(
         ) ?: return
@@ -339,6 +340,47 @@ class RetrofitManager {
         })
     }
 
+    // 게시물 목록 조회
+    fun requestPostList(
+        pagenum: Int,
+        completion: (Int, postList: List<Post>?) -> Unit
+    ) {
+        val call = service?.requestPostList(pagenum) ?: return
+
+        call.enqueue(object : Callback<ResultPostList> {
+
+            override fun onResponse(
+                call: Call<ResultPostList>,
+                response: Response<ResultPostList>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0, response.body()!!.item)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null)
+                            } else {
+                                completion(2, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultPostList>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null)
+            }
+
+        })
+    }
+
     // 게시물 등록
     fun requestUploadPost(
         catename: String,
@@ -348,7 +390,7 @@ class RetrofitManager {
         lat: String,
         lon: String,
         location: String,
-        imageid: Long?, completion: (Int, postid: String?) -> Unit
+        imageid: Long?, completion: (Int, postid: Long?) -> Unit
     ) {
         val req = ReqUploadPost(catename, title, contents, fee, lat, lon, location, imageid)
         val call = service?.requestUploadPost(req) ?: return
@@ -384,5 +426,88 @@ class RetrofitManager {
             }
 
         })
+    }
+
+    // 게시물 조회
+    fun requestPostView(postid: Long, completion: (Int, post: ResultPostView?) -> Unit) {
+        val req = ReqPostView(postid)
+        val call = service?.requestPostView(req) ?: return
+
+        call.enqueue(object : Callback<ResultPostView> {
+            override fun onResponse(
+                call: Call<ResultPostView>,
+                response: Response<ResultPostView>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0, response.body())
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null)
+                            } else {
+                                completion(2, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultPostView>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null)
+            }
+        })
+    }
+
+    // 게시물 수정
+    fun requestUpdatePost() {
+
+    }
+
+    // 게시물 삭제
+    fun requestDeletePost() {
+
+    }
+
+    /* 예약/대여/반납 */
+    // 예약하기 화면 조회
+    fun requestReserveInit() {
+
+    }
+
+    // 예약하기
+    fun requestReserveRequest() {
+
+    }
+
+    // 예약내역
+    fun requestReserveList() {
+
+    }
+
+    // 예약내역 상세
+    fun requestReserveView() {
+
+    }
+
+    // 대여하기
+    fun requestReserveStateRental() {
+
+    }
+
+    // 반납하기
+    fun requestReserveStateReturn() {
+
+    }
+
+    // 승인하기
+    fun requestReserveStateCancel() {
+
     }
 }

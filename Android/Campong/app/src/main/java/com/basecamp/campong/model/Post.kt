@@ -4,15 +4,25 @@ import com.basecamp.campong.utils.Keyword
 import com.google.gson.annotations.SerializedName
 
 data class ResultPostList(
-    @SerializedName("n")
-    val n: Int,
+    @SerializedName("num")
+    val num: Int,
 
-    val item: List<Post>
+    @SerializedName("data")
+    val item: List<Post>,
+
+    @SerializedName(Keyword.ERROR)
+    val error: Boolean,
+
+    @SerializedName(Keyword.ERROR_MESSAGE)
+    val errInfo: String,
+
+    @SerializedName(Keyword.ERROR_CODE)
+    val errCode: Int
 )
 
 data class Post(
     @SerializedName(Keyword.POST_ID)
-    val postid: String,
+    val postid: Long,
 
     @SerializedName(Keyword.CATENAME)
     val catename: String,
@@ -26,8 +36,8 @@ data class Post(
     @SerializedName(Keyword.LOCATION)
     val location: String,
 
-    @SerializedName(Keyword.ITEM_PHOTO)
-    val itemphoto: String,
+    @SerializedName(Keyword.IMAGE_ID)
+    val imageid: Long?,
 
     @SerializedName(Keyword.UPLOAD_DATE)
     val uploaddate: String,
@@ -64,7 +74,50 @@ data class ReqUploadPost(
 
 data class ResultUploadPost(
     @SerializedName(Keyword.POST_ID)
-    val postid: String,
+    val postid: Long,
+
+    @SerializedName(Keyword.ERROR)
+    val error: Boolean,
+
+    @SerializedName(Keyword.ERROR_MESSAGE)
+    val errInfo: String,
+
+    @SerializedName(Keyword.ERROR_CODE)
+    val errCode: Int
+)
+
+data class ReqPostView(
+    @SerializedName(Keyword.POST_ID)
+    val postid: Long
+)
+
+data class ResultPostView(
+    @SerializedName(Keyword.POST_ID)
+    val postid: Long,
+
+    @SerializedName(Keyword.CATENAME)
+    val catename: String,
+
+    @SerializedName(Keyword.USERNICK)
+    val usernick: String,
+
+    @SerializedName(Keyword.TITLE)
+    val title: String,
+
+    @SerializedName(Keyword.LOCATION)
+    val location: String,
+
+    @SerializedName(Keyword.IMAGE_ID)
+    val imageid: Long?,
+
+    @SerializedName(Keyword.UPLOAD_DATE)
+    val uploaddate: String,
+
+    @SerializedName(Keyword.FEE)
+    val fee: String,
+
+    @SerializedName(Keyword.CONTENTS)
+    val contents: String,
 
     @SerializedName(Keyword.ERROR)
     val error: Boolean,

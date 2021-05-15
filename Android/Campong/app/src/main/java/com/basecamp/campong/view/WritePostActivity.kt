@@ -222,7 +222,7 @@ class WritePostActivity : AppCompatActivity() {
                     0 -> {
                         if (id != null) { // post id가 null이 아니면
                             Toast.makeText(this, "장비 등록 완료!", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(applicationContext, ShowMyPostActivity::class.java)
+                            val intent = Intent(applicationContext, ShowPostActivity::class.java)
                             intent.putExtra("post_id", id)
                             startActivity(intent)
                             finish()

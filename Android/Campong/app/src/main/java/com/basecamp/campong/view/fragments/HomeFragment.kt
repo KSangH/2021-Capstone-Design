@@ -2,13 +2,15 @@ package com.basecamp.campong.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.basecamp.campong.R
 import com.basecamp.campong.RecyclerAdapter
 import com.basecamp.campong.databinding.FragmentHomeBinding
-import com.basecamp.campong.utils.postList
+import com.basecamp.campong.retrofit.RetrofitManager
+import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.view.WritePostActivity
 
 
@@ -16,6 +18,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private var mBinding: FragmentHomeBinding? = null
     lateinit var mAdapter: RecyclerAdapter
+    private var pageNum: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,10 +34,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         setHasOptionsMenu(true)
 
-        val tmpList = postList()
+        // val tmpList = postList()
 
         mAdapter = RecyclerAdapter()
-        mAdapter.setList(tmpList)
+        // mAdapter.setList(tmpList)
+        getPostList(pageNum)
 
         binding.recyclerview.apply {
             adapter = mAdapter
@@ -66,6 +70,24 @@ class HomeFragment : Fragment(), View.OnClickListener {
         when (v.id) {
             R.id.addButton -> {
                 goToWritePost(v)
+            }
+        }
+    }
+
+    fun getPostList(pageNum: Int) {
+        RetrofitManager.instance.requestPostList(pageNum) { code, data ->
+            when (code) {
+                0 -> {
+                    if (data != null) {
+                        Log.d(Constants.TAG, "HomeFragment - getPostList() : data is not null!!")
+                        mAdapter.setList(data)
+                    } else {
+                        Log.d(Constants.TAG, "HomeFragment - getPostList() : data is null!!")
+                    }
+                }
+                else -> {
+                    Log.d(Constants.TAG, "HomeFragment - getPostList() : 통신 실패")
+                }
             }
         }
     }
