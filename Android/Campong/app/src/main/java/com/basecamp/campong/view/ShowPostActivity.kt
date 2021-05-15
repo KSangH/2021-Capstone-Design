@@ -50,7 +50,16 @@ class ShowPostActivity : AppCompatActivity() {
         val intent = Intent(this, ReqReserveActivity::class.java)
         intent.putExtra("postid", postid)
 
-        startActivity(intent)
+        RetrofitManager.instance.requestReserveInit(postid!!) {
+            when (it) {
+                0 -> {
+                    startActivity(intent)
+                }
+                else -> {
+                    Toast.makeText(this, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     fun goToReserveList() {
