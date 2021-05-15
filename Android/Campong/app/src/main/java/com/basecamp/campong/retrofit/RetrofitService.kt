@@ -98,40 +98,56 @@ interface RetrofitService {
     // 예약하기 화면 조회
     @Headers("content-type: application/json")
     @POST(API.RESERVE_INIT)
-    fun requestReserveInit(): Call<ResultBase>
+    fun requestReserveInit(
+        @Body body: ReqReserveInit
+    ): Call<ResultBase>
 
     // 예약하기
     @Headers("content-type: application/json")
     @POST(API.RESERVE_REQUEST)
-    fun requestReserveRequest(): Call<ResultBase>
+    fun requestReserveRequest(
+        @Body body: ReqReserveRequest
+    ): Call<ResultBase>
 
     // 예약내역
     @Headers("content-type: application/json")
     @POST(API.RESERVE_LIST)
-    fun requestReserveList()
+    fun requestReserveList(
+        @Body body: ReqReserveList
+    ): Call<ResultBase>
 
     // 예약내역 상세
     @Headers("content-type: application/json")
     @POST(API.RESERVE_VIEW)
-    fun requestReserveView()
+    fun requestReserveView(
+        @Body body: ReqReserveState
+    ): Call<ResultBase>
 
     // 대여하기
     @Headers("content-type: application/json")
     @POST(API.STATE_RENTAL)
-    fun requestStateRental(): Call<ResultBase>
+    fun requestStateRental(
+        @Body body: ReqReserveState
+    ): Call<ResultBase>
 
     // 반납하기
     @Headers("content-type: application/json")
     @POST(API.STATE_RETURN)
-    fun requestStateReturn(): Call<ResultBase>
+    fun requestStateReturn(
+        @Body body: ReqReserveState
+    ): Call<ResultBase>
 
     // 승인하기
     @Headers("content-type: application/json")
     @POST(API.STATE_GRANT)
-    fun requestStateGrant(): Call<ResultBase>
+    fun requestStateGrant(
+        @Body body: ReqReserveState
+    ): Call<ResultBase>
 
     // 취소하기
     @Headers("content-type: application/json")
     @POST(API.STATE_CANCEL)
-    fun requestStateCancel(): Call<ResultBase>
+    fun requestStateCancel(
+        @Body body: ReqReserveState
+    ): Call<ResultBase>
 }

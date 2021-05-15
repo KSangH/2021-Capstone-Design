@@ -466,48 +466,304 @@ class RetrofitManager {
     }
 
     // 게시물 수정
+    // postid, catename, title, contents, fee, lat, lon, location, imageid
     fun requestUpdatePost() {
 
     }
 
     // 게시물 삭제
+    // postid
     fun requestDeletePost() {
 
     }
 
     /* 예약/대여/반납 */
     // 예약하기 화면 조회
-    fun requestReserveInit() {
+    fun requestReserveInit(postid: Long, completion: (Int) -> Unit) {
+        val req = ReqReserveInit(postid)
+        val call = service?.requestReserveInit(req) ?: return
 
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
     }
 
     // 예약하기
-    fun requestReserveRequest() {
+    fun requestReserveRequest(
+        postid: Long,
+        rentaldate: String,
+        returndate: String,
+        completion: (Int) -> Unit
+    ) {
+        val req = ReqReserveRequest(postid, rentaldate, returndate)
+        val call = service?.requestReserveRequest(req) ?: return
 
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
     }
 
     // 예약내역
-    fun requestReserveList() {
+    fun requestReserveList(state: Int, completion: (Int) -> Unit) {
+        val req = ReqReserveList(state)
+        val call = service?.requestReserveList(req) ?: return
 
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
     }
 
     // 예약내역 상세
-    fun requestReserveView() {
+    fun requestReserveView(reserveid: Long, completion: (Int) -> Unit) {
 
+        val req = ReqReserveState(reserveid)
+        val call = service?.requestReserveView(req) ?: return
+
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
     }
 
     // 대여하기
-    fun requestReserveStateRental() {
+    fun requestReserveStateRental(reserveid: Long, completion: (Int) -> Unit) {
 
+        val req = ReqReserveState(reserveid)
+        val call = service?.requestStateRental(req) ?: return
+
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
     }
 
     // 반납하기
-    fun requestReserveStateReturn() {
+    fun requestReserveStateReturn(reserveid: Long, completion: (Int) -> Unit) {
 
+        val req = ReqReserveState(reserveid)
+        val call = service?.requestStateReturn(req) ?: return
+
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
     }
 
     // 승인하기
-    fun requestReserveStateCancel() {
+    fun requestReserveStateGrant(reserveid: Long, completion: (Int) -> Unit) {
+        val req = ReqReserveState(reserveid)
+        val call = service?.requestStateGrant(req) ?: return
 
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
+    }
+
+    // 취소하기
+    fun requestReserveStateCancel(reserveid: Long, completion: (Int) -> Unit) {
+
+        val req = ReqReserveState(reserveid)
+        val call = service?.requestStateCancel(req) ?: return
+
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+
+        })
     }
 }

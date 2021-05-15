@@ -62,16 +62,16 @@ object API {
     const val RESERVE_VIEW: String = "/reserve/view"
 
     // 대여
-    const val STATE_RENTAL: String = "/state/rental"
+    const val STATE_RENTAL: String = "/reserve/state/rental"
 
     // 반납
-    const val STATE_RETURN: String = "/state/return"
+    const val STATE_RETURN: String = "/reserve/state/return"
 
     // 승인
-    const val STATE_GRANT: String = "/state/grant"
+    const val STATE_GRANT: String = "/reserve/state/grant"
 
     // 취소
-    const val STATE_CANCEL: String = "/state/cancel"
+    const val STATE_CANCEL: String = "/reserve/state/cancel"
 
     // 이미지 업로드
     const val UPLOAD_IMAGE: String = "/image/upload"
