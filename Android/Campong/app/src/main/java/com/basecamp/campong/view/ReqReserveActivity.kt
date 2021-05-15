@@ -2,16 +2,16 @@ package com.basecamp.campong.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.basecamp.campong.databinding.ActivitySendRequestBinding
+import com.basecamp.campong.databinding.ActivityReqReserveBinding
 
-class SendRequestActivity : AppCompatActivity() {
+class ReqReserveActivity : AppCompatActivity() {
 
-    private lateinit var mBinding: ActivitySendRequestBinding
+    private lateinit var mBinding: ActivityReqReserveBinding
     private var postid: Long? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mBinding = ActivitySendRequestBinding.inflate(layoutInflater)
+        mBinding = ActivityReqReserveBinding.inflate(layoutInflater)
 
         postid = intent.getLongExtra("postid", -1)
 

@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="postItem"
+            type="com.basecamp.campong.model.ResultPostView" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -10,7 +17,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".view.SendRequestActivity"
+            tools:context=".view.ReqReserveActivity"
             android:background="@color/white">
 
             <androidx.appcompat.widget.Toolbar
@@ -65,19 +72,19 @@
                         android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="편히 쉴 수 있는 의자 공유해요!"
+                        android:text="@{postItem.title}"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:textSize="24dp"
+                        android:textSize="24sp"
                         android:layout_alignParentTop="true"/>
 
                     <TextView
                         android:id="@+id/town"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="노원구 중계동"
+                        android:text="@{postItem.location}"
                         android:textColor="@color/black"
-                        android:textSize="16dp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:layout_below="@id/title"/>
                     <TextView
@@ -97,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginVertical="5dp"
                         android:layout_marginHorizontal="5dp"
-                        android:text="50,000원"
+                        android:text="@{postItem.fee}"
                         android:textColor="@color/black"
                         android:textSize="20dp"
                         android:textStyle="bold"
@@ -110,7 +117,7 @@
                         android:layout_marginVertical="5dp"
                         android:text="(/일)"
                         android:textColor="#818181"
-                        android:textSize="19dp"
+                        android:textSize="19sp"
                         android:textStyle="bold"
                         android:layout_below="@id/town"
                         android:layout_alignParentRight="true" />
@@ -143,8 +150,6 @@
                     />
 
             </RelativeLayout>
-
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

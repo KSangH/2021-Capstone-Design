@@ -16,7 +16,7 @@
         <activity
             android:name=".view.WritePostActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".view.SendRequestActivity" />
+        <activity android:name=".view.ReqReserveActivity" />
         <activity android:name=".view.ShowPostActivity" />
         <activity android:name=".view.EditProfileActivity" />
         <activity android:name=".view.SearchActivity" />

@@ -47,7 +47,7 @@ class ShowPostActivity : AppCompatActivity() {
     }
 
     fun goToReserve() {
-        val intent = Intent(this, SendRequestActivity::class.java)
+        val intent = Intent(this, ReqReserveActivity::class.java)
         intent.putExtra("postid", postid)
 
         startActivity(intent)
