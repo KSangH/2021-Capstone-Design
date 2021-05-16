@@ -29,6 +29,6 @@ public interface PostRepository extends JpaRepository<PostList, Long> {
             "order by p.postid desc ")
     Page<PostList> filteredPost(@Param("state") int state, @Param("category") Category category, @Param("location") String location, @Param("keyword") String keyword,Pageable pageable);
 
-    //user
-    List<PostList> findAllByUser(User user);
+    //user별 게시글 목록
+    List<PostList> findAllByUserAndDeletestate(User user, int state);
 }

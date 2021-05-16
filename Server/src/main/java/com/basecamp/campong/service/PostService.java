@@ -158,11 +158,10 @@ public class PostService {
 
         //postid로 게시글 조회
         PostList viewPost = postRepository.findByPostid(post.getPostid());
-        if(viewPost.getDeletestate() == 1 || viewPost == null){
+        if(viewPost == null || viewPost.getDeletestate() == 1){
             //게시글을 조회하는 중에 작성자가 게시글을 삭제한 경우 or 존재하지 않는 postid를 넘겨준경우
             return result.setError(2007, "존재하지않는 게시글입니다.");
         }
-
 
         viewPost.setLocation(post.getLocation());
         viewPost.setCategory(categoryRepository.findByCatename(post.getCatename()));
@@ -174,6 +173,31 @@ public class PostService {
         viewPost.setImageid(post.getImageid());
 
         System.out.println("updatePost END");
+        return result;
+    }
+
+    //특정 유저의 게시물 목록을 조회
+    public JsonMap readListByUser(String usernick){
+        System.out.println("readListByUser START");
+        JsonMap result = new JsonMap();
+
+        User user = userRepository.findByUsernick(usernick);
+
+        if(user == null){
+            return result.setError(1008, "존재하지 않는 닉네임입니다.");
+        }
+
+        List<PostList> listByUser = postRepository.findAllByUserAndDeletestate(user, 0);
+        result.put("num", listByUser.size());
+
+        // 보낼 데이터 편집
+        ArrayList<Post> postArrayList = new ArrayList<>();
+        for(PostList post : listByUser){
+            postArrayList.add(new Post(post));
+        }
+        result.put("data", postArrayList);
+
+        System.out.println("readListByUser END");
         return result;
     }
 }

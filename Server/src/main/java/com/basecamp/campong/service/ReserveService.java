@@ -100,7 +100,7 @@ public class ReserveService {
         JsonMap result = new JsonMap();
 
         User user = userRepository.findByUserid(userid);
-        List<PostList> posts = postRepository.findAllByUser(user);
+        List<PostList> posts = postRepository.findAllByUserAndDeletestate(user, 0);
         ArrayList<Reservelist> reservelist = new ArrayList<>();
         for(PostList post : posts){
             var list = post.getReservelists();

@@ -20,4 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findBySession(String session);
 
+    //usernick으로 조회
+    User findByUsernick(String usernick);
+
 }
