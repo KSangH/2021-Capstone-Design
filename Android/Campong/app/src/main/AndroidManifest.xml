@@ -20,6 +20,7 @@
         <activity android:name=".view.ShowPostActivity" />
         <activity android:name=".view.EditProfileActivity" />
         <activity android:name=".view.SearchActivity" />
+        <activity android:name=".view.QrViewActivity" />
         <activity android:name=".view.FilterActivity" />
         <activity
             android:name=".view.SignupActivity"
