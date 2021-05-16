@@ -2,8 +2,10 @@ package com.basecamp.campong.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NotificationCompat.getCategory
 import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivitySearchBinding
@@ -25,6 +27,23 @@ class SearchActivity : AppCompatActivity() {
         chipGroup.setOnCheckedChangeListener { _, checkedId ->
             category = getCategory(checkedId)
         }
+
+        val toolbar = findViewById(R.id.searchtoolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar!!
+        ab.setDisplayShowTitleEnabled(false)
+        ab.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        when (id) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     /*
