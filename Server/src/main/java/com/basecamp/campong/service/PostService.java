@@ -163,16 +163,15 @@ public class PostService {
             return result.setError(2007, "존재하지않는 게시글입니다.");
         }
 
-        postRepository.save(viewPost);
 
-//        viewPost.setLocation(post.getLocation());
-//        viewPost.setCategory(categoryRepository.findByCatename(post.getCatename()));
-//        viewPost.setTitle(post.getTitle());
-//        viewPost.setContents(post.getContents());
-//        viewPost.setFee(post.getFee());
-//        viewPost.setLat(post.getLat());
-//        viewPost.setLon(post.getLon());
-//        viewPost.setImageid(post.getImageid());
+        viewPost.setLocation(post.getLocation());
+        viewPost.setCategory(categoryRepository.findByCatename(post.getCatename()));
+        viewPost.setTitle(post.getTitle());
+        viewPost.setContents(post.getContents());
+        viewPost.setFee(post.getFee());
+        viewPost.setLat(post.getLat());
+        viewPost.setLon(post.getLon());
+        viewPost.setImageid(post.getImageid());
 
         System.out.println("updatePost END");
         return result;
