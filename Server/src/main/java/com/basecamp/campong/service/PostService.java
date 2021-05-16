@@ -80,20 +80,18 @@ public class PostService {
         System.out.println("readList START");
         JsonMap result = new JsonMap();
 
-        //List<PostList> postLists = postRepository.findAllByDeletestateOrderByPostidDesc(0, PageRequest.of(pagenum,10)).getContent();
-
-        Category category = new Category();
+        Category category = null;
 
         if(catename != null){
             //카테고리 필터를 설정한 경우
             category = categoryRepository.findByCatename(catename);
-        }else{
-            //카테고리 필터를 설정하지 않은 경우
-            category = null;
+            if(category == null){
+                //존재하지 않는 카테고리를 요청한 경우
+                return result.setError(2009, "존재하지 않는 카테고리입니다.");
+            }
         }
 
         List<PostList> postLists = postRepository.filteredPost(0,category,location,keyword, PageRequest.of(pagenum, 10)).getContent();
-
 
         // 사이즈 입력
         result.put("num", postLists.size());
@@ -124,6 +122,59 @@ public class PostService {
         post.setDeletedate(LocalDateTime.now());
 
         System.out.println("deletePost END");
+        return result;
+    }
+
+    //게시물 조회
+    public JsonMap viewPost(long id, PostList post){
+        System.out.println("viewPost START");
+        JsonMap result = new JsonMap();
+
+        //postid로 게시글 조회
+        PostList viewPost = postRepository.findByPostid(post.getPostid());
+        if(viewPost.getDeletestate() == 1 || viewPost == null){
+            //게시글을 조회하는 중에 작성자가 게시글을 삭제한 경우 or 존재하지 않는 postid를 넘겨준경우
+            return result.setError(2007, "존재하지않는 게시글입니다.");
+        }
+
+        Post refinedPost = new Post(viewPost);
+        result.put("post", refinedPost);
+
+        //게시물을 조회하는 사람이 작성자인지 확인
+        if(viewPost.getUser().getUserid() == id){
+            result.put("mypost", true);
+        }else{
+            result.put("mypost", false);
+        }
+
+        System.out.println("viewPost END");
+        return result;
+    }
+
+    //게시물 수정
+    public JsonMap updatePost(long id, PostList post){
+        System.out.println("updatePost START");
+        JsonMap result = new JsonMap();
+
+        //postid로 게시글 조회
+        PostList viewPost = postRepository.findByPostid(post.getPostid());
+        if(viewPost.getDeletestate() == 1 || viewPost == null){
+            //게시글을 조회하는 중에 작성자가 게시글을 삭제한 경우 or 존재하지 않는 postid를 넘겨준경우
+            return result.setError(2007, "존재하지않는 게시글입니다.");
+        }
+
+        postRepository.save(viewPost);
+
+//        viewPost.setLocation(post.getLocation());
+//        viewPost.setCategory(categoryRepository.findByCatename(post.getCatename()));
+//        viewPost.setTitle(post.getTitle());
+//        viewPost.setContents(post.getContents());
+//        viewPost.setFee(post.getFee());
+//        viewPost.setLat(post.getLat());
+//        viewPost.setLon(post.getLon());
+//        viewPost.setImageid(post.getImageid());
+
+        System.out.println("updatePost END");
         return result;
     }
 }

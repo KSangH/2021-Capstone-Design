@@ -6,7 +6,6 @@ import com.basecamp.campong.service.PostService;
 import com.basecamp.campong.service.UserService;
 import com.basecamp.campong.util.JsonMap;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -94,5 +93,48 @@ public class PostController {
 
     }
 
+    //게시물 조회
+    @PostMapping(value = "view")
+    public JsonMap viewPost(@RequestBody PostList post,
+                              @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                              HttpSession session, HttpServletResponse res){
+        JsonMap result = new JsonMap();
+        try{
+            // 사용자 인증
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
 
+            //게시물조회 서비스 실행
+            return postService.viewPost(id,post);
+
+        } catch (Exception e){
+            System.out.println("ERROR : " + e.getMessage());
+            return result.setError(2006, "게시물 조회 오류(" + e.getLocalizedMessage() + ")");
+        }
+
+    }
+    //게시물 수정
+    @PostMapping(value = "update")
+    public JsonMap updatePost(@RequestBody PostList post,
+                            @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                            HttpSession session, HttpServletResponse res){
+        JsonMap result = new JsonMap();
+        try{
+            // 사용자 인증
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+
+            //게시물수정 서비스 실행
+            return postService.updatePost(id,post);
+
+        } catch (Exception e){
+            System.out.println("ERROR : " + e.getMessage());
+            return result.setError(2008, "게시물 수정 오류(" + e.getLocalizedMessage() + ")");
+        }
+
+    }
 }

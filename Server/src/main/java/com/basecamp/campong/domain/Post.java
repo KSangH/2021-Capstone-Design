@@ -24,6 +24,12 @@ public class Post { //게시글 목록 조회시 반환할 객체
 
     private long fee;
 
+    private String contents; // 개별 게시글 조회할 때 사용
+
+    private String lat; // 개별 게시글 조회할 때 사용
+
+    private String lon; // 개별 게시글 조회할 때 사용
+
     public Post(PostList post){
         setPostid(post.getPostid());
         setCatename(post.getCategory().getCatename());
@@ -34,5 +40,8 @@ public class Post { //게시글 목록 조회시 반환할 객체
             setImageid(post.getItemphoto().getImageid());
         setUploaddate(post.getUploaddate());
         setFee(post.getFee());
+        setContents(post.getContents());
+        setLat(post.getLat());
+        setLon(post.getLon());
     }
 }

@@ -2,6 +2,7 @@ package com.basecamp.campong.repository;
 
 import com.basecamp.campong.domain.Category;
 import com.basecamp.campong.domain.PostList;
+import com.basecamp.campong.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,4 +28,7 @@ public interface PostRepository extends JpaRepository<PostList, Long> {
             "and (:keyword is null or p.title like %:keyword% or p.contents like %:keyword%) "+
             "order by p.postid desc ")
     Page<PostList> filteredPost(@Param("state") int state, @Param("category") Category category, @Param("location") String location, @Param("keyword") String keyword,Pageable pageable);
+
+    //user
+    List<PostList> findAllByUser(User user);
 }
