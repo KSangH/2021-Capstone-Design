@@ -132,7 +132,7 @@ public class PostService {
 
         //postid로 게시글 조회
         PostList viewPost = postRepository.findByPostid(post.getPostid());
-        if(viewPost.getDeletestate() == 1 || viewPost == null){
+        if( viewPost == null || viewPost.getDeletestate() == 1){
             //게시글을 조회하는 중에 작성자가 게시글을 삭제한 경우 or 존재하지 않는 postid를 넘겨준경우
             return result.setError(2007, "존재하지않는 게시글입니다.");
         }

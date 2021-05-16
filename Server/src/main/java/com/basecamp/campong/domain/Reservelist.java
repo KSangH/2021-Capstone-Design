@@ -43,4 +43,7 @@ public class Reservelist { //예약정보 테이블
     @Transient
     private long postid;
 
+    @Transient
+    private int requeststate;
+
 }

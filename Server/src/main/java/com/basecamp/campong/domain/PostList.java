@@ -5,6 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table
 @Getter
@@ -59,6 +61,10 @@ public class PostList {
 
     @Column
     private LocalDateTime deletedate;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<Reservelist> reservelists = new ArrayList<>();
 
     @Transient //임시로 받을 카테고리명
     private String catename;

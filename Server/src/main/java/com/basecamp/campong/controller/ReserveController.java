@@ -74,6 +74,40 @@ public class ReserveController {
         }
     }
 
+    @PostMapping(value = "/mylist")
+    public JsonMap reserverMyList(@RequestBody Reservelist body,
+                               @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                               HttpSession session, HttpServletResponse res) {
+        JsonMap result = new JsonMap();
+        try {
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+            return reserveService.reserveMyList(id, body);
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+            return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
+        }
+    }
+
+    @PostMapping(value = "/view")
+    public JsonMap reserveView(@RequestBody Reservelist body,
+                               @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                               HttpSession session, HttpServletResponse res) {
+        JsonMap result = new JsonMap();
+        try {
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+            return reserveService.reserverView(id, body);
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.getMessage());
+            return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
+        }
+    }
+
     // 대여
     @PostMapping(value = "/state/rental")
     public JsonMap stateRental(@RequestBody Reservelist body,
