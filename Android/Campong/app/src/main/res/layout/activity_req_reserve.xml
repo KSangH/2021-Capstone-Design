@@ -7,7 +7,7 @@
 
         <variable
             name="postItem"
-            type="com.basecamp.campong.model.ResultPostView" />
+            type="com.basecamp.campong.model.Post" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

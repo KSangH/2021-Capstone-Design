@@ -1,13 +1,16 @@
 package com.basecamp.campong
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.basecamp.campong.databinding.RvItemBinding
 import com.basecamp.campong.model.Post
 import com.basecamp.campong.utils.API
+import com.basecamp.campong.view.ShowPostActivity
 import com.bumptech.glide.Glide
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.MainViewHolder>() {
@@ -49,6 +52,13 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.MainViewHolder>() {
                 .load(url)
                 .centerCrop()
                 .into(binding.imageView)
+
+            itemView.setOnClickListener {
+                val intent = Intent(itemView.context, ShowPostActivity::class.java)
+                intent.putExtra("post_id", post.postid)
+                startActivity(itemView.context, intent, null)
+            }
+
         }
 
     }

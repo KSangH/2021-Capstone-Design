@@ -27,7 +27,7 @@ class ReqReserveActivity : AppCompatActivity() {
 
         mBinding = ActivityReqReserveBinding.inflate(layoutInflater)
 
-        postid = intent.getLongExtra("postid", -1)
+        postid = intent.getLongExtra("post_id", -1)
 
         setUpDefaultDate()
 

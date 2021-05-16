@@ -429,7 +429,10 @@ class RetrofitManager {
     }
 
     // 게시물 조회
-    fun requestPostView(postid: Long, completion: (Int, post: ResultPostView?) -> Unit) {
+    fun requestPostView(
+        postid: Long,
+        completion: (Int, mypost: Boolean?, post: Post?) -> Unit
+    ) {
         val req = ReqPostView(postid)
         val call = service?.requestPostView(req) ?: return
 
@@ -442,25 +445,25 @@ class RetrofitManager {
                     200 -> {
                         Log.d(TAG, response.raw().toString())
                         if (response.body()?.error == false) { // 성공
-                            completion(0, response.body())
+                            completion(0, response.body()!!.mypost, response.body()!!.post)
                         } else {
                             if (response.body()?.errCode == 1007) {
-                                completion(1, null)
+                                completion(1, null, null)
                             } else {
-                                completion(2, null)
+                                completion(2, null, null)
                             }
                         }
                     }
                     else -> {
                         Log.d(TAG, response.code().toString())
-                        completion(-1, null)
+                        completion(-1, null, null)
                     }
                 }
             }
 
             override fun onFailure(call: Call<ResultPostView>, t: Throwable) {
                 Log.d(TAG, t.toString())
-                completion(-1, null)
+                completion(-1, null, null)
             }
         })
     }

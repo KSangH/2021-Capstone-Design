@@ -19,7 +19,7 @@ class ShowPostActivity : AppCompatActivity() {
 
         mBinding = ActivityShowPostBinding.inflate(layoutInflater)
 
-        postid = intent.getLongExtra("postid", -1)
+        postid = intent.getLongExtra("post_id", -1)
 
         if (postid != null) {
             getPost(postid!!)
@@ -29,9 +29,22 @@ class ShowPostActivity : AppCompatActivity() {
     }
 
     private fun getPost(postid: Long) {
-        RetrofitManager.instance.requestPostView(postid) { code, post ->
+        RetrofitManager.instance.requestPostView(postid) { code, mypost, post ->
             when (code) {
                 0 -> {
+                    if (mypost != null) {
+                        if (mypost) {
+                            mBinding.button.text = "예약 내역 보기"
+                            mBinding.button.setOnClickListener {
+                                goToReserveList()
+                            }
+                        } else {
+                            mBinding.button.text = "예약하기"
+                            mBinding.button.setOnClickListener {
+                                goToReserve()
+                            }
+                        }
+                    }
                     if (post != null) {
                         mBinding.apply {
                             postItem = post
@@ -46,9 +59,9 @@ class ShowPostActivity : AppCompatActivity() {
         }
     }
 
-    fun goToReserve() {
+    private fun goToReserve() {
         val intent = Intent(this, ReqReserveActivity::class.java)
-        intent.putExtra("postid", postid)
+        intent.putExtra("post_id", postid)
 
         RetrofitManager.instance.requestReserveInit(postid!!) {
             when (it) {
@@ -62,7 +75,7 @@ class ShowPostActivity : AppCompatActivity() {
         }
     }
 
-    fun goToReserveList() {
+    private fun goToReserveList() {
         //  val intent = Intent(this, )
     }
 }
