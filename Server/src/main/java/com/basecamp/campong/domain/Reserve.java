@@ -21,6 +21,8 @@ public class Reserve {
 
     private String returndate;
 
+    private long imageid;
+
     private long fee;
 
     private int state;
@@ -35,5 +37,6 @@ public class Reserve {
         setReturndate(reservelist.getReturndate());
         setFee(post.getFee());
         setState(state);
+        setImageid(post.getItemphoto().getImageid());
     }
 }
