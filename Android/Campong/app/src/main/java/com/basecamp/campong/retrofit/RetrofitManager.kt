@@ -342,15 +342,63 @@ class RetrofitManager {
 
     // 게시물 목록 조회
     fun requestPostList(
-        pagenum: Int, keyword: String?, catename: String?, location: String?,
+        pagenum: Int, location: String?,
         completion: (Int, postList: List<Post>?) -> Unit
     ) {
         var call = service?.requestPostList(pagenum) ?: return
 
-        if (keyword != null) {
-            call = service?.requestPostList(pagenum, keyword)
+        if (location != null) {
+            call = service.requestPostList(pagenum, location)
         }
 
+        call.enqueue(object : Callback<ResultPostList> {
+
+            override fun onResponse(
+                call: Call<ResultPostList>,
+                response: Response<ResultPostList>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0, response.body()!!.item)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null)
+                            } else {
+                                completion(2, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultPostList>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null)
+            }
+
+        })
+    }
+
+    // 게시물 검색
+    fun requestSearchPostList(
+        pagenum: Int, keyword: String?, catename: String?,
+        completion: (Int, postList: List<Post>?) -> Unit
+    ) {
+        var call = service?.requestPostList(pagenum) ?: return
+
+        if (keyword != null && catename != null) {
+            call = service.requestPostList(pagenum, keyword, catename)
+        } else if (keyword != null) {
+            call = service.requestPostList(pagenum, keyword)
+        } else if (catename != null) {
+            call = service.requestPostList(pagenum, catename)
+        }
 
         call.enqueue(object : Callback<ResultPostList> {
 

@@ -18,6 +18,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private var mBinding: FragmentHomeBinding? = null
     lateinit var mAdapter: RecyclerAdapter
+    private var location: String? = null
     private var pageNum: Int = 0
 
     override fun onCreateView(
@@ -38,7 +39,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         mAdapter = RecyclerAdapter()
         // mAdapter.setList(tmpList)
-        getPostList(pageNum)
+        setPostList(pageNum)
 
         binding.recyclerview.apply {
             adapter = mAdapter
@@ -74,8 +75,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun getPostList(pageNum: Int) {
-        RetrofitManager.instance.requestPostList(pageNum) { code, data ->
+    fun setPostList(pageNum: Int) {
+        RetrofitManager.instance.requestPostList(pageNum, location) { code, data ->
             when (code) {
                 0 -> {
                     if (data != null) {
