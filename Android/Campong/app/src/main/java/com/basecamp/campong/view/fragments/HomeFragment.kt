@@ -17,7 +17,7 @@ import com.basecamp.campong.view.WritePostActivity
 class HomeFragment : Fragment(), View.OnClickListener {
 
     private var mBinding: FragmentHomeBinding? = null
-    lateinit var mAdapter: RecyclerAdapter
+    private lateinit var mAdapter: RecyclerAdapter
     private var location: String? = null
     private var pageNum: Int = 0
 
@@ -75,7 +75,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun setPostList(pageNum: Int) {
+    private fun setPostList(pageNum: Int) {
         RetrofitManager.instance.requestPostList(pageNum, location) { code, data ->
             when (code) {
                 0 -> {

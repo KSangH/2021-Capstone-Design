@@ -12,7 +12,7 @@ import com.basecamp.campong.databinding.FragmentRentalDetailBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
 
-class RentalState1Fragment : Fragment() {
+class RentalState3Fragment : Fragment() {
 
     private var mBinding: FragmentRentalDetailBinding? = null
     private lateinit var mAdapter: RentalRecyclerAdapter
@@ -27,7 +27,7 @@ class RentalState1Fragment : Fragment() {
         mBinding = binding
 
         mAdapter = RentalRecyclerAdapter()
-        setRentalList(1)
+        setRentalList(3)
 
         binding.recyclerview.apply {
             adapter = mAdapter
@@ -49,15 +49,15 @@ class RentalState1Fragment : Fragment() {
                     if (data != null) {
                         Log.d(
                             Constants.TAG,
-                            "RentalState1Fragment - setList() : data is not null!!"
+                            "RentalState3Fragment - setList() : data is not null!!"
                         )
                         mAdapter.setList(data)
                     } else {
-                        Log.d(Constants.TAG, "RentalState1Fragment - setList() : data is null!!")
+                        Log.d(Constants.TAG, "RentalState3Fragment - setList() : data is null!!")
                     }
                 }
                 else -> {
-                    Log.d(Constants.TAG, "RentalState1Fragment - setList() : 통신 실패")
+                    Log.d(Constants.TAG, "RentalState3Fragment - setList() : 통신 실패")
                 }
             }
         }

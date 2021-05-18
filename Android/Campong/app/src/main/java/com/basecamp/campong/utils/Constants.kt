@@ -36,9 +36,6 @@ object API {
     // 게시물 등록
     const val POST_UPLOAD: String = "/post/upload"
 
-    // 게시물 이미지 등록
-    const val POST_UPLOAD_IMAGE: String = "/post/uploadimage"
-
     // 게시물 조회
     const val POST_VIEW: String = "/post/view"
 
@@ -54,6 +51,9 @@ object API {
 
     // 최종 예약
     const val RESERVE_REQUEST: String = "/reserve/request"
+
+    // 예약내역(빌려준장비)
+    const val RESERVE_MYLIST: String = "/reserve/mylist"
 
     // 예약내역(빌린장비)
     const val RESERVE_LIST: String = "/reserve/list"
@@ -111,15 +111,15 @@ object Keyword {
 
     const val LOCATION = "location"
 
-    const val ITEM_PHOTO = "itemphoto"
-
     const val UPLOAD_DATE = "uploaddate"
 
     const val RENTAL_DATE = "rentaldate"
 
     const val RETURN_DATE = "returndate"
 
-    const val STATE = "STATE"
+    const val STATE = "state"
+
+    const val REQUEST_STATE = "requeststate"
 
     const val RESERVE_ID = "reserveid"
 

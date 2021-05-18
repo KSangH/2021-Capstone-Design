@@ -1,15 +1,21 @@
 package com.basecamp.campong.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.basecamp.campong.RentalRecyclerAdapter
 import com.basecamp.campong.databinding.FragmentRentalDetailBinding
+import com.basecamp.campong.retrofit.RetrofitManager
+import com.basecamp.campong.utils.Constants
 
 class RentalState4Fragment : Fragment() {
 
     private var mBinding: FragmentRentalDetailBinding? = null
+    private lateinit var mAdapter: RentalRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -20,6 +26,14 @@ class RentalState4Fragment : Fragment() {
 
         mBinding = binding
 
+        mAdapter = RentalRecyclerAdapter()
+        setRentalList(4)
+
+        binding.recyclerview.apply {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
+
         return mBinding?.root
     }
 
@@ -28,4 +42,24 @@ class RentalState4Fragment : Fragment() {
         super.onDestroyView()
     }
 
+    private fun setRentalList(state: Int) {
+        RetrofitManager.instance.requestReserveList(state) { code, data ->
+            when (code) {
+                0 -> {
+                    if (data != null) {
+                        Log.d(
+                            Constants.TAG,
+                            "RentalState4Fragment - setList() : data is not null!!"
+                        )
+                        mAdapter.setList(data)
+                    } else {
+                        Log.d(Constants.TAG, "RentalState4Fragment - setList() : data is null!!")
+                    }
+                }
+                else -> {
+                    Log.d(Constants.TAG, "RentalState4Fragment - setList() : 통신 실패")
+                }
+            }
+        }
+    }
 }

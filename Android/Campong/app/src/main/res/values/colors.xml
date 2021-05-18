@@ -10,4 +10,5 @@
     <color name="white_76">#C2FFFFFF</color>
     <color name="gradient_start">#72dfc5</color>
     <color name="gradient_end">#1dde7d</color>
+    <color name="gray">#c4c4c4</color>
 </resources>

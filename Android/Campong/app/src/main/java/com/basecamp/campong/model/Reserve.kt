@@ -18,6 +18,62 @@ data class ReqReserveRequest(
 )
 
 data class ReqReserveList(
+    @SerializedName(Keyword.REQUEST_STATE)
+    val requeststate: Int
+)
+
+// 예약내역 Response
+data class ResultReserveList(
+    @SerializedName("num1")
+    val num1: Int,
+
+    @SerializedName("num2")
+    val num2: Int,
+
+    @SerializedName("num3")
+    val num3: Int,
+
+    @SerializedName("num4")
+    val num4: Int,
+
+    @SerializedName("num5")
+    val num5: Int,
+
+    @SerializedName("data")
+    val data: List<ReserveItem>,
+
+    @SerializedName(Keyword.ERROR)
+    val error: Boolean,
+
+    @SerializedName(Keyword.ERROR_MESSAGE)
+    val errInfo: String,
+
+    @SerializedName(Keyword.ERROR_CODE)
+    val errCode: Int
+)
+
+data class ReserveItem(
+    @SerializedName(Keyword.RESERVE_ID)
+    val reserveid: Long,
+
+    @SerializedName(Keyword.CATENAME)
+    val catename: String,
+
+    @SerializedName(Keyword.TITLE)
+    val title: String,
+
+    @SerializedName(Keyword.LOCATION)
+    val location: String,
+
+    @SerializedName(Keyword.RENTAL_DATE)
+    val rentaldate: String,
+
+    @SerializedName(Keyword.RETURN_DATE)
+    val returndate: String,
+
+    @SerializedName(Keyword.FEE)
+    val fee: String,
+
     @SerializedName(Keyword.STATE)
     val state: Int
 )
