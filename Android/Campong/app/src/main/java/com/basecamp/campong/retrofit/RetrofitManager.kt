@@ -342,10 +342,15 @@ class RetrofitManager {
 
     // 게시물 목록 조회
     fun requestPostList(
-        pagenum: Int,
+        pagenum: Int, keyword: String?, catename: String?, location: String?,
         completion: (Int, postList: List<Post>?) -> Unit
     ) {
-        val call = service?.requestPostList(pagenum) ?: return
+        var call = service?.requestPostList(pagenum) ?: return
+
+        if (keyword != null) {
+            call = service?.requestPostList(pagenum, keyword)
+        }
+
 
         call.enqueue(object : Callback<ResultPostList> {
 

@@ -66,7 +66,10 @@ interface RetrofitService {
     @Headers("content-type: application/json")
     @GET(API.POST_LIST)
     fun requestPostList(
-        @Query("pagenum") pagenum: Int
+        @Query("pagenum") pagenum: Int,
+        @Query("keyword") keyword: String? = null,
+        @Query("catename") catename: String? = null,
+        @Query("location") location: String? = null
     ): Call<ResultPostList>
 
     /* 게시물 관리 */
