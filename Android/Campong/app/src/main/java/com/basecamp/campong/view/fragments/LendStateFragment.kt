@@ -1,5 +1,6 @@
 package com.basecamp.campong.view.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,15 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.basecamp.campong.RentalRecyclerAdapter
+import com.basecamp.campong.LendRecyclerAdapter
 import com.basecamp.campong.databinding.FragmentRentalDetailBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
+import com.basecamp.campong.utils.Keyword
+import com.basecamp.campong.view.ShowPostActivity
 
 class LendStateFragment(val state: Int) : Fragment() {
 
     private var mBinding: FragmentRentalDetailBinding? = null
-    private lateinit var mAdapter: RentalRecyclerAdapter
+    private lateinit var mAdapter: LendRecyclerAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,7 +29,15 @@ class LendStateFragment(val state: Int) : Fragment() {
 
         mBinding = binding
 
-        mAdapter = RentalRecyclerAdapter()
+        mAdapter = LendRecyclerAdapter()
+        mAdapter.setOnItemClickListener(object : LendRecyclerAdapter.ClickListener {
+            override fun onBaseItemClicked(view: View) {
+                val intent = Intent(context, ShowPostActivity::class.java)
+                intent.putExtra(Keyword.POST_ID, -1) // TODO
+                startActivity(intent)
+            }
+
+        })
         setLendList(state)
 
         binding.recyclerview.apply {
