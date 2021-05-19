@@ -75,7 +75,10 @@ data class ReserveItem(
     val fee: String,
 
     @SerializedName(Keyword.STATE)
-    val state: Int
+    val state: Int,
+
+    @SerializedName(Keyword.IMAGE_ID)
+    val imageid: Long
 )
 
 data class ReqReserveState(
