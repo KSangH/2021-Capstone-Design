@@ -126,6 +126,12 @@ object Keyword {
     const val QRCODE = "qrcode"
 
     const val IMAGE_ID = "imageid"
+
+    const val QR_TYPE = "qr_type"
+
+    const val QR_TYPE_RENTAL = 1
+
+    const val QR_TYPE_RETURN = 2
 }
 
 object Preference {

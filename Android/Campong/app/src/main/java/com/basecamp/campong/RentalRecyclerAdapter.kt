@@ -1,6 +1,7 @@
 package com.basecamp.campong
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.basecamp.campong.databinding.*
@@ -16,24 +17,29 @@ import com.bumptech.glide.Glide
 class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var reservationList: MutableList<ReserveItem> = mutableListOf()
+    lateinit var clickListener: RentalClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
+            // request state가 신청(1)이면
             RENTAL_STATE_WAIT -> {
                 val binding =
                     RvItemType01Binding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return ItemWaitHolder(binding)
+                return Item01Holder(binding)
             }
+            // request state가 확정(2)이면
             RENTAL_STATE_CONFIRM -> {
                 val binding =
-                    RvItemType02Binding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return ItemConfirmHolder(binding)
+                    RvItemType03Binding.inflate(LayoutInflater.from(parent.context), parent, false)
+                return Item03Holder(binding, RENTAL_STATE_CONFIRM)
             }
+            // request state가 대여중(3)이면
             RENTAL_STATE_RENTAL -> {
                 val binding =
                     RvItemType03Binding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return ItemRentalHolder(binding)
+                return Item03Holder(binding, RENTAL_STATE_RENTAL)
             }
+            // request state가 반납완료(4)이면
             RENTAL_STATE_RETURN -> {
                 val binding =
                     RvItemTypeBaseBinding.inflate(
@@ -43,10 +49,11 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     )
                 return ItemBaseHolder(binding)
             }
+            // request state가 취소(5)이면
             RENTAL_STATE_CANCEL -> {
                 val binding =
                     RvItemType00Binding.inflate(LayoutInflater.from(parent.context), parent, false)
-                return ItemCancelHolder(binding)
+                return Item05Holder(binding)
             }
             else -> {
                 val binding =
@@ -62,13 +69,13 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ItemWaitHolder -> {
+            is Item01Holder -> {
                 holder.bind(reservationList[position])
             }
-            is ItemConfirmHolder -> {
+            is Item03Holder -> {
                 holder.bind(reservationList[position])
             }
-            is ItemRentalHolder -> {
+            is Item05Holder -> {
                 holder.bind(reservationList[position])
             }
             is ItemBaseHolder -> {
@@ -89,57 +96,159 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         this.reservationList.addAll(reservationList)
         notifyDataSetChanged()
     }
-}
 
-class ItemWaitHolder(val binding: RvItemType01Binding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: ReserveItem) {
-        binding.apply {
-            reserveItem = item
+    // 승인 대기
+    inner class Item01Holder(val binding: RvItemType01Binding) :
+        RecyclerView.ViewHolder(binding.root),
+        View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
         }
 
-        val url = "${API.BASE_URL}/image/${item.imageid}"
+        fun bind(item: ReserveItem) {
+            binding.apply {
+                reserveItem = item
+            }
 
-        Glide.with(itemView)
-            .load(url)
-            .centerCrop()
-            .into(binding.imageView)
+            val url = "${API.BASE_URL}/image/${item.imageid}"
 
-        itemView.setOnClickListener {
-//            val intent = Intent(itemView.context, ShowPostActivity::class.java)
-//            intent.putExtra("post_id", post.postid)
-//            ContextCompat.startActivity(itemView.context, intent, null)
+            Glide.with(itemView)
+                .load(url)
+                .centerCrop()
+                .into(binding.imageView)
+
         }
-    }
-}
 
-class ItemConfirmHolder(val binding: RvItemType02Binding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: ReserveItem) {
-        binding.apply {
-            reserveItem = item
-        }
-    }
-}
-
-class ItemRentalHolder(val binding: RvItemType03Binding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: ReserveItem) {
-        binding.apply {
-            reserveItem = item
+        override fun onClick(v: View?) {
+            if (v != null) {
+                clickListener.onBaseItemClicked(v)
+            }
         }
     }
-}
 
-class ItemCancelHolder(val binding: RvItemType00Binding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: ReserveItem) {
-        binding.apply {
-            reserveItem = item
+    inner class Item02Holder(val binding: RvItemType02Binding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: ReserveItem) {
+            binding.apply {
+                reserveItem = item
+            }
+
+            val url = "${API.BASE_URL}/image/${item.imageid}"
+
+            Glide.with(itemView)
+                .load(url)
+                .centerCrop()
+                .into(binding.imageView)
         }
     }
-}
 
-class ItemBaseHolder(val binding: RvItemTypeBaseBinding) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(item: ReserveItem) {
-        binding.apply {
-            reserveItem = item
+    // 확정, 대여중 (확정 -> QR 버튼 클릭 -> 대여 QR / 대여중 -> QR 버튼 클릭 -> 반납 QR)
+    inner class Item03Holder(val binding: RvItemType03Binding, val state: Int) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
         }
+
+        fun bind(item: ReserveItem) {
+            binding.apply {
+                reserveItem = item
+            }
+
+            val url = "${API.BASE_URL}/image/${item.imageid}"
+
+            Glide.with(itemView)
+                .load(url)
+                .centerCrop()
+                .into(binding.imageView)
+
+            binding.qrButton.setOnClickListener { v ->
+                when (item.state) {
+                    RENTAL_STATE_CONFIRM -> {
+                        clickListener.onRentalQRClicked(v, item)
+                    }
+                    RENTAL_STATE_RENTAL -> {
+                        clickListener.onReturnQRClicked(v, item)
+                    }
+                }
+            }
+        }
+
+        override fun onClick(v: View?) {
+            if (v != null) {
+                clickListener.onBaseItemClicked(v)
+            }
+        }
+    }
+
+    // 취소
+    inner class Item05Holder(val binding: RvItemType00Binding) :
+        RecyclerView.ViewHolder(binding.root),
+        View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        fun bind(item: ReserveItem) {
+            binding.apply {
+                reserveItem = item
+            }
+
+            val url = "${API.BASE_URL}/image/${item.imageid}"
+
+            Glide.with(itemView)
+                .load(url)
+                .centerCrop()
+                .into(binding.imageView)
+        }
+
+        override fun onClick(v: View?) {
+            if (v != null) {
+                clickListener.onBaseItemClicked(v)
+            }
+        }
+    }
+
+    // 기본 (메인과 동일한 레이아웃)
+    inner class ItemBaseHolder(val binding: RvItemTypeBaseBinding) :
+        RecyclerView.ViewHolder(binding.root),
+        View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        fun bind(item: ReserveItem) {
+            binding.apply {
+                reserveItem = item
+            }
+
+            val url = "${API.BASE_URL}/image/${item.imageid}"
+
+            Glide.with(itemView)
+                .load(url)
+                .centerCrop()
+                .into(binding.imageView)
+        }
+
+        override fun onClick(v: View?) {
+            if (v != null) {
+                clickListener.onBaseItemClicked(v)
+            }
+        }
+    }
+
+    // 클릭리스너
+    interface RentalClickListener {
+        fun onBaseItemClicked(view: View)
+        fun onRentalQRClicked(view: View, reserveItem: ReserveItem)
+        fun onReturnQRClicked(view: View, reserveItem: ReserveItem)
+    }
+
+    fun setOnItemClickListener(clickListener: RentalClickListener) {
+        this.clickListener = clickListener
     }
 }
