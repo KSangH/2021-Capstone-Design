@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.basecamp.campong.databinding.ActivityReqReserveBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
+import com.basecamp.campong.utils.Keyword
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
@@ -27,7 +28,7 @@ class ReqReserveActivity : AppCompatActivity() {
 
         mBinding = ActivityReqReserveBinding.inflate(layoutInflater)
 
-        postid = intent.getLongExtra("post_id", -1)
+        postid = intent.getLongExtra(Keyword.POST_ID, -1)
 
         setUpDefaultDate()
 

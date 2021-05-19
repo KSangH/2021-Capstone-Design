@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.basecamp.campong.databinding.ActivityShowPostBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
+import com.basecamp.campong.utils.Keyword
 
 class ShowPostActivity : AppCompatActivity() {
 
@@ -19,7 +20,7 @@ class ShowPostActivity : AppCompatActivity() {
 
         mBinding = ActivityShowPostBinding.inflate(layoutInflater)
 
-        postid = intent.getLongExtra("post_id", -1)
+        postid = intent.getLongExtra(Keyword.POST_ID, -1)
 
         if (postid != null) {
             getPost(postid!!)
@@ -61,7 +62,7 @@ class ShowPostActivity : AppCompatActivity() {
 
     private fun goToReserve() {
         val intent = Intent(this, ReqReserveActivity::class.java)
-        intent.putExtra("post_id", postid)
+        intent.putExtra(Keyword.POST_ID, postid)
 
         RetrofitManager.instance.requestReserveInit(postid!!) {
             when (it) {

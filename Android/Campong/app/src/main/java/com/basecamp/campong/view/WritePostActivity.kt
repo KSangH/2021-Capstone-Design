@@ -19,6 +19,7 @@ import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityWritePostBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
+import com.basecamp.campong.utils.Keyword
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -223,7 +224,7 @@ class WritePostActivity : AppCompatActivity() {
                         if (id != null) { // post id가 null이 아니면
                             Toast.makeText(this, "장비 등록 완료!", Toast.LENGTH_SHORT).show()
                             val intent = Intent(applicationContext, ShowPostActivity::class.java)
-                            intent.putExtra("post_id", id)
+                            intent.putExtra(Keyword.POST_ID, id)
                             startActivity(intent)
                             finish()
                         } else {

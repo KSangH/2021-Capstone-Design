@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.basecamp.campong.databinding.ActivityAcceptBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
+import com.basecamp.campong.utils.Keyword
 
 class AcceptActivity : AppCompatActivity() {
 
@@ -19,7 +20,7 @@ class AcceptActivity : AppCompatActivity() {
 
         mBinding = ActivityAcceptBinding.inflate(layoutInflater)
 
-        reserveid = intent.getLongExtra("reserveid", -1)
+        reserveid = intent.getLongExtra(Keyword.RESERVE_ID, -1)
 
         setContentView(mBinding.root)
     }
