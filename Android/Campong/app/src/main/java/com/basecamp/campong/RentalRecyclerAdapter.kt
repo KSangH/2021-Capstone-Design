@@ -3,21 +3,15 @@ package com.basecamp.campong
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.basecamp.campong.RentalState.STATE_CANCEL
-import com.basecamp.campong.RentalState.STATE_CONFIRM
-import com.basecamp.campong.RentalState.STATE_RENTAL
-import com.basecamp.campong.RentalState.STATE_RETURN
-import com.basecamp.campong.RentalState.STATE_WAIT
 import com.basecamp.campong.databinding.*
 import com.basecamp.campong.model.ReserveItem
-
-object RentalState {
-    const val STATE_WAIT = 1
-    const val STATE_CONFIRM = 2
-    const val STATE_RENTAL = 3
-    const val STATE_RETURN = 4
-    const val STATE_CANCEL = 0
-}
+import com.basecamp.campong.utils.API
+import com.basecamp.campong.utils.RentalState.RENTAL_STATE_CANCEL
+import com.basecamp.campong.utils.RentalState.RENTAL_STATE_CONFIRM
+import com.basecamp.campong.utils.RentalState.RENTAL_STATE_RENTAL
+import com.basecamp.campong.utils.RentalState.RENTAL_STATE_RETURN
+import com.basecamp.campong.utils.RentalState.RENTAL_STATE_WAIT
+import com.bumptech.glide.Glide
 
 class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -25,22 +19,22 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
-            STATE_WAIT -> {
+            RENTAL_STATE_WAIT -> {
                 val binding =
                     RvItemType01Binding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return ItemWaitHolder(binding)
             }
-            STATE_CONFIRM -> {
+            RENTAL_STATE_CONFIRM -> {
                 val binding =
                     RvItemType02Binding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return ItemConfirmHolder(binding)
             }
-            STATE_RENTAL -> {
+            RENTAL_STATE_RENTAL -> {
                 val binding =
                     RvItemType03Binding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return ItemRentalHolder(binding)
             }
-            STATE_RETURN -> {
+            RENTAL_STATE_RETURN -> {
                 val binding =
                     RvItemTypeBaseBinding.inflate(
                         LayoutInflater.from(parent.context),
@@ -49,7 +43,7 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                     )
                 return ItemBaseHolder(binding)
             }
-            STATE_CANCEL -> {
+            RENTAL_STATE_CANCEL -> {
                 val binding =
                     RvItemType00Binding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return ItemCancelHolder(binding)
@@ -103,12 +97,12 @@ class ItemWaitHolder(val binding: RvItemType01Binding) : RecyclerView.ViewHolder
             reserveItem = item
         }
 
-//        val url = "${API.BASE_URL}/image/${item.imageid}"
-//
-//        Glide.with(itemView)
-//            .load(url)
-//            .centerCrop()
-//            .into(binding.imageView)
+        val url = "${API.BASE_URL}/image/${item.imageid}"
+
+        Glide.with(itemView)
+            .load(url)
+            .centerCrop()
+            .into(binding.imageView)
 
         itemView.setOnClickListener {
 //            val intent = Intent(itemView.context, ShowPostActivity::class.java)

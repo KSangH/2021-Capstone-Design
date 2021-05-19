@@ -12,7 +12,7 @@ import com.basecamp.campong.databinding.FragmentRentalDetailBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
 
-class RentalState3Fragment : Fragment() {
+class LendStateFragment(val state: Int) : Fragment() {
 
     private var mBinding: FragmentRentalDetailBinding? = null
     private lateinit var mAdapter: RentalRecyclerAdapter
@@ -27,7 +27,7 @@ class RentalState3Fragment : Fragment() {
         mBinding = binding
 
         mAdapter = RentalRecyclerAdapter()
-        setRentalList(3)
+        setLendList(state)
 
         binding.recyclerview.apply {
             adapter = mAdapter
@@ -42,22 +42,22 @@ class RentalState3Fragment : Fragment() {
         super.onDestroyView()
     }
 
-    private fun setRentalList(state: Int) {
-        RetrofitManager.instance.requestReserveList(state) { code, data ->
+    private fun setLendList(state: Int) {
+        RetrofitManager.instance.requestReserveMyList(state) { code, data ->
             when (code) {
                 0 -> {
                     if (data != null) {
                         Log.d(
                             Constants.TAG,
-                            "RentalState3Fragment - setList() : data is not null!!"
+                            "LendStateFragment - setList() : data is not null!!"
                         )
                         mAdapter.setList(data)
                     } else {
-                        Log.d(Constants.TAG, "RentalState3Fragment - setList() : data is null!!")
+                        Log.d(Constants.TAG, "LendStateFragment - setList() : data is null!!")
                     }
                 }
                 else -> {
-                    Log.d(Constants.TAG, "RentalState3Fragment - setList() : 통신 실패")
+                    Log.d(Constants.TAG, "LendStateFragment - setList() : 통신 실패")
                 }
             }
         }

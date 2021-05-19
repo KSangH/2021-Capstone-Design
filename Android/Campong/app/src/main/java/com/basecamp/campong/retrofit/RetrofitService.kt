@@ -116,6 +116,7 @@ interface RetrofitService {
     @Headers("content-type: application/json")
     @POST(API.RESERVE_MYLIST)
     fun requestReserveMyList(
+        @Body body: ReqReserveList
     ): Call<ResultReserveList>
 
     // 예약내역(빌린장비)

@@ -137,3 +137,11 @@ object Preference {
     const val SHARED_PREFERENCE_NAME_COOKIE = "cookies"
 
 }
+
+object RentalState {
+    const val RENTAL_STATE_WAIT = 1
+    const val RENTAL_STATE_CONFIRM = 2
+    const val RENTAL_STATE_RENTAL = 3
+    const val RENTAL_STATE_RETURN = 4
+    const val RENTAL_STATE_CANCEL = 5
+}

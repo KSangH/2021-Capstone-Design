@@ -609,7 +609,48 @@ class RetrofitManager {
         })
     }
 
-    // 예약내역
+    // 예약내역(빌려준장비)
+    fun requestReserveMyList(
+        state: Int,
+        completion: (Int, reservationList: List<ReserveItem>?) -> Unit
+    ) {
+        val req = ReqReserveList(state)
+        val call = service?.requestReserveMyList(req) ?: return
+
+        call.enqueue(object : Callback<ResultReserveList> {
+            override fun onResponse(
+                call: Call<ResultReserveList>,
+                response: Response<ResultReserveList>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0, response.body()!!.data)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null)
+                            } else {
+                                completion(2, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultReserveList>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null)
+            }
+
+        })
+    }
+
+    // 예약내역(빌린장비)
     fun requestReserveList(
         state: Int,
         completion: (Int, reservationList: List<ReserveItem>?) -> Unit
