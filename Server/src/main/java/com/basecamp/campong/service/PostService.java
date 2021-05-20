@@ -200,4 +200,28 @@ public class PostService {
         System.out.println("readListByUser END");
         return result;
     }
+
+    //내 게시글 목록 조회
+    public JsonMap mypostList(long id){
+        System.out.println("mypostList START");
+        JsonMap result = new JsonMap();
+
+        User user = userRepository.findByUserid(id);
+        if(user == null){
+            result.setError(2009, "존재하지 않는 사용자입니다.");
+        }
+
+        List<PostList> listByUser = postRepository.findAllByUserAndDeletestate(user, 0);
+        result.put("num", listByUser.size());
+
+        // 보낼 데이터 편집
+        ArrayList<Post> postArrayList = new ArrayList<>();
+        for(PostList post : listByUser){
+            postArrayList.add(new Post(post));
+        }
+        result.put("data", postArrayList);
+
+        System.out.println("mypostList END");
+        return result;
+    }
 }

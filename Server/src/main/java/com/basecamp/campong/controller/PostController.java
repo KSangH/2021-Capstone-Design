@@ -161,4 +161,25 @@ public class PostController {
 
 
     }
+    
+    //내 게시글 목록 조회
+    @GetMapping(value = "list/mypost")
+    public JsonMap mypostList(@CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                              HttpSession session, HttpServletResponse res){
+        JsonMap result = new JsonMap();
+        try{
+            // 사용자 인증
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+
+            //내 게시글 목록 조회 서비스
+            return postService.mypostList(id);
+
+        } catch (Exception e){
+            System.out.println("ERROR : " + e.getMessage());
+            return result.setError(2011, "내 게시글 목록 조회 오류(" + e.getLocalizedMessage() + ")");
+        }
+    }
 }
