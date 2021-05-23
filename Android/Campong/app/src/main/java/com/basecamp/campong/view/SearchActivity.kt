@@ -46,12 +46,6 @@ class SearchActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    /*
-    fun goToFilter(view: View) {
-        val intent = Intent(applicationContext, FilterActivity::class.java)
-        startActivity(intent)
-    }
-    */
 
     private fun getCategory(checkedId: Int): String? {
         return when (checkedId) {
