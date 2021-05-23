@@ -1,16 +1,13 @@
 package com.basecamp.campong.service;
 
 import com.basecamp.campong.domain.*;
-import com.basecamp.campong.repository.PostRepository;
-import com.basecamp.campong.repository.ReserveRepository;
-import com.basecamp.campong.repository.ReserveStateRepository;
-import com.basecamp.campong.repository.UserRepository;
+import com.basecamp.campong.repository.*;
 import com.basecamp.campong.util.JsonMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,7 +26,10 @@ public class ReserveService {
     @Autowired
     PostRepository postRepository;
 
-    public JsonMap reserveinit(Reservelist body) {
+    @Autowired
+    ReserveReadRepository reserveReadRepository;
+
+    public JsonMap reserveinit(ReserveList body) {
         System.out.println("RESERVE-INIT: START");
         JsonMap result = new JsonMap();
         PostList post = postRepository.findById(body.getPostid()).orElse(null);
@@ -45,7 +45,7 @@ public class ReserveService {
         return result;
     }
 
-    public JsonMap reserveRequest(long userid, Reservelist body) {
+    public JsonMap reserveRequest(long userid, ReserveList body) {
         System.out.println("RESERVE-REQUEST: START");
         JsonMap result = new JsonMap();
         JsonMap init = reserveinit(body);
@@ -67,89 +67,58 @@ public class ReserveService {
         return result;
     }
 
-    public JsonMap reserveList(long userid, Reservelist body) {
+    public JsonMap reserveList(long userid, ReserveList body) {
         System.out.println("RESERVE-LIST: START");
         JsonMap result = new JsonMap();
 
-        User user = userRepository.findByUserid(userid);
-        List<Reservelist> reservelist = reserveRepository
-                .findAllByUserOrderByReserveidDesc(user);
+        int requeststate = body.getRequeststate();
+        List<ReserveView> reservelist =
+                reserveReadRepository.findAllByLenduseridAndStateBetweenOrderByReserveidDesc(userid, requeststate, requeststate != 1 ? requeststate : requeststate + 1, PageRequest.of(body.getPagenum(), 10)).getContent();
 
-        result.put("num1", 0);
-        result.put("num2", 0);
-        result.put("num3", 0);
-        result.put("num4", 0);
-        result.put("num5", 0);
-        ArrayList<Reserve> reserveArrayList = new ArrayList<>();
-        for (Reservelist reserve : reservelist) {
-            int state = reserveStateRepository.findTopByReserveOrderByStateidDesc(reserve).get().getState();
-            result.put("num"+state, (int)result.getOrDefault("num"+state, 0 )+1);
-            if (body.getRequeststate() == state || (body.getRequeststate() == 1 && body.getRequeststate() + 1 == state)) {
-                reserveArrayList.add(new Reserve(reserve, state));
-            }
+        for(int i=1; i<=5; i++){
+            result.put("num"+i, reserveReadRepository.countAllByLenduseridAndState(userid, i));
         }
-
-        result.put("data", reserveArrayList);
+        result.put("data", reservelist);
 
         System.out.println("RESERVE-LIST: END");
         return result;
     }
 
-    public JsonMap reserveMyList(long userid, Reservelist body) {
+    public JsonMap reserveMyList(long userid, ReserveList body) {
         System.out.println("RESERVE-MyLIST: START");
         JsonMap result = new JsonMap();
 
-        User user = userRepository.findByUserid(userid);
-        List<PostList> posts = postRepository.findAllByUserAndDeletestate(user, 0);
-        ArrayList<Reservelist> reservelist = new ArrayList<>();
-        for(PostList post : posts){
-            var list = post.getReservelists();
-            if(list.size() != 0){
-                reservelist.add(list.get(0));
-            }
+        int requeststate = body.getRequeststate();
+        List<ReserveView> reservelist =
+                reserveReadRepository.findAllByBorrowuseridAndStateBetweenOrderByReserveidDesc(userid, requeststate, requeststate != 1 ? requeststate : requeststate + 1, PageRequest.of(body.getPagenum(), 10)).getContent();
+        for(int i=1; i<=5; i++){
+            result.put("num"+i, reserveReadRepository.countAllByBorrowuseridAndState(userid, i));
         }
-
-        result.put("num1", 0);
-        result.put("num2", 0);
-        result.put("num3", 0);
-        result.put("num4", 0);
-        result.put("num5", 0);
-        ArrayList<Reserve> reserveArrayList = new ArrayList<>();
-        for (Reservelist reserve : reservelist) {
-            int state = reserveStateRepository.findTopByReserveOrderByStateidDesc(reserve).get().getState();
-            result.put("num"+state, (int)result.getOrDefault("num"+state, 0 )+1);
-            if (body.getRequeststate() == state || (body.getRequeststate() == 1 && body.getRequeststate() + 1 == state)) {
-                reserveArrayList.add(new Reserve(reserve, state));
-            }
-        }
-
-        result.put("data", reserveArrayList);
+        result.put("data", reservelist);
 
         System.out.println("RESERVE-MyLIST: END");
         return result;
     }
 
-    public JsonMap reserverView(long userid, Reservelist body) {
+
+    public JsonMap reserveView(long userid, ReserveList body) {
         System.out.println("RESERVE-VIEW: START");
         JsonMap result = new JsonMap();
-        Reservelist reserve = reserveRepository.findById(body.getReserveid()).get();
-        ReserveState state = reserveStateRepository.findTopByReserveOrderByStateidDesc(reserve).get();
-        PostList post = reserve.getPost();
-        result.put("post", new Post(post));
-        result.put("reserve", new Reserve(reserve, state.getState()));
+        ReserveView reserveView = reserveReadRepository.findById(body.getReserveid()).orElse(null);
+        result.put("reserve", reserveView);
         System.out.println("RESERVE-VIEW: END");
         return result;
     }
 
 
-    public JsonMap reserveState(long userid, Reservelist body, int statecode) {
+    public JsonMap reserveState(long userid, ReserveList body, int statecode) {
         System.out.println("RESERVE-STATE: START");
         JsonMap result = new JsonMap();
 
         User user = userRepository.findByUserid(userid);
 
         // 예약 내역 확인
-        Reservelist reserve = reserveRepository.findById(body.getReserveid()).orElse(null);
+        ReserveList reserve = reserveRepository.findById(body.getReserveid()).orElse(null);
         if (reserve == null) {
             System.out.println("RESERVE-STATE: ERROR - NO-RESERVE");
             return result.setError(3001, "예약내역을 찾을 수 없습니다");

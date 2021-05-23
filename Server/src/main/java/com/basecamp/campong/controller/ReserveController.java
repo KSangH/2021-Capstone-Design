@@ -1,7 +1,7 @@
 package com.basecamp.campong.controller;
 
 import com.basecamp.campong.config.Config;
-import com.basecamp.campong.domain.Reservelist;
+import com.basecamp.campong.domain.ReserveList;
 import com.basecamp.campong.service.ReserveService;
 import com.basecamp.campong.service.UserService;
 import com.basecamp.campong.util.JsonMap;
@@ -24,7 +24,7 @@ public class ReserveController {
 
     // 예약버튼을 누르면 예약이 마감되었는지 처음 확인하는 단계
     @PostMapping(value = "/init")
-    public JsonMap reserveinit(@RequestBody Reservelist body,
+    public JsonMap reserveinit(@RequestBody ReserveList body,
                                @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
@@ -41,7 +41,7 @@ public class ReserveController {
     }
 
     @PostMapping(value = "/request")
-    public JsonMap reserveRequest(@RequestBody Reservelist body,
+    public JsonMap reserveRequest(@RequestBody ReserveList body,
                                   @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                   HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
@@ -58,7 +58,7 @@ public class ReserveController {
     }
 
     @PostMapping(value = "/list")
-    public JsonMap reserveList(@RequestBody Reservelist body,
+    public JsonMap reserveList(@RequestBody ReserveList body,
                                   @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                   HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
@@ -75,7 +75,7 @@ public class ReserveController {
     }
 
     @PostMapping(value = "/mylist")
-    public JsonMap reserverMyList(@RequestBody Reservelist body,
+    public JsonMap reserverMyList(@RequestBody ReserveList body,
                                @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
@@ -92,7 +92,7 @@ public class ReserveController {
     }
 
     @PostMapping(value = "/view")
-    public JsonMap reserveView(@RequestBody Reservelist body,
+    public JsonMap reserveView(@RequestBody ReserveList body,
                                @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
@@ -101,7 +101,7 @@ public class ReserveController {
             if (id < 0) {
                 return result.setAuthFailed();
             }
-            return reserveService.reserverView(id, body);
+            return reserveService.reserveView(id, body);
         } catch (Exception e) {
             System.out.println("ERROR: " + e.getMessage());
             return result.setError(1007, "잠시 후 다시 시도해주세요.(" + e.getLocalizedMessage() + ")");
@@ -110,7 +110,7 @@ public class ReserveController {
 
     // 대여
     @PostMapping(value = "/state/rental")
-    public JsonMap stateRental(@RequestBody Reservelist body,
+    public JsonMap stateRental(@RequestBody ReserveList body,
                                   @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                   HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
@@ -128,7 +128,7 @@ public class ReserveController {
 
     // 반납
     @PostMapping(value = "/state/return")
-    public JsonMap stateReturn(@RequestBody Reservelist body,
+    public JsonMap stateReturn(@RequestBody ReserveList body,
                                @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
@@ -146,7 +146,7 @@ public class ReserveController {
 
     // 취소
     @PostMapping(value = "/state/cancel")
-    public JsonMap stateCancel(@RequestBody Reservelist body,
+    public JsonMap stateCancel(@RequestBody ReserveList body,
                                @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
@@ -164,7 +164,7 @@ public class ReserveController {
 
     // 확정
     @PostMapping(value = "/state/grant")
-    public JsonMap stateGrant(@RequestBody Reservelist body,
+    public JsonMap stateGrant(@RequestBody ReserveList body,
                                @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                HttpSession session, HttpServletResponse res) {
         JsonMap result = new JsonMap();
