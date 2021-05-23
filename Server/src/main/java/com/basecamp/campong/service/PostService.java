@@ -78,32 +78,25 @@ public class PostService {
     public JsonMap readList(int pagenum, String catename, String location, String keyword) {
         System.out.println("readList START");
         JsonMap result = new JsonMap();
-        /*
-        Category category = null;
+
+        String category = null;
 
         if (catename != null) {
             //카테고리 필터를 설정한 경우
-            category = categoryRepository.findByCatename(catename);
+            category = categoryRepository.findByCatename(catename).getCatename();
             if (category == null) {
                 //존재하지 않는 카테고리를 요청한 경우
                 return result.setError(2009, "존재하지 않는 카테고리입니다.");
             }
         }
-
-        List<PostList> postLists = postRepository.filteredPost(0, category, location, keyword, PageRequest.of(pagenum, 10)).getContent();
-        */
-
-        List<PostView> postLists = postReadRepository.findAllByOrderByPostidDesc(PageRequest.of(pagenum, 10)).getContent();
+        
+        List<PostView> postLists = postReadRepository.filteredPost(category, location, keyword,PageRequest.of(pagenum, 10)).getContent();
         // 사이즈 입력
         result.put("num", postLists.size());
 
-        // 보낼 데이터 편집
+        // 보낼 데이터를 arrayList에 넣기
         ArrayList<PostView> postArrayList = new ArrayList<>(postLists);
-        /*
-        for (PostList post : postLists) {
-            postArrayList.add(new Post(post));
-        }
-         */
+       
         result.put("data", postArrayList);
 
         System.out.println("readList END");
@@ -133,17 +126,6 @@ public class PostService {
         System.out.println("viewPost START");
         JsonMap result = new JsonMap();
 
-        /*
-        //postid로 게시글 조회
-        PostList viewPost = postRepository.findByPostid(post.getPostid());
-        if( viewPost == null || viewPost.getDeletestate() == 1){
-            //게시글을 조회하는 중에 작성자가 게시글을 삭제한 경우 or 존재하지 않는 postid를 넘겨준경우
-            return result.setError(2007, "존재하지않는 게시글입니다.");
-        }
-
-        Post refinedPost = new Post(viewPost);
-        */
-
         PostView refinedPost = postReadRepository.findById(post.getPostid()).orElse(null);
         if (refinedPost == null) {
             //게시글을 조회하는 중에 작성자가 게시글을 삭제한 경우 or 존재하지 않는 postid를 넘겨준경우
@@ -153,20 +135,13 @@ public class PostService {
 
         User user = userRepository.findByUsernick(refinedPost.getUsernick());
 
+        //게시물을 조회하는 사람이 작성자인지 확인
         if (user.getUserid() == id) {
             result.put("mypost", true);
         } else {
             result.put("mypost", false);
         }
 
-        /*
-        //게시물을 조회하는 사람이 작성자인지 확인
-        if(viewPost.getUser().getUserid() == id){
-            result.put("mypost", true);
-        }else{
-            result.put("mypost", false);
-        }
-         */
         System.out.println("viewPost END");
         return result;
     }
@@ -196,26 +171,23 @@ public class PostService {
         return result;
     }
 
-    /*
+
     //특정 유저의 게시물 목록을 조회
-    public JsonMap readListByUser(String usernick){
+    public JsonMap readListByUser(String usernick, int pagenum){
         System.out.println("readListByUser START");
         JsonMap result = new JsonMap();
 
-        User user = userRepository.findByUsernick(usernick);
+        //User user = userRepository.findByUsernick(usernick);
 
-        if(user == null){
+        if(userRepository.findByUsernick(usernick) == null){
             return result.setError(1008, "존재하지 않는 닉네임입니다.");
         }
 
-        List<PostList> listByUser = postRepository.findAllByUserAndDeletestate(user, 0);
+        List<PostView> listByUser = postReadRepository.findAllByUsernick(usernick,PageRequest.of(pagenum, 10)).getContent();
         result.put("num", listByUser.size());
 
         // 보낼 데이터 편집
-        ArrayList<Post> postArrayList = new ArrayList<>();
-        for(PostList post : listByUser){
-            postArrayList.add(new Post(post));
-        }
+        ArrayList<PostView> postArrayList = new ArrayList<>(listByUser);
         result.put("data", postArrayList);
 
         System.out.println("readListByUser END");
@@ -223,28 +195,28 @@ public class PostService {
     }
 
     //내 게시글 목록 조회
-    public JsonMap mypostList(long id){
+    public JsonMap mypostList(long id, int pagenum){
         System.out.println("mypostList START");
         JsonMap result = new JsonMap();
 
-        User user = userRepository.findByUserid(id);
-        if(user == null){
+        //User user = userRepository.findByUserid(id);
+        if(userRepository.findByUserid(id) == null){
             result.setError(2009, "존재하지 않는 사용자입니다.");
         }
-
-        List<PostList> listByUser = postRepository.findAllByUserAndDeletestate(user, 0);
-        result.put("num", listByUser.size());
-
-        // 보낼 데이터 편집
-        ArrayList<Post> postArrayList = new ArrayList<>();
-        for(PostList post : listByUser){
-            postArrayList.add(new Post(post));
-        }
-        result.put("data", postArrayList);
-
-        System.out.println("mypostList END");
+//
+//        List<PostList> listByUser = postRepository.findAllByUserAndDeletestate(user, 0);
+//        result.put("num", listByUser.size());
+//
+//        // 보낼 데이터 편집
+//        ArrayList<Post> postArrayList = new ArrayList<>();
+//        for(PostList post : listByUser){
+//            postArrayList.add(new Post(post));
+//        }
+//        result.put("data", postArrayList);
+//
+//        System.out.println("mypostList END");
         return result;
     }
 
-     */
+
 }

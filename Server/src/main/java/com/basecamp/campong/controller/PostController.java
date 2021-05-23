@@ -137,10 +137,11 @@ public class PostController {
         }
 
     }
-/*
+
     //특정 사용자의 게시글 목록 조회
     @GetMapping(value = "list/{usernick}")
-    public JsonMap readListByUser(@PathVariable String usernick,
+    public JsonMap readListByUser(@RequestParam(value = "pagenum") int pagenum,
+                                    @PathVariable String usernick,
                                   @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                                   HttpSession session, HttpServletResponse res){
         JsonMap result = new JsonMap();
@@ -152,7 +153,7 @@ public class PostController {
             }
             
             //특정 유저의 게시물 목록을 조회하는 서비스
-            return postService.readListByUser(usernick);
+            return postService.readListByUser(usernick, pagenum);
 
         } catch (Exception e){
             System.out.println("ERROR : " + e.getMessage());
@@ -161,7 +162,7 @@ public class PostController {
 
 
     }
-    
+    /*
     //내 게시글 목록 조회
     @GetMapping(value = "list/mypost")
     public JsonMap mypostList(@CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,

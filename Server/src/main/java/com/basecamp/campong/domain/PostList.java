@@ -40,7 +40,7 @@ public class PostList {
     private LocalDateTime uploaddate;
 
     @ManyToOne
-    @JoinColumn(name = "imageid")
+    @JoinColumn(name = "imageid", nullable = false)
     private Image itemphoto;
 
     @Column(nullable = false)

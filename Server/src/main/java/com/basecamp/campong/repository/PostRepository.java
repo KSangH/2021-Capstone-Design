@@ -15,9 +15,6 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<PostList, Long> {
 
-    //deletestate가 0인 post 목록 조회
-    //Page<PostList> findAllByDeletestateOrderByPostidDesc(int state, Pageable pageable);
-
     //게시물 조회
     PostList findByPostid(long postid);
 
