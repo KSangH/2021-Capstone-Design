@@ -137,7 +137,7 @@ public class PostController {
         }
 
     }
-
+/*
     //특정 사용자의 게시글 목록 조회
     @GetMapping(value = "list/{usernick}")
     public JsonMap readListByUser(@PathVariable String usernick,
@@ -182,4 +182,6 @@ public class PostController {
             return result.setError(2011, "내 게시글 목록 조회 오류(" + e.getLocalizedMessage() + ")");
         }
     }
+
+ */
 }
