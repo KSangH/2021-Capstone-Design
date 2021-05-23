@@ -1,17 +1,25 @@
 package com.basecamp.campong.view
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.app.NotificationCompat.getCategory
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.basecamp.campong.R
+import com.basecamp.campong.databinding.ActivitySearchBinding
+import com.basecamp.campong.databinding.ActivityWritePostBinding
 import com.basecamp.campong.RecyclerAdapter
 import com.basecamp.campong.databinding.ActivitySearchBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
 
 class SearchActivity : AppCompatActivity() {
+
+    private var category: String? = null
+    private lateinit var mBinding: ActivitySearchBinding
 
     private var category: String? = null
     private lateinit var mBinding: ActivitySearchBinding
@@ -35,7 +43,38 @@ class SearchActivity : AppCompatActivity() {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        setContentView(R.layout.activity_search)
 
+        mBinding = ActivitySearchBinding.inflate(layoutInflater)
+
+        val chipGroup = mBinding.chipGroup
+
+        chipGroup.setOnCheckedChangeListener { _, checkedId ->
+            category = getCategory(checkedId)
+        }
+
+        val toolbar = findViewById(R.id.searchtoolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar!!
+        ab.setDisplayShowTitleEnabled(false)
+        ab.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        when (id) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    /*
+    fun goToFilter(view: View) {
+        val intent = Intent(applicationContext, FilterActivity::class.java)
+        startActivity(intent)
         setContentView(mBinding.root)
     }
 
@@ -74,6 +113,21 @@ class SearchActivity : AppCompatActivity() {
                     Log.d(Constants.TAG, "HomeFragment - getPostList() : 통신 실패")
                 }
             }
+        }
+    }
+    */
+
+    private fun getCategory(checkedId: Int): String? {
+        return when (checkedId) {
+            R.id.chip0 -> "텐트/타프"
+            R.id.chip1 -> "침낭/매트리스"
+            R.id.chip2 -> "캠핑퍼니처"
+            R.id.chip3 -> "화로/오븐/바베큐"
+            R.id.chip4 -> "취사도구"
+            R.id.chip5 -> "난로/난방/전기"
+            R.id.chip6 -> "트레일러/카라반/차량용품"
+            R.id.chip7 -> "기타"
+            else -> null
         }
     }
 }
