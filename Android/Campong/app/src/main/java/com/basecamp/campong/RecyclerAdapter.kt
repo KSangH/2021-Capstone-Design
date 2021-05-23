@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.basecamp.campong.databinding.RvItemBinding
 import com.basecamp.campong.model.Post
 import com.basecamp.campong.utils.API
+import com.basecamp.campong.utils.Keyword
 import com.basecamp.campong.view.ShowPostActivity
 import com.bumptech.glide.Glide
 
@@ -55,7 +56,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.MainViewHolder>() {
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ShowPostActivity::class.java)
-                intent.putExtra("post_id", post.postid)
+                intent.putExtra(Keyword.POST_ID, post.postid)
                 startActivity(itemView.context, intent, null)
             }
 
