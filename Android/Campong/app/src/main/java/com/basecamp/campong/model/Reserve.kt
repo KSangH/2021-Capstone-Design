@@ -85,3 +85,20 @@ data class ReqReserveState(
     @SerializedName(Keyword.RESERVE_ID)
     val reserveid: Long
 )
+
+data class ResultReserveView(
+    @SerializedName("post")
+    val post: Post,
+
+    @SerializedName("reserve")
+    val reserveItem: ReserveItem,
+
+    @SerializedName(Keyword.ERROR)
+    val error: Boolean,
+
+    @SerializedName(Keyword.ERROR_MESSAGE)
+    val errInfo: String,
+
+    @SerializedName(Keyword.ERROR_CODE)
+    val errCode: Int
+)

@@ -104,6 +104,10 @@ class LendRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun removeAll() {
+        this.reservationList.clear()
+    }
+
     // 승인 대기
     inner class Item01Holder(val binding: RvItemType01Binding) :
         RecyclerView.ViewHolder(binding.root),
@@ -129,7 +133,7 @@ class LendRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onClick(v: View?) {
             if (v != null) {
-                clickListener.onBaseItemClicked(v)
+                clickListener.onBaseItemClicked(v, reservationList[adapterPosition])
             }
         }
     }
@@ -175,7 +179,7 @@ class LendRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onClick(v: View?) {
             if (v != null) {
-                clickListener.onBaseItemClicked(v)
+                clickListener.onBaseItemClicked(v, reservationList[adapterPosition])
             }
         }
     }
@@ -204,14 +208,14 @@ class LendRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onClick(v: View?) {
             if (v != null) {
-                clickListener.onBaseItemClicked(v)
+                clickListener.onBaseItemClicked(v, reservationList[adapterPosition])
             }
         }
     }
 
     // 클릭리스너
     interface ClickListener {
-        fun onBaseItemClicked(view: View)
+        fun onBaseItemClicked(view: View, reserveItem: ReserveItem)
 //        fun onRentalQRClicked(view: View, reserveItem: ReserveItem)
 //        fun onReturnQRClicked(view: View, reserveItem: ReserveItem)
     }

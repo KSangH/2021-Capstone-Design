@@ -14,6 +14,7 @@ import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.view.EditProfileActivity
+import com.basecamp.campong.view.LendActivity
 import com.basecamp.campong.view.LoginActivity
 import com.bumptech.glide.Glide
 
@@ -59,7 +60,11 @@ class MypageFragment : Fragment(), View.OnClickListener {
                 goToEditProfile(v)
             }
             R.id.logoutButton -> {
-                logout(v)
+//                logout(v)
+                goToLendList(v)
+            }
+            R.id.goToLendListButton -> {
+                goToLendList(v)
             }
         }
     }
@@ -107,4 +112,8 @@ class MypageFragment : Fragment(), View.OnClickListener {
             }
     }
 
+    fun goToLendList(view: View) {
+        val intent = Intent(context, LendActivity::class.java)
+        startActivity(intent)
+    }
 }

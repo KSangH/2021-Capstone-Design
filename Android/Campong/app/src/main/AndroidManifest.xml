@@ -13,17 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.ScanQrActivity" />
+
+        <activity android:name=".view.AcceptActivity" />
+        <activity android:name=".view.EditProfileActivity" />
+        <activity android:name=".view.FilterActivity" />
         <activity android:name=".view.LendActivity" />
+        <activity android:name=".view.QrViewActivity" />
+        <activity android:name=".view.ReqReserveActivity" />
+        <activity android:name=".view.ScanQrActivity" />
+        <activity android:name=".view.SearchActivity" />
+        <activity android:name=".view.ShowPostActivity" />
         <activity
             android:name=".view.WritePostActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".view.ReqReserveActivity" />
-        <activity android:name=".view.ShowPostActivity" />
-        <activity android:name=".view.EditProfileActivity" />
-        <activity android:name=".view.SearchActivity" />
-        <activity android:name=".view.QrViewActivity" />
-        <activity android:name=".view.FilterActivity" />
         <activity
             android:name=".view.SignupActivity"
             android:parentActivityName=".view.LoginActivity" />

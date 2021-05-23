@@ -186,8 +186,13 @@ class WritePostActivity : AppCompatActivity() {
         val msg = "필수 항목입니다."
         var result: Boolean = true
 
+        if (image_id == null) {
+            Toast.makeText(this, "이미지를 선택해주세요.(필수)", Toast.LENGTH_SHORT).show()
+            result = false
+        }
+
         if (category.isNullOrBlank()) {
-            Toast.makeText(this, "카테고리를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "카테고리를 선택해주세요.(필수)", Toast.LENGTH_SHORT).show()
             result = false
         }
         if (mBinding.titleEditText.text.isNullOrBlank()) {

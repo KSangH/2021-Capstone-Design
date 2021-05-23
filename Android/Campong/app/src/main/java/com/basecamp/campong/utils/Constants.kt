@@ -151,3 +151,8 @@ object RentalState {
     const val RENTAL_STATE_RETURN = 4
     const val RENTAL_STATE_CANCEL = 5
 }
+
+object RequestCode {
+    const val WRITE_POST = 100
+    const val ACCEPT_REQUEST = 300
+}

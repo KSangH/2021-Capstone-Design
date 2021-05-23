@@ -22,7 +22,25 @@ class AcceptActivity : AppCompatActivity() {
 
         reserveid = intent.getLongExtra(Keyword.RESERVE_ID, -1)
 
+        getReserveItem()
+
         setContentView(mBinding.root)
+    }
+
+    fun getReserveItem() {
+        RetrofitManager.instance.requestReserveView(reserveid!!) { code, reserveItem ->
+            when (code) {
+                0 -> {
+                    mBinding.apply {
+                        this.reserveItem = reserveItem
+                    }
+                }
+                else -> {
+                    Log.d(Constants.TAG, "AcceptActivity - getReserveItem() : 예약 내역을 불러오지 못했습니다.")
+                    Toast.makeText(this, "예약 내역을 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     fun requestGrant(view: View) {
@@ -31,6 +49,7 @@ class AcceptActivity : AppCompatActivity() {
                 0 -> {
                     Log.d(Constants.TAG, "AcceptActivity - requestGrant() : 신청을 승인하였습니다.")
                     Toast.makeText(this, "예약을 승인하였습니다.", Toast.LENGTH_SHORT).show()
+                    setResult(RESULT_OK)
                     finish()
                 }
                 else -> {
@@ -47,6 +66,7 @@ class AcceptActivity : AppCompatActivity() {
                 0 -> {
                     Log.d(Constants.TAG, "AcceptActivity - requestCancel() : 신청을 거절하였습니다.")
                     Toast.makeText(this, "신청을 거절하였습니다.", Toast.LENGTH_SHORT).show()
+                    setResult(RESULT_OK)
                     finish()
                 }
                 else -> {

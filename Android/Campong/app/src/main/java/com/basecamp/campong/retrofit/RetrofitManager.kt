@@ -692,36 +692,39 @@ class RetrofitManager {
     }
 
     // 예약내역 상세
-    fun requestReserveView(reserveid: Long, completion: (Int) -> Unit) {
+    fun requestReserveView(reserveid: Long, completion: (Int, ReserveItem?) -> Unit) {
 
         val req = ReqReserveState(reserveid)
         val call = service?.requestReserveView(req) ?: return
 
-        call.enqueue(object : Callback<ResultBase> {
-            override fun onResponse(call: Call<ResultBase>, response: Response<ResultBase>) {
+        call.enqueue(object : Callback<ResultReserveView> {
+            override fun onResponse(
+                call: Call<ResultReserveView>,
+                response: Response<ResultReserveView>
+            ) {
                 when (response.code()) {
                     200 -> {
                         Log.d(TAG, response.raw().toString())
                         if (response.body()?.error == false) { // 성공
-                            completion(0)
+                            completion(0, response.body()!!.reserveItem)
                         } else {
                             if (response.body()?.errCode == 1007) {
-                                completion(1)
+                                completion(1, null)
                             } else {
-                                completion(2)
+                                completion(2, null)
                             }
                         }
                     }
                     else -> {
                         Log.d(TAG, response.code().toString())
-                        completion(-1)
+                        completion(-1, null)
                     }
                 }
             }
 
-            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+            override fun onFailure(call: Call<ResultReserveView>, t: Throwable) {
                 Log.d(TAG, t.toString())
-                completion(-1)
+                completion(-1, null)
             }
 
         })

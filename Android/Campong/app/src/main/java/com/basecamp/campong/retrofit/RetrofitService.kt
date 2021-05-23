@@ -131,7 +131,7 @@ interface RetrofitService {
     @POST(API.RESERVE_VIEW)
     fun requestReserveView(
         @Body body: ReqReserveState
-    ): Call<ResultBase>
+    ): Call<ResultReserveView>
 
     // 대여하기
     @Headers("content-type: application/json")
