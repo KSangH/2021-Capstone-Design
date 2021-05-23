@@ -43,6 +43,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
 
         binding.addButton.setOnClickListener(this)
+        binding.scannerButton.setOnClickListener(this)
+        binding.searchButton.setOnClickListener(this)
 
         return mBinding?.root
     }
