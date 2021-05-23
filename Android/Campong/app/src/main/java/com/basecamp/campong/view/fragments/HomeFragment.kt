@@ -9,6 +9,7 @@ import com.basecamp.campong.R
 import com.basecamp.campong.RecyclerAdapter
 import com.basecamp.campong.databinding.FragmentHomeBinding
 import com.basecamp.campong.utils.postList
+import com.basecamp.campong.view.SearchActivity
 import com.basecamp.campong.view.WritePostActivity
 
 
@@ -51,14 +52,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
         super.onDestroyView()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_toolbar_menu, menu)
-
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     private fun goToWritePost(view: View) {
         val intent = Intent(context, WritePostActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun goToSearch(view: View) {
+        val intent = Intent(context, SearchActivity::class.java)
         startActivity(intent)
     }
 
@@ -66,6 +66,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
         when (v.id) {
             R.id.addButton -> {
                 goToWritePost(v)
+            }
+            R.id.scannerButton ->{
+
+            }
+            R.id.searchButton ->{
+                goToSearch(v)
             }
         }
     }
