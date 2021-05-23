@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReserveList { //예약정보 테이블
+public class Reservelist { //예약정보 테이블
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

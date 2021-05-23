@@ -1,7 +1,7 @@
 package com.basecamp.campong.repository;
 
 import com.basecamp.campong.domain.PostList;
-import com.basecamp.campong.domain.ReserveList;
+import com.basecamp.campong.domain.Reservelist;
 import com.basecamp.campong.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ReserveRepository extends JpaRepository<ReserveList, Long> {
+public interface ReserveRepository extends JpaRepository<Reservelist, Long> {
 
-    Optional<ReserveList> findByPost(PostList postList);
+    Optional<Reservelist> findByPost(PostList postList);
 
-    List<ReserveList> findAllByUserOrderByReserveidDesc(User user);
+    List<Reservelist> findAllByUserOrderByReserveidDesc(User user);
 }

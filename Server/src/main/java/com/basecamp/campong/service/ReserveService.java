@@ -29,7 +29,7 @@ public class ReserveService {
     @Autowired
     ReserveReadRepository reserveReadRepository;
 
-    public JsonMap reserveinit(ReserveList body) {
+    public JsonMap reserveinit(Reservelist body) {
         System.out.println("RESERVE-INIT: START");
         JsonMap result = new JsonMap();
         PostList post = postRepository.findById(body.getPostid()).orElse(null);
@@ -45,7 +45,7 @@ public class ReserveService {
         return result;
     }
 
-    public JsonMap reserveRequest(long userid, ReserveList body) {
+    public JsonMap reserveRequest(long userid, Reservelist body) {
         System.out.println("RESERVE-REQUEST: START");
         JsonMap result = new JsonMap();
         JsonMap init = reserveinit(body);
@@ -67,7 +67,7 @@ public class ReserveService {
         return result;
     }
 
-    public JsonMap reserveList(long userid, ReserveList body) {
+    public JsonMap reserveList(long userid, Reservelist body) {
         System.out.println("RESERVE-LIST: START");
         JsonMap result = new JsonMap();
 
@@ -84,7 +84,7 @@ public class ReserveService {
         return result;
     }
 
-    public JsonMap reserveMyList(long userid, ReserveList body) {
+    public JsonMap reserveMyList(long userid, Reservelist body) {
         System.out.println("RESERVE-MyLIST: START");
         JsonMap result = new JsonMap();
 
@@ -101,7 +101,7 @@ public class ReserveService {
     }
 
 
-    public JsonMap reserveView(long userid, ReserveList body) {
+    public JsonMap reserveView(long userid, Reservelist body) {
         System.out.println("RESERVE-VIEW: START");
         JsonMap result = new JsonMap();
         ReserveView reserveView = reserveReadRepository.findById(body.getReserveid()).orElse(null);
@@ -111,14 +111,14 @@ public class ReserveService {
     }
 
 
-    public JsonMap reserveState(long userid, ReserveList body, int statecode) {
+    public JsonMap reserveState(long userid, Reservelist body, int statecode) {
         System.out.println("RESERVE-STATE: START");
         JsonMap result = new JsonMap();
 
         User user = userRepository.findByUserid(userid);
 
         // 예약 내역 확인
-        ReserveList reserve = reserveRepository.findById(body.getReserveid()).orElse(null);
+        Reservelist reserve = reserveRepository.findById(body.getReserveid()).orElse(null);
         if (reserve == null) {
             System.out.println("RESERVE-STATE: ERROR - NO-RESERVE");
             return result.setError(3001, "예약내역을 찾을 수 없습니다");

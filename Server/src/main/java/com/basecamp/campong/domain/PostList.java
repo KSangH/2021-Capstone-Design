@@ -64,7 +64,7 @@ public class PostList {
 
     @Builder.Default
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-    private List<ReserveList> reservelists = new ArrayList<>();
+    private List<Reservelist> reservelists = new ArrayList<>();
 
     @Transient //임시로 받을 카테고리명
     private String catename;

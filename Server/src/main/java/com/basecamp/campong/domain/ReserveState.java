@@ -21,7 +21,7 @@ public class ReserveState {
 
     @ManyToOne
     @JoinColumn(name = "reserveid", nullable = false)
-    private ReserveList reserve;
+    private Reservelist reserve;
 
     @Column(nullable = false)
     private int state;
