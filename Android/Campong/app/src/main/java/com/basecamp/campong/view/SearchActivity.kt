@@ -75,5 +75,27 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
         }
+        val toolbar = findViewById(R.id.searchtoolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar!!
+        ab.setDisplayShowTitleEnabled(false)
+        ab.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        when (id) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    /*
+    fun goToFilter(view: View) {
+        val intent = Intent(applicationContext, FilterActivity::class.java)
+        startActivity(intent)
     }
 }
