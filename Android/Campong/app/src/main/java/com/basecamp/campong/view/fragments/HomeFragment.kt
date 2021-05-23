@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.basecamp.campong.R
 import com.basecamp.campong.RecyclerAdapter
+import com.basecamp.campong.SearchLocationActivity
 import com.basecamp.campong.databinding.FragmentHomeBinding
 import com.basecamp.campong.utils.postList
 import com.basecamp.campong.view.SearchActivity
@@ -45,6 +46,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.addButton.setOnClickListener(this)
         binding.scannerButton.setOnClickListener(this)
         binding.searchButton.setOnClickListener(this)
+        binding.locationButton.setOnClickListener(this)
 
         return mBinding?.root
     }
@@ -64,6 +66,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
         startActivity(intent)
     }
 
+    private fun goToSearchLocation(view: View) {
+        val intent = Intent(context, SearchLocationActivity::class.java)
+        startActivity(intent)
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.addButton -> {
@@ -74,6 +81,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
             R.id.searchButton ->{
                 goToSearch(v)
+            }
+            R.id.locationButton ->{
+                goToSearchLocation(v)
             }
         }
     }
