@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Immutable
 @Getter
 @JsonIgnoreProperties(value = "userid")
-@Subselect("SELECT post.userid as userid, postid, catename, usernick, title, location, post.imageid as imageid, uploaddate, fee, contents, lat, lon, (select count(*) from reservelist where reservelist.postid = post.postid) as reservestate FROM post_list post join user join category on post.cateid = category.cateid  where deletestate = 0")
+@Subselect("SELECT post.userid as userid, postid, catename, usernick, title, location, post.imageid as imageid, uploaddate, fee, contents, lat, lon, (select count(*) from reservelist where reservelist.postid = post.postid) as reservestate FROM post_list post join user on post.userid = user.userid join category on post.cateid = category.cateid  where deletestate = 0")
 public class PostView {
 
     @Id
