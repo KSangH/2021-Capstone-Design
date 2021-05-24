@@ -36,6 +36,8 @@ class MypageFragment : Fragment(), View.OnClickListener {
 
         binding.goToEditProfileButton.setOnClickListener(this)
         binding.logoutButton.setOnClickListener(this)
+        binding.goToLendListButton.setOnClickListener(this)
+        binding.lendListButton.setOnClickListener(this)
 
         return mBinding?.root
     }
@@ -60,10 +62,12 @@ class MypageFragment : Fragment(), View.OnClickListener {
                 goToEditProfile(v)
             }
             R.id.logoutButton -> {
-//                logout(v)
-                goToLendList(v)
+                logout(v)
             }
             R.id.goToLendListButton -> {
+                goToLendList(v)
+            }
+            R.id.lendListButton -> {
                 goToLendList(v)
             }
         }
@@ -112,7 +116,7 @@ class MypageFragment : Fragment(), View.OnClickListener {
             }
     }
 
-    fun goToLendList(view: View) {
+    private fun goToLendList(view: View) {
         val intent = Intent(context, LendActivity::class.java)
         startActivity(intent)
     }
