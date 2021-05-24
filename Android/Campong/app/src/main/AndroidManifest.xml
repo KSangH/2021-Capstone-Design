@@ -16,6 +16,7 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".view.AcceptActivity" />
+        <activity android:name=".view.EditPostActivity" />
         <activity android:name=".view.EditProfileActivity" />
         <activity android:name=".view.FilterActivity" />
         <activity android:name=".view.LendActivity" />
