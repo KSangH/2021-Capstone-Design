@@ -21,7 +21,10 @@ class QrViewActivity : AppCompatActivity() {
         mBinding = ActivityQrViewBinding.inflate(layoutInflater)
 
         init(intent)
-        setUpQR(intent.getLongExtra(Keyword.RESERVE_ID, -1))
+        setUpQR(
+            intent.getLongExtra(Keyword.RESERVE_ID, -1),
+            intent.getIntExtra(Keyword.QR_TYPE, -1)
+        )
 
         setContentView(mBinding.root)
     }
@@ -34,12 +37,15 @@ class QrViewActivity : AppCompatActivity() {
         mBinding.enddate.text = intent.getStringExtra(Keyword.RETURN_DATE)
     }
 
-    private fun setUpQR(reserveid: Long) {
+    private fun setUpQR(reserveid: Long, qrType: Int) {
         val multiFormatWriter = MultiFormatWriter()
-        if (reserveid > 0) {
+        if (reserveid > 0 && qrType != -1) {
+            // qr코드에 인코딩할 데이터 - 콜론(:)으로 구분
+            val data = "$qrType:${reserveid}"
             try {
+                // qr코드 인코딩
                 val bitMatrix =
-                    multiFormatWriter.encode(reserveid.toString(), BarcodeFormat.QR_CODE, 200, 200)
+                    multiFormatWriter.encode(data, BarcodeFormat.QR_CODE, 200, 200)
                 val barcodeEncoder = BarcodeEncoder()
                 val bitmap = barcodeEncoder.createBitmap(bitMatrix)
                 mBinding.qrimageview.setImageBitmap(bitmap)
