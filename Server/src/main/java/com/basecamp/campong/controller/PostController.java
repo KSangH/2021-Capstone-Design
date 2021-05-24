@@ -162,10 +162,11 @@ public class PostController {
 
 
     }
-    /*
+
     //내 게시글 목록 조회
     @GetMapping(value = "list/mypost")
-    public JsonMap mypostList(@CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+    public JsonMap mypostList(@RequestParam(value = "pagenum") int pagenum,
+                                @CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
                               HttpSession session, HttpServletResponse res){
         JsonMap result = new JsonMap();
         try{
@@ -176,7 +177,7 @@ public class PostController {
             }
 
             //내 게시글 목록 조회 서비스
-            return postService.mypostList(id);
+            return postService.mypostList(id, pagenum);
 
         } catch (Exception e){
             System.out.println("ERROR : " + e.getMessage());
@@ -184,5 +185,5 @@ public class PostController {
         }
     }
 
- */
+
 }

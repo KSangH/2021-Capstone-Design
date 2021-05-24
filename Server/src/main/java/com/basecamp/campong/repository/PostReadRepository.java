@@ -21,4 +21,5 @@ public interface PostReadRepository extends JpaRepository<PostView, Long> {
     Page<PostView> findAllByUsernick(String usernick, Pageable pageable);
 
     //userid로 게시글 목록 조회
+    Page<PostView> findAllByUserid(long id, Pageable pageable);
 }

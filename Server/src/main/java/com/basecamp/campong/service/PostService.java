@@ -203,18 +203,15 @@ public class PostService {
         if(userRepository.findByUserid(id) == null){
             result.setError(2009, "존재하지 않는 사용자입니다.");
         }
-//
-//        List<PostList> listByUser = postRepository.findAllByUserAndDeletestate(user, 0);
-//        result.put("num", listByUser.size());
-//
-//        // 보낼 데이터 편집
-//        ArrayList<Post> postArrayList = new ArrayList<>();
-//        for(PostList post : listByUser){
-//            postArrayList.add(new Post(post));
-//        }
-//        result.put("data", postArrayList);
-//
-//        System.out.println("mypostList END");
+
+        List<PostView> listByUser = postReadRepository.findAllByUserid(id,PageRequest.of(pagenum, 10)).getContent();
+        result.put("num", listByUser.size());
+
+        // 보낼 데이터 편집
+        ArrayList<PostView> postArrayList = new ArrayList<>(listByUser);
+        result.put("data", postArrayList);
+
+        System.out.println("mypostList END");
         return result;
     }
 
