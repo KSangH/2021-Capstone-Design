@@ -87,6 +87,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/white" />
 
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
