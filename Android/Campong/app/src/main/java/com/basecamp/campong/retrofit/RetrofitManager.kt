@@ -457,7 +457,7 @@ class RetrofitManager {
                     200 -> {
                         Log.d(TAG, response.raw().toString())
                         if (response.body()?.error == false) { // 성공
-                            completion(0, response.body()!!.postid)
+                            completion(0, response.body()!!.postid) // 성공시 업로드한 게시물을 확인하기 위한 postid
                         } else {
                             if (response.body()?.errCode == 1007) {
                                 completion(1, null)

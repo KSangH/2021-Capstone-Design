@@ -91,7 +91,7 @@ interface RetrofitService {
     @Headers("content-type: application/json")
     @POST(API.POST_UPDATE)
     fun requestUpdatePost(        // TODO
-    ): Call<ResultPostView>
+    ): Call<ResultUploadPost>
 
     // 게시물 삭제
     @Headers("content-type: application/json")
