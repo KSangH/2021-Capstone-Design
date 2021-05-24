@@ -69,4 +69,8 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.MainViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun removeAll() {
+        this.postList.clear()
+        notifyDataSetChanged()
+    }
 }
