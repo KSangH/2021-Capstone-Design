@@ -14,6 +14,7 @@ import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.view.EditProfileActivity
+import com.basecamp.campong.view.LendActivity
 import com.basecamp.campong.view.LoginActivity
 import com.bumptech.glide.Glide
 
@@ -35,6 +36,8 @@ class MypageFragment : Fragment(), View.OnClickListener {
 
         binding.goToEditProfileButton.setOnClickListener(this)
         binding.logoutButton.setOnClickListener(this)
+        binding.goToLendListButton.setOnClickListener(this)
+        binding.lendListButton.setOnClickListener(this)
 
         return mBinding?.root
     }
@@ -60,6 +63,12 @@ class MypageFragment : Fragment(), View.OnClickListener {
             }
             R.id.logoutButton -> {
                 logout(v)
+            }
+            R.id.goToLendListButton -> {
+                goToLendList(v)
+            }
+            R.id.lendListButton -> {
+                goToLendList(v)
             }
         }
     }
@@ -107,4 +116,8 @@ class MypageFragment : Fragment(), View.OnClickListener {
             }
     }
 
+    private fun goToLendList(view: View) {
+        val intent = Intent(context, LendActivity::class.java)
+        startActivity(intent)
+    }
 }

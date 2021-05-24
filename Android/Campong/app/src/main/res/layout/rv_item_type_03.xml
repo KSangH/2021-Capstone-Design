@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="postItem"
-            type="com.basecamp.campong.model.Post" />
+            name="reserveItem"
+            type="com.basecamp.campong.model.ReserveItem" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -36,10 +36,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:text="@{postItem.catename}"
+                android:text="@{reserveItem.catename}"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@id/imageView"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/qrButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/button_main_color"
+                android:src="@drawable/ic_qrscan"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -51,10 +61,10 @@
                 android:layout_marginEnd="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@{postItem.title}"
+                android:text="@{reserveItem.title}"
                 android:textAlignment="textStart"
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/qrButton"
                 app:layout_constraintStart_toEndOf="@id/imageView"
                 app:layout_constraintTop_toBottomOf="@id/categoryTextView" />
 
@@ -64,46 +74,57 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="15dp"
-                android:text="@{postItem.location}"
+                android:text="@{reserveItem.location}"
                 android:textColor="@color/black"
                 app:layout_constraintStart_toEndOf="@id/imageView"
                 app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
             <TextView
-                android:id="@+id/uploadDateTextView"
+                android:id="@+id/rentalDateTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
-                android:text="@{postItem.uploaddate}"
+                android:text="@{reserveItem.rentaldate}"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imageView"
                 app:layout_constraintTop_toBottomOf="@id/locationTextView" />
 
             <TextView
+                android:id="@+id/periodLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="~"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/rentalDateTextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/rentalDateTextView" />
+
+            <TextView
+                android:id="@+id/returnDateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="@{reserveItem.returndate}"
+                android:textSize="12sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/rentalDateTextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/periodLabel"
+                app:layout_constraintTop_toBottomOf="@id/locationTextView" />
+
+            <TextView
                 android:id="@+id/costTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{postItem.fee}"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@id/uploadDateTextView"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/costElse" />
-
-            <TextView
-                android:id="@+id/costElse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
-                android:text="원(/일)"
+                android:text="@{reserveItem.fee}"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@id/uploadDateTextView"
+                app:layout_constraintBaseline_toBaselineOf="@id/rentalDateTextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

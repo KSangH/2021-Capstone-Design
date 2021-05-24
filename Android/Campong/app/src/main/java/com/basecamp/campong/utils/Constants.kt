@@ -36,9 +36,6 @@ object API {
     // 게시물 등록
     const val POST_UPLOAD: String = "/post/upload"
 
-    // 게시물 이미지 등록
-    const val POST_UPLOAD_IMAGE: String = "/post/uploadimage"
-
     // 게시물 조회
     const val POST_VIEW: String = "/post/view"
 
@@ -55,6 +52,9 @@ object API {
     // 최종 예약
     const val RESERVE_REQUEST: String = "/reserve/request"
 
+    // 예약내역(빌려준장비)
+    const val RESERVE_MYLIST: String = "/reserve/mylist"
+
     // 예약내역(빌린장비)
     const val RESERVE_LIST: String = "/reserve/list"
 
@@ -62,16 +62,16 @@ object API {
     const val RESERVE_VIEW: String = "/reserve/view"
 
     // 대여
-    const val STATE_RENTAL: String = "/state/rental"
+    const val STATE_RENTAL: String = "/reserve/state/rental"
 
     // 반납
-    const val STATE_RETURN: String = "/state/return"
+    const val STATE_RETURN: String = "/reserve/state/return"
 
     // 승인
-    const val STATE_GRANT: String = "/state/grant"
+    const val STATE_GRANT: String = "/reserve/state/grant"
 
     // 취소
-    const val STATE_CANCEL: String = "/state/cancel"
+    const val STATE_CANCEL: String = "/reserve/state/cancel"
 
     // 이미지 업로드
     const val UPLOAD_IMAGE: String = "/image/upload"
@@ -111,21 +111,27 @@ object Keyword {
 
     const val LOCATION = "location"
 
-    const val ITEM_PHOTO = "itemphoto"
-
     const val UPLOAD_DATE = "uploaddate"
 
     const val RENTAL_DATE = "rentaldate"
 
     const val RETURN_DATE = "returndate"
 
-    const val STATE = "STATE"
+    const val STATE = "state"
+
+    const val REQUEST_STATE = "requeststate"
 
     const val RESERVE_ID = "reserveid"
 
     const val QRCODE = "qrcode"
 
     const val IMAGE_ID = "imageid"
+
+    const val QR_TYPE = "qr_type"
+
+    const val QR_TYPE_RENTAL = 1
+
+    const val QR_TYPE_RETURN = 2
 }
 
 object Preference {
@@ -136,4 +142,17 @@ object Preference {
     // Preference Key 값
     const val SHARED_PREFERENCE_NAME_COOKIE = "cookies"
 
+}
+
+object RentalState {
+    const val RENTAL_STATE_WAIT = 1
+    const val RENTAL_STATE_CONFIRM = 2
+    const val RENTAL_STATE_RENTAL = 3
+    const val RENTAL_STATE_RETURN = 4
+    const val RENTAL_STATE_CANCEL = 5
+}
+
+object RequestCode {
+    const val WRITE_POST = 100
+    const val ACCEPT_REQUEST = 300
 }

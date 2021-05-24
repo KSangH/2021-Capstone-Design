@@ -12,7 +12,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class RentalFragment : Fragment() {
 
     private var mBinding: FragmentRentalBinding? = null
-    private val tabTextList = arrayListOf("신청", "대여중", "반납완료", "취소")
+    private val tabTextList = arrayListOf("예약", "대여중", "반납완료", "취소")
 
     override fun onCreateView(
         inflater: LayoutInflater,

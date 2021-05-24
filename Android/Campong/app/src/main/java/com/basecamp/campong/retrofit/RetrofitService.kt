@@ -66,7 +66,10 @@ interface RetrofitService {
     @Headers("content-type: application/json")
     @GET(API.POST_LIST)
     fun requestPostList(
-        @Query("pagenum") pagenum: Int
+        @Query("pagenum") pagenum: Int,
+        @Query("keyword") keyword: String? = null,
+        @Query("catename") catename: String? = null,
+        @Query("location") location: String? = null
     ): Call<ResultPostList>
 
     /* 게시물 관리 */
@@ -87,51 +90,76 @@ interface RetrofitService {
     // 게시물 수정
     @Headers("content-type: application/json")
     @POST(API.POST_UPDATE)
-    fun requestUpdatePost()
+    fun requestUpdatePost(        // TODO
+    ): Call<ResultUploadPost>
 
     // 게시물 삭제
     @Headers("content-type: application/json")
     @POST(API.POST_DELETE)
-    fun requestDeletePost(): Call<ResultBase>
+    fun requestDeletePost(        // TODO
+    ): Call<ResultBase>
 
     /* 예약/대여/반납 */
     // 예약하기 화면 조회
     @Headers("content-type: application/json")
     @POST(API.RESERVE_INIT)
-    fun requestReserveInit(): Call<ResultBase>
+    fun requestReserveInit(
+        @Body body: ReqReserveInit
+    ): Call<ResultBase>
 
     // 예약하기
     @Headers("content-type: application/json")
     @POST(API.RESERVE_REQUEST)
-    fun requestReserveRequest(): Call<ResultBase>
+    fun requestReserveRequest(
+        @Body body: ReqReserveRequest
+    ): Call<ResultBase>
 
-    // 예약내역
+    // 예약내역(빌려준장비)
+    @Headers("content-type: application/json")
+    @POST(API.RESERVE_MYLIST)
+    fun requestReserveMyList(
+        @Body body: ReqReserveList
+    ): Call<ResultReserveList>
+
+    // 예약내역(빌린장비)
     @Headers("content-type: application/json")
     @POST(API.RESERVE_LIST)
-    fun requestReserveList()
+    fun requestReserveList(
+        @Body body: ReqReserveList
+    ): Call<ResultReserveList>
 
     // 예약내역 상세
     @Headers("content-type: application/json")
     @POST(API.RESERVE_VIEW)
-    fun requestReserveView()
+    fun requestReserveView(
+        @Body body: ReqReserveState
+    ): Call<ResultReserveView>
 
     // 대여하기
     @Headers("content-type: application/json")
     @POST(API.STATE_RENTAL)
-    fun requestStateRental(): Call<ResultBase>
+    fun requestStateRental(
+        @Body body: ReqReserveState
+    ): Call<ResultBase>
 
     // 반납하기
     @Headers("content-type: application/json")
     @POST(API.STATE_RETURN)
-    fun requestStateReturn(): Call<ResultBase>
+    fun requestStateReturn(
+        @Body body: ReqReserveState
+    ): Call<ResultBase>
 
     // 승인하기
     @Headers("content-type: application/json")
     @POST(API.STATE_GRANT)
-    fun requestStateGrant(): Call<ResultBase>
+    fun requestStateGrant(
+        @Body body: ReqReserveState
+    ): Call<ResultBase>
 
     // 취소하기
     @Headers("content-type: application/json")
     @POST(API.STATE_CANCEL)
-    fun requestStateCancel(): Call<ResultBase>
+    fun requestStateCancel(
+        @Body body: ReqReserveState
+    ): Call<ResultBase>
 }

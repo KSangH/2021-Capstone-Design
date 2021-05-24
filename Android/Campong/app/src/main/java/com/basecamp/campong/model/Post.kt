@@ -43,7 +43,16 @@ data class Post(
     val uploaddate: String,
 
     @SerializedName(Keyword.FEE)
-    val fee: String
+    val fee: String,
+
+    @SerializedName(Keyword.CONTENTS)
+    val contents: String,
+
+    @SerializedName(Keyword.LON)
+    val lon: String,
+
+    @SerializedName(Keyword.LAT)
+    val lat: String
 )
 
 data class ReqUploadPost(
@@ -92,32 +101,11 @@ data class ReqPostView(
 )
 
 data class ResultPostView(
-    @SerializedName(Keyword.POST_ID)
-    val postid: Long,
+    @SerializedName("mypost")
+    val mypost: Boolean,
 
-    @SerializedName(Keyword.CATENAME)
-    val catename: String,
-
-    @SerializedName(Keyword.USERNICK)
-    val usernick: String,
-
-    @SerializedName(Keyword.TITLE)
-    val title: String,
-
-    @SerializedName(Keyword.LOCATION)
-    val location: String,
-
-    @SerializedName(Keyword.IMAGE_ID)
-    val imageid: Long?,
-
-    @SerializedName(Keyword.UPLOAD_DATE)
-    val uploaddate: String,
-
-    @SerializedName(Keyword.FEE)
-    val fee: String,
-
-    @SerializedName(Keyword.CONTENTS)
-    val contents: String,
+    @SerializedName("post")
+    val post: Post,
 
     @SerializedName(Keyword.ERROR)
     val error: Boolean,
