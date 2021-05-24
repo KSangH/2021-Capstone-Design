@@ -2,8 +2,10 @@ package com.basecamp.campong.view
 
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.basecamp.campong.R
 import com.basecamp.campong.RecyclerAdapter
@@ -15,7 +17,7 @@ class SearchActivity : AppCompatActivity() {
 
     private var category: String? = null
     private lateinit var mBinding: ActivitySearchBinding
-    lateinit var mAdapter: RecyclerAdapter
+    private lateinit var mAdapter: RecyclerAdapter
     private var pageNum: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,20 +25,78 @@ class SearchActivity : AppCompatActivity() {
 
         mBinding = ActivitySearchBinding.inflate(layoutInflater)
 
-        val chipGroup = mBinding.chipGroup
+        initToolbar()
+        initChipGroup()
+        initRecyclerview()
 
-        chipGroup.setOnCheckedChangeListener { _, checkedId ->
+        setContentView(mBinding.root)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun initChipGroup() {
+        mBinding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
             category = getCategory(checkedId)
         }
+    }
 
+    private fun initToolbar() {
+        val toolbar = findViewById<Toolbar>(R.id.searchtoolbar)
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun initRecyclerview() {
         mAdapter = RecyclerAdapter()
 
         mBinding.recyclerview.apply {
             adapter = mAdapter
             layoutManager = LinearLayoutManager(context)
         }
+    }
 
-        setContentView(mBinding.root)
+
+    fun search(view: View) {
+        val keyword = mBinding.searchInput.text.toString()
+        requestSearch(pageNum, keyword, category)
+    }
+
+    private fun pageUp() {
+        pageNum++
+    }
+
+    private fun pageReset() {
+        pageNum = 0
+    }
+
+    private fun requestSearch(pageNum: Int, keyword: String?, category: String?) {
+
+        RetrofitManager.instance.requestSearchPostList(pageNum, keyword, category) { code, data ->
+            when (code) {
+                0 -> {
+                    if (data != null) {
+                        Log.d(Constants.TAG, "HomeFragment - getPostList() : data is not null!!")
+                        mAdapter.setList(data)
+                        pageUp()
+                    } else {
+                        Log.d(Constants.TAG, "HomeFragment - getPostList() : data is null!!")
+                    }
+                }
+                else -> {
+                    Log.d(Constants.TAG, "HomeFragment - getPostList() : 통신 실패")
+                }
+            }
+        }
     }
 
     private fun getCategory(checkedId: Int): String? {
@@ -51,51 +111,5 @@ class SearchActivity : AppCompatActivity() {
             R.id.chip7 -> "기타"
             else -> null
         }
-    }
-
-    fun search(view: View) {
-        val keyword = mBinding.searchInput.text.toString()
-        requestSearch(pageNum, keyword, category)
-    }
-
-    private fun requestSearch(pageNum: Int, keyword: String?, category: String?) {
-
-        RetrofitManager.instance.requestSearchPostList(pageNum, keyword, category) { code, data ->
-            when (code) {
-                0 -> {
-                    if (data != null) {
-                        Log.d(Constants.TAG, "HomeFragment - getPostList() : data is not null!!")
-                        mAdapter.setList(data)
-                    } else {
-                        Log.d(Constants.TAG, "HomeFragment - getPostList() : data is null!!")
-                    }
-                }
-                else -> {
-                    Log.d(Constants.TAG, "HomeFragment - getPostList() : 통신 실패")
-                }
-            }
-        }
-        val toolbar = findViewById(R.id.searchtoolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        val ab = supportActionBar!!
-        ab.setDisplayShowTitleEnabled(false)
-        ab.setDisplayHomeAsUpEnabled(true)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        when (id) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    /*
-    fun goToFilter(view: View) {
-        val intent = Intent(applicationContext, FilterActivity::class.java)
-        startActivity(intent)
     }
 }

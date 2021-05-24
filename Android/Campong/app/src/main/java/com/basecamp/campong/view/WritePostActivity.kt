@@ -184,7 +184,7 @@ class WritePostActivity : AppCompatActivity() {
 
     private fun checkNoBlank(): Boolean {
         val msg = "필수 항목입니다."
-        var result: Boolean = true
+        var result = true
 
         if (image_id == null) {
             Toast.makeText(this, "이미지를 선택해주세요.(필수)", Toast.LENGTH_SHORT).show()
@@ -230,6 +230,7 @@ class WritePostActivity : AppCompatActivity() {
                             Toast.makeText(this, "장비 등록 완료!", Toast.LENGTH_SHORT).show()
                             val intent = Intent(applicationContext, ShowPostActivity::class.java)
                             intent.putExtra(Keyword.POST_ID, id)
+                            setResult(RESULT_OK)
                             startActivity(intent)
                             finish()
                         } else {
