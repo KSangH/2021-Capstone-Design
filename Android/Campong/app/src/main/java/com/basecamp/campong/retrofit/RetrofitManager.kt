@@ -524,13 +524,13 @@ class RetrofitManager {
     // 게시물 수정
     // postid, catename, title, contents, fee, lat, lon, location, imageid
     fun requestUpdatePost() {
-
+        // TODO
     }
 
     // 게시물 삭제
     // postid
     fun requestDeletePost() {
-
+        // TODO
     }
 
     /* 예약/대여/반납 */
