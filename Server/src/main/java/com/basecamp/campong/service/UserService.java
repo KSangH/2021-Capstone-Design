@@ -91,6 +91,11 @@ public class UserService {
         cookie.setMaxAge(Config.COOKIE_MAXAGE);
         res.addCookie(cookie);
 
+        User checkUser = userRepository.findBySession(session.getId());
+        if(checkUser != null){
+            checkUser.setSession(null);
+        }
+
         //해당 user table에 세션 id 저장
         user.setSession(session.getId());
 
