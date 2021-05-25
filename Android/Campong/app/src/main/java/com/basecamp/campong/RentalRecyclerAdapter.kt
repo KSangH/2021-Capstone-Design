@@ -4,7 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.basecamp.campong.databinding.*
+import com.basecamp.campong.databinding.RvItemType00Binding
+import com.basecamp.campong.databinding.RvItemType01Binding
+import com.basecamp.campong.databinding.RvItemType03Binding
+import com.basecamp.campong.databinding.RvItemTypeBaseBinding
 import com.basecamp.campong.model.ReserveItem
 import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.RentalState.RENTAL_STATE_CANCEL
@@ -97,6 +100,10 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun removeAll() {
+        this.reservationList.clear()
+    }
+
     // 승인 대기
     inner class Item01Holder(val binding: RvItemType01Binding) :
         RecyclerView.ViewHolder(binding.root),
@@ -124,23 +131,6 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             if (v != null) {
                 clickListener.onBaseItemClicked(v)
             }
-        }
-    }
-
-    inner class Item02Holder(val binding: RvItemType02Binding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(item: ReserveItem) {
-            binding.apply {
-                reserveItem = item
-            }
-
-            val url = "${API.BASE_URL}/image/${item.imageid}"
-
-            Glide.with(itemView)
-                .load(url)
-                .centerCrop()
-                .into(binding.imageView)
         }
     }
 

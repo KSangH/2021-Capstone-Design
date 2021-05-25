@@ -6,14 +6,18 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.basecamp.campong.databinding.ActivityShowPostBinding
+import com.basecamp.campong.model.Post
 import com.basecamp.campong.retrofit.RetrofitManager
+import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
+import com.bumptech.glide.Glide
 
 class ShowPostActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityShowPostBinding
     private var postid: Long? = null
+    private var post: Post? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +51,14 @@ class ShowPostActivity : AppCompatActivity() {
                         }
                     }
                     if (post != null) {
+                        this.post = post
+                        val url = "${API.BASE_URL}/image/${post.imageid}"
+
+                        Glide.with(this)
+                            .load(url)
+                            .centerCrop()
+                            .into(mBinding.imageView)
+
                         mBinding.apply {
                             postItem = post
                         }
@@ -67,7 +79,13 @@ class ShowPostActivity : AppCompatActivity() {
         RetrofitManager.instance.requestReserveInit(postid!!) {
             when (it) {
                 0 -> {
-                    startActivity(intent)
+                    if (post != null) {
+                        intent.putExtra(Keyword.TITLE, post!!.title)
+                        intent.putExtra(Keyword.LOCATION, post!!.location)
+                        intent.putExtra(Keyword.FEE, post!!.fee)
+                        intent.putExtra(Keyword.IMAGE_ID, post!!.imageid)
+                        startActivity(intent)
+                    }
                 }
                 else -> {
                     Toast.makeText(this, "오류가 발생하였습니다.", Toast.LENGTH_SHORT).show()

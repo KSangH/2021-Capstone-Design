@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.basecamp.campong">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,12 +16,16 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".view.AcceptActivity" />
+        <activity android:name=".view.EditPostActivity" />
         <activity android:name=".view.EditProfileActivity" />
         <activity android:name=".view.FilterActivity" />
         <activity android:name=".view.LendActivity" />
         <activity android:name=".view.QrViewActivity" />
         <activity android:name=".view.ReqReserveActivity" />
-        <activity android:name=".view.ScanQrActivity" />
+        <activity
+            android:name=".view.ScanQrActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
         <activity android:name=".view.SearchActivity" />
         <activity android:name=".view.ShowPostActivity" />
         <activity

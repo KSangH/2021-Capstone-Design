@@ -7,10 +7,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.os.PersistableBundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -19,35 +17,19 @@ import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityWritePostBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
-import com.basecamp.campong.utils.Keyword
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class WritePostActivity : AppCompatActivity() {
-
+class EditPostActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityWritePostBinding
     private var image_id: Long? = null
     private var category: String? = null
 
-    private val mTextWatcher: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onCreate(savedInstanceState, persistentState)
 
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-
-        }
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         mBinding = ActivityWritePostBinding.inflate(layoutInflater)
 
         initAddPhotoButton()
@@ -61,6 +43,7 @@ class WritePostActivity : AppCompatActivity() {
         setContentView(mBinding.root)
     }
 
+    // 갤러리 권한 요청, 갤러리 열기
     private fun initAddPhotoButton() {
         mBinding.selectImageButton.setOnClickListener {
             when {
@@ -182,6 +165,7 @@ class WritePostActivity : AppCompatActivity() {
         }
     }
 
+    // 빈칸이 없는지 확인
     private fun checkNoBlank(): Boolean {
         val msg = "필수 항목입니다."
         var result = true
@@ -214,37 +198,6 @@ class WritePostActivity : AppCompatActivity() {
         return result
     }
 
-    fun uploadPost(view: View) {
-        if (checkNoBlank()) {
-            RetrofitManager.instance.requestUploadPost(
-                category!!,
-                mBinding.titleEditText.text.toString(),
-                mBinding.contentEditText.text.toString(),
-                mBinding.feeEditText.text.toString(),
-                "37.541", "126.986", "종로구 종로2가", // TODO
-                image_id
-            ) { code, id ->
-                when (code) {
-                    0 -> {
-                        if (id != null) { // post id가 null이 아니면
-                            Toast.makeText(this, "장비 등록 완료!", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(applicationContext, ShowPostActivity::class.java)
-                            intent.putExtra(Keyword.POST_ID, id)
-                            setResult(RESULT_OK)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Log.d(
-                                Constants.TAG,
-                                "WritePostActivity : uploadPost() - Result : post id is null"
-                            )
-                        }
-                    }
-                    else -> {
-                        Toast.makeText(this, "게시물 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-    }
+    // 게시물 수정하기
+
 }

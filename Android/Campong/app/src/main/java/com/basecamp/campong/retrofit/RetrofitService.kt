@@ -90,12 +90,14 @@ interface RetrofitService {
     // 게시물 수정
     @Headers("content-type: application/json")
     @POST(API.POST_UPDATE)
-    fun requestUpdatePost()
+    fun requestUpdatePost(        // TODO
+    ): Call<ResultUploadPost>
 
     // 게시물 삭제
     @Headers("content-type: application/json")
     @POST(API.POST_DELETE)
-    fun requestDeletePost(): Call<ResultBase>
+    fun requestDeletePost(        // TODO
+    ): Call<ResultBase>
 
     /* 예약/대여/반납 */
     // 예약하기 화면 조회

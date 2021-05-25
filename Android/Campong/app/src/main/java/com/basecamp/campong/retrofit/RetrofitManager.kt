@@ -457,7 +457,7 @@ class RetrofitManager {
                     200 -> {
                         Log.d(TAG, response.raw().toString())
                         if (response.body()?.error == false) { // 성공
-                            completion(0, response.body()!!.postid)
+                            completion(0, response.body()!!.postid) // 성공시 업로드한 게시물을 확인하기 위한 postid
                         } else {
                             if (response.body()?.errCode == 1007) {
                                 completion(1, null)
@@ -524,13 +524,13 @@ class RetrofitManager {
     // 게시물 수정
     // postid, catename, title, contents, fee, lat, lon, location, imageid
     fun requestUpdatePost() {
-
+        // TODO
     }
 
     // 게시물 삭제
     // postid
     fun requestDeletePost() {
-
+        // TODO
     }
 
     /* 예약/대여/반납 */

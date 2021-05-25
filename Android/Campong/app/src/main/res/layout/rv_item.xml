@@ -86,8 +86,20 @@
                 android:id="@+id/costTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
                 android:text="@{postItem.fee}"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBaseline_toBaselineOf="@id/uploadDateTextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/costElse" />
+
+            <TextView
+                android:id="@+id/costElse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:text="원(/일)"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"

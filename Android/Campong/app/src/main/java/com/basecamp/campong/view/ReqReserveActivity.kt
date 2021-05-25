@@ -9,8 +9,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.basecamp.campong.databinding.ActivityReqReserveBinding
 import com.basecamp.campong.retrofit.RetrofitManager
+import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
+import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
@@ -30,9 +32,24 @@ class ReqReserveActivity : AppCompatActivity() {
 
         postid = intent.getLongExtra(Keyword.POST_ID, -1)
 
+
+        buildUI()
         setUpDefaultDate()
 
         setContentView(mBinding.root)
+    }
+
+    private fun buildUI() {
+        val url = "${API.BASE_URL}/image/${intent.getLongExtra(Keyword.IMAGE_ID, -1)}"
+
+        Glide.with(this)
+            .load(url)
+            .centerCrop()
+            .into(mBinding.imageView)
+
+        mBinding.title.text = intent.getStringExtra(Keyword.TITLE)
+        mBinding.town.text = intent.getStringExtra(Keyword.LOCATION)
+        mBinding.price.text = intent.getStringExtra(Keyword.FEE)
     }
 
     // 날짜 기본값 설정
