@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong"
         android:usesCleartextTraffic="true">
-        <meta-data android:name="com.naver.maps.map.CLIENT_ID" />
 
         <activity android:name=".view.AcceptActivity" />
         <activity android:name=".view.EditPostActivity" />
