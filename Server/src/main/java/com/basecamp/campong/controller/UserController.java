@@ -132,4 +132,23 @@ public class UserController {
             return result.setError(1007, "잠시 후 다시 시도해주세요.");
         }
     }
+
+    //마이페이지
+    @PostMapping(value="/mypage")
+    public JsonMap mypage(@CookieValue(value = Config.COOKIE_SESSIONID, required = false) Cookie cookie,
+                          HttpSession session, HttpServletResponse res){
+        JsonMap result = new JsonMap();
+        try {
+            // 사용자 인증
+            long id = userService.auth(session, cookie, res);
+            if (id < 0) {
+                return result.setAuthFailed();
+            }
+
+            return userService.mypage(id);
+
+        } catch (UnexpectedRollbackException e) {
+            return result.setError(4001, "잠시 후 다시 시도해주세요.");
+        }
+    }
 }

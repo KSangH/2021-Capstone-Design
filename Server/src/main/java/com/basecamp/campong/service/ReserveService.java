@@ -73,10 +73,10 @@ public class ReserveService {
 
         int requeststate = body.getRequeststate();
         List<ReserveView> reservelist =
-                reserveReadRepository.findAllByLenduseridAndStateBetweenOrderByReserveidDesc(userid, requeststate, requeststate != 1 ? requeststate : requeststate + 1, PageRequest.of(body.getPagenum(), 10)).getContent();
+                reserveReadRepository.findAllByBorrowuseridAndStateBetweenOrderByReserveidDesc(userid, requeststate, requeststate != 1 ? requeststate : requeststate + 1, PageRequest.of(body.getPagenum(), 10)).getContent();
 
         for(int i=1; i<=5; i++){
-            result.put("num"+i, reserveReadRepository.countAllByLenduseridAndState(userid, i));
+            result.put("num"+i, reserveReadRepository.countAllByBorrowuseridAndState(userid, i));
         }
         result.put("data", reservelist);
 
@@ -90,9 +90,9 @@ public class ReserveService {
 
         int requeststate = body.getRequeststate();
         List<ReserveView> reservelist =
-                reserveReadRepository.findAllByBorrowuseridAndStateBetweenOrderByReserveidDesc(userid, requeststate, requeststate != 1 ? requeststate : requeststate + 1, PageRequest.of(body.getPagenum(), 10)).getContent();
+                reserveReadRepository.findAllByLenduseridAndStateBetweenOrderByReserveidDesc(userid, requeststate, requeststate != 1 ? requeststate : requeststate + 1, PageRequest.of(body.getPagenum(), 10)).getContent();
         for(int i=1; i<=5; i++){
-            result.put("num"+i, reserveReadRepository.countAllByBorrowuseridAndState(userid, i));
+            result.put("num"+i, reserveReadRepository.countAllByLenduseridAndState(userid, i));
         }
         result.put("data", reservelist);
 

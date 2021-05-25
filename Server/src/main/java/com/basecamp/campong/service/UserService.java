@@ -5,6 +5,7 @@ import com.basecamp.campong.config.Config;
 import com.basecamp.campong.domain.Image;
 import com.basecamp.campong.domain.User;
 import com.basecamp.campong.repository.ImageRepository;
+import com.basecamp.campong.repository.ReserveReadRepository;
 import com.basecamp.campong.repository.UserRepository;
 import com.basecamp.campong.util.JsonMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class UserService {
 
     @Autowired
     ImageRepository imageRepository;
+
+    @Autowired
+    ReserveReadRepository reserveReadRepository;
 
     // 회원 가입 서비스
     public boolean signup(User userBody) {
@@ -184,5 +188,30 @@ public class UserService {
         res.addCookie(cookie);
         System.out.println("USER-AUTH# SESSION CHANGE END");
         return user.getUserid();
+    }
+
+    //마이페이지 호출
+    public JsonMap mypage(long userID) {
+        System.out.println("mypage# START");
+        JsonMap result = new JsonMap();
+
+        //usernick과 이미지 설정
+        User user = userRepository.findByUserid(userID);
+        if (user == null) {
+            System.out.println("USER-USERINFO# ERROR-NO USER");
+            return result.setError(1009, "유저 정보가 없습니다.");
+        }
+        result.put("usernick", user.getUsernick());
+        Image image = user.getProfile();
+        result.put("imageid", image == null ? null : image.getImageid());
+
+        //빌려준 장비 갯수
+        for(int i=1; i<=5; i++){
+            result.put("num"+i, reserveReadRepository.countAllByLenduseridAndState(userID, i));
+        }
+
+
+        System.out.println("mypage# END");
+        return result;
     }
 }
