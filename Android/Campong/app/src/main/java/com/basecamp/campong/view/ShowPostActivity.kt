@@ -3,8 +3,12 @@ package com.basecamp.campong.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityShowPostBinding
 import com.basecamp.campong.model.Post
 import com.basecamp.campong.retrofit.RetrofitManager
@@ -30,7 +34,38 @@ class ShowPostActivity : AppCompatActivity() {
             getPost(postid!!)
         }
 
+        val toolbar = findViewById(R.id.posttoolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar!!
+        ab.setDisplayShowTitleEnabled(false)
+        ab.setDisplayHomeAsUpEnabled(true)
+
         setContentView(mBinding.root)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(
+            R.menu.s_m_p_toolbar_menu,
+            menu
+        )       // main_menu 메뉴를 toolbar 메뉴 버튼으로 설정
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+        when (id) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            R.id.modify -> {
+
+            }
+            R.id.delete -> {
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun getPost(postid: Long) {
