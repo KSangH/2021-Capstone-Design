@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong"
         android:usesCleartextTraffic="true">
+        <meta-data android:name="com.naver.maps.map.CLIENT_ID" />
 
         <activity android:name=".view.AcceptActivity" />
         <activity android:name=".view.EditPostActivity" />
@@ -28,6 +29,7 @@
             tools:replace="screenOrientation" />
         <activity android:name=".view.SearchActivity" />
         <activity android:name=".view.ShowPostActivity" />
+        <activity android:name=".view.MapActivity" />
         <activity
             android:name=".view.WritePostActivity"
             android:windowSoftInputMode="adjustResize" />
