@@ -47,7 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:paddingHorizontal="50dp"
-            android:src="@drawable/qrimg"
             android:layout_below="@id/qrtoolbar"
             />
         <RelativeLayout
