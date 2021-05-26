@@ -16,7 +16,7 @@ import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.view.EditProfileActivity
 import com.basecamp.campong.view.LendActivity
 import com.basecamp.campong.view.LoginActivity
-import com.basecamp.campong.view.MapActivity
+import com.basecamp.campong.view.SetMapActivity
 import com.bumptech.glide.Glide
 
 class MypageFragment : Fragment(), View.OnClickListener {
@@ -64,7 +64,7 @@ class MypageFragment : Fragment(), View.OnClickListener {
             }
             R.id.logoutButton -> {
                 // logout(v)
-                val intent = Intent(context, MapActivity::class.java)
+                val intent = Intent(context, SetMapActivity::class.java)
                 startActivity(intent)
             }
             R.id.goToLendListButton -> {

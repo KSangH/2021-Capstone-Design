@@ -872,4 +872,92 @@ class RetrofitManager {
 
         })
     }
+
+    fun requestReverseGeocoding(
+        lat: Double,
+        lon: Double,
+        completion: (Int, String?, String?, String?) -> Unit
+    ) {
+        val coords = "$lon,$lat"
+        val call = service?.requestReverseGeocoding(coords) ?: return
+
+        call.enqueue(object : Callback<ResultReverseGeocoding> {
+            override fun onResponse(
+                call: Call<ResultReverseGeocoding>,
+                response: Response<ResultReverseGeocoding>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body() != null) {
+
+                            var addr: String? = null
+                            var roadaddr: String? = null
+                            var baseaddr: String? = null
+
+                            for (item in response.body()!!.results) {
+                                when (item.name) {
+                                    "addr" -> { // 지번주소
+                                        if (item.region.area1.name != "") {
+                                            addr = item.region.area1.name
+                                        }
+                                        if (item.region.area2.name != "") {
+                                            addr += " ${item.region.area2.name}"
+                                        }
+                                        if (item.region.area3.name != "") {
+                                            addr += " ${item.region.area3.name}"
+                                        }
+                                        if (item.region.area4.name != "") {
+                                            addr += " ${item.region.area4.name}"
+                                        }
+
+                                        baseaddr = addr
+
+                                        if (item.land.number1 != "") {
+                                            addr += " ${item.land.number1}"
+                                        }
+                                        if (item.land.number2 != "") {
+                                            addr += "-${item.land.number2}"
+                                        }
+                                    }
+                                    "roadaddr" -> { // 도로명 주소
+                                        if (item.region.area1.name != "") {
+                                            roadaddr = item.region.area1.name
+                                        }
+                                        if (item.region.area2.name != "") {
+                                            roadaddr += " ${item.region.area2.name}"
+                                        }
+                                        if (item.region.area3.name != "") {
+                                            roadaddr += " ${item.region.area3.name}"
+                                        }
+                                        if (item.region.area4.name != "") {
+                                            roadaddr += " ${item.region.area4.name}"
+                                        }
+
+                                        if (item.land.name != "") {
+                                            roadaddr += " ${item.land.name}"
+                                        }
+                                        if (item.land.number1 != "") {
+                                            roadaddr += " ${item.land.number1}"
+                                        }
+                                    }
+                                }
+                            }
+                            completion(0, baseaddr, addr, roadaddr)
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null, null, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultReverseGeocoding>, t: Throwable) {
+                completion(-1, null, null, null)
+            }
+
+        })
+
+    }
 }

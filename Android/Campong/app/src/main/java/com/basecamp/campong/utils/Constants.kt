@@ -156,3 +156,11 @@ object RequestCode {
     const val WRITE_POST = 100
     const val ACCEPT_REQUEST = 300
 }
+
+object Map {
+    const val BASE_URL: String = "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc"
+
+    const val KEY_ID: String = "X-NCP-APIGW-API-KEY-ID"
+
+    const val KEY: String = "X-NCP-APIGW-API-KEY"
+}

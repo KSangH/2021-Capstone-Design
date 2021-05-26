@@ -1,7 +1,9 @@
 package com.basecamp.campong.retrofit
 
+import com.basecamp.campong.BuildConfig
 import com.basecamp.campong.model.*
 import com.basecamp.campong.utils.API
+import com.basecamp.campong.utils.Map
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -162,4 +164,15 @@ interface RetrofitService {
     fun requestStateCancel(
         @Body body: ReqReserveState
     ): Call<ResultBase>
+
+    @Headers(
+        "${Map.KEY_ID}: ${BuildConfig.MAP_KEY_ID}",
+        "${Map.KEY}: ${BuildConfig.MAP_KEY}"
+    )
+    @GET(Map.BASE_URL)
+    fun requestReverseGeocoding(
+        @Query("coords", encoded = true) coords: String,
+        @Query("orders", encoded = true) orders: String = "addr,roadaddr",
+        @Query("output") output: String = "json"
+    ): Call<ResultReverseGeocoding>
 }
