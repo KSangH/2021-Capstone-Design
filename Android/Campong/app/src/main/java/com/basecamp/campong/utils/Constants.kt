@@ -149,6 +149,7 @@ object Preference {
     // Preference Key 값
     const val SHARED_PREFERENCE_NAME_COOKIE = "cookies"
 
+    const val SHARED_PREFERENCE_NAME_LOCATION = "location"
 }
 
 object RentalState {

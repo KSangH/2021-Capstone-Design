@@ -15,7 +15,9 @@ import com.basecamp.campong.SearchLocationActivity
 import com.basecamp.campong.databinding.FragmentHomeBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
+import com.basecamp.campong.utils.Preference
 import com.basecamp.campong.utils.RequestCode
+import com.basecamp.campong.utils.SharedPreferenceManager
 import com.basecamp.campong.view.ScanQrActivity
 import com.basecamp.campong.view.SearchActivity
 import com.basecamp.campong.view.WritePostActivity
@@ -52,6 +54,17 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.scannerButton.setOnClickListener(this)
         binding.searchButton.setOnClickListener(this)
         binding.locationButton.setOnClickListener(this)
+        binding.locationButton.setOnClickListener(this)
+
+        // Preference에서 쿠키 가져오기
+        val myLocation: String =
+            SharedPreferenceManager.instance.getString(
+                Preference.SHARED_PREFERENCE_NAME_LOCATION, ""
+            ) as String
+
+        if (myLocation != "") {
+            binding.locationButton.text = myLocation
+        }
 
         return mBinding?.root
     }
@@ -59,11 +72,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onDestroyView() {
         mBinding = null
         super.onDestroyView()
-    }
-
-    private fun goToSearchLocation(view: View) {
-        val intent = Intent(context, SearchLocationActivity::class.java)
-        startActivity(intent)
     }
 
     override fun onClick(v: View) {
@@ -77,8 +85,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
             R.id.searchButton -> {
                 goToSearch(v)
             }
-            R.id.locationButton ->{
-                goToSearchLocation(v)
+            R.id.locationButton -> {
+                goToSetMyLocation(v)
             }
         }
     }
@@ -98,6 +106,12 @@ class HomeFragment : Fragment(), View.OnClickListener {
     /* 검색 화면으로 이동 */
     private fun goToSearch(view: View) {
         val intent = Intent(context, SearchActivity::class.java)
+        startActivity(intent)
+    }
+
+    /* 나의 위치 설정 화면으로 이동 */
+    private fun goToSetMyLocation(view: View) {
+        val intent = Intent(context, SearchLocationActivity::class.java)
         startActivity(intent)
     }
 
