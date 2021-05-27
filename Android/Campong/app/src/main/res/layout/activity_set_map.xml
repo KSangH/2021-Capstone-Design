@@ -53,6 +53,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/button_main_color"
         android:text="이 위치로 설정"
+        android:onClick="setLocationButtonClicked"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"

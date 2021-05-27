@@ -155,6 +155,8 @@ object RentalState {
 object RequestCode {
     const val WRITE_POST = 100
     const val ACCEPT_REQUEST = 300
+    const val PICK_PHOTO = 400
+    const val SELECT_LOCATION = 500
 }
 
 object Map {

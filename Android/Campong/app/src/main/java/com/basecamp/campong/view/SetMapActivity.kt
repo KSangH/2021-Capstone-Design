@@ -1,9 +1,11 @@
 package com.basecamp.campong.view
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -21,6 +23,9 @@ class SetMapActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mBinding: ActivitySetMapBinding
     private lateinit var locationSource: FusedLocationSource
     private lateinit var naverMap: NaverMap
+    private var lat: Double? = null
+    private var lon: Double? = null
+    private var baseAddr: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +43,7 @@ class SetMapActivity : AppCompatActivity(), OnMapReadyCallback {
         var mapFragment: MapFragment? = fm.findFragmentById(R.id.setMapFragment) as MapFragment
         if (mapFragment == null) {
             mapFragment = MapFragment.newInstance()
-            fm.beginTransaction().add(R.id.map, mapFragment).commit()
+            fm.beginTransaction().add(R.id.setMapFragment, mapFragment).commit()
         }
         mapFragment!!.getMapAsync(this)
     }
@@ -54,19 +59,21 @@ class SetMapActivity : AppCompatActivity(), OnMapReadyCallback {
             val cameraPosition = naverMap.cameraPosition
 
             // 현재 카메라 위치의 위도, 경도 받아오기
-            val lat = cameraPosition.target.latitude
-            val lon = cameraPosition.target.longitude
+            lat = cameraPosition.target.latitude
+            lon = cameraPosition.target.longitude
 
-            getAddress(lat, lon)
+            getAddress(lat!!, lon!!)
             setEnableButton()
         }
     }
 
+    // 카메라 이동 중 버튼 비활성화
     private fun setDisableToUI() {
         mBinding.locationLabel.text = "위치 이동중"
         mBinding.setMapButton.isEnabled = false
     }
 
+    // 카메라 이동 후 버튼 재활성화
     private fun setEnableButton() {
         mBinding.setMapButton.isEnabled = true
     }
@@ -79,6 +86,7 @@ class SetMapActivity : AppCompatActivity(), OnMapReadyCallback {
             when (code) {
                 0 -> {
                     mBinding.locationLabel.text = "$addr, $roadaddr"
+                    baseAddr = baseaddr
                 }
                 else -> {
                     Toast.makeText(
@@ -132,5 +140,14 @@ class SetMapActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun setLocationButtonClicked(view: View) {
+        val intent = Intent()
+        intent.putExtra("lat", lat)
+        intent.putExtra("lon", lon)
+        intent.putExtra("baseAddr", baseAddr)
+        setResult(RESULT_OK, intent)
+        finish()
     }
 }

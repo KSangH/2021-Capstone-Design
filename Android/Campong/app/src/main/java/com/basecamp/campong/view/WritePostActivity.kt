@@ -15,21 +15,34 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityWritePostBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
+import com.basecamp.campong.utils.RequestCode.PICK_PHOTO
+import com.basecamp.campong.utils.RequestCode.SELECT_LOCATION
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class WritePostActivity : AppCompatActivity() {
+
+class WritePostActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mBinding: ActivityWritePostBinding
+    private lateinit var naverMap: NaverMap
     private var image_id: Long? = null
     private var category: String? = null
+    private var baseAddress: String? = null
+    private var marker: Marker? = null
 
     private val mTextWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -59,6 +72,15 @@ class WritePostActivity : AppCompatActivity() {
         }
 
         setContentView(mBinding.root)
+
+        // 지도 객체 가져오기
+        val fm: FragmentManager = supportFragmentManager
+        var mapFragment: MapFragment? = fm.findFragmentById(R.id.smallMap) as MapFragment
+        if (mapFragment == null) {
+            mapFragment = MapFragment.newInstance()
+            fm.beginTransaction().add(R.id.smallMap, mapFragment).commit()
+        }
+        mapFragment!!.getMapAsync(this)
     }
 
     private fun initAddPhotoButton() {
@@ -98,37 +120,68 @@ class WritePostActivity : AppCompatActivity() {
     private fun navigatePhotos() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, 2000)
+        startActivityForResult(intent, PICK_PHOTO)
     }
 
-    // 이미지 선택 후
+    fun selectMapLocation(view: View) {
+        val intent = Intent(applicationContext, SetMapActivity::class.java)
+        startActivityForResult(intent, SELECT_LOCATION)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode != Activity.RESULT_OK) return
 
         when (requestCode) {
-            2000 -> {
-                val selectedImageUri: Uri? = data?.data
-                if (selectedImageUri != null) {
+            PICK_PHOTO -> { // 이미지 선택 후
+                if (resultCode == RESULT_OK) {
+                    val selectedImageUri: Uri? = data?.data
+                    if (selectedImageUri != null) {
 
-                    try {
-                        val inputStream = contentResolver.openInputStream(data.data!!)
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-                        uploadImage(bitmap)
-                        mBinding.selectImageButton.setImageURI(selectedImageUri)
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
+                        try {
+                            val inputStream = contentResolver.openInputStream(data.data!!)
+                            val bitmap = BitmapFactory.decodeStream(inputStream)
+                            uploadImage(bitmap)
+                            mBinding.selectImageButton.setImageURI(selectedImageUri)
+                        } catch (e: FileNotFoundException) {
+                            e.printStackTrace()
+                        }
+
+                    } else {
+                        Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                     }
-
                 } else {
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
+
             }
-            else -> {
-                Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+            SELECT_LOCATION -> { // 위치 선택 후
+                if (requestCode == SELECT_LOCATION) {
+                    if (resultCode == RESULT_OK) {
+                        val lat = data?.getDoubleExtra("lat", -1.0)
+                        val lon = data?.getDoubleExtra("lon", -1.0)
+                        baseAddress = data?.getStringExtra("baseAddress")
+
+                        if (lat != null && lon != null) {
+                            Log.d(Constants.TAG, "lat : $lat, lon: $lon")
+                            setLocationToUI(lat, lon)
+                        }
+                    }
+                }
             }
         }
+    }
+
+    private fun setLocationToUI(lat: Double, lon: Double) {
+        if (marker == null) {
+            marker = Marker()
+        }
+        marker!!.position = LatLng(lat, lon)
+        marker!!.map = naverMap
+
+        val cameraUpdate = CameraUpdate.scrollTo(LatLng(lat, lon))
+        naverMap.moveCamera(cameraUpdate)
     }
 
     private fun getImageFile(bitmap: Bitmap, name: String): File {
@@ -203,8 +256,8 @@ class WritePostActivity : AppCompatActivity() {
             mBinding.contentTextInput.error = msg
             result = false
         }
-        if (mBinding.locationEditText.text.isNullOrBlank()) {
-            mBinding.locationTextInput.error = msg
+        if (baseAddress.isNullOrBlank()) {
+            Toast.makeText(this, "거래 위치를 선택해주세요.(필수)", Toast.LENGTH_SHORT).show()
             result = false
         }
         if (mBinding.feeEditText.text.isNullOrBlank()) {
@@ -213,6 +266,7 @@ class WritePostActivity : AppCompatActivity() {
         }
         return result
     }
+
 
     fun uploadPost(view: View) {
         if (checkNoBlank()) {
@@ -246,5 +300,9 @@ class WritePostActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onMapReady(naverMap: NaverMap) {
+        this.naverMap = naverMap
     }
 }

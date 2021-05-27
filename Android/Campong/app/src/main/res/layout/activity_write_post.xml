@@ -218,31 +218,12 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/locationTextInput"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="5dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/locationEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="거래할 위치를 입력하세요"
-                    android:padding="10dp"
-                    android:textColorHint="@color/black"
-                    android:textSize="15sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/feeTextInput"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp">
+                android:layout_marginTop="5dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/feeEditText"
@@ -255,6 +236,27 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <Button
+                android:id="@+id/setMapLocationButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:onClick="selectMapLocation"
+                android:paddingVertical="10dp"
+                android:text="거래 위치 설정"
+                app:cornerRadius="20dp" />
+
+            <fragment
+                android:id="@+id/smallMap"
+                android:name="com.naver.maps.map.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp" />
 
         </LinearLayout>
 

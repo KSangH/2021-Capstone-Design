@@ -187,10 +187,10 @@ class EditPostActivity : AppCompatActivity() {
             mBinding.contentTextInput.error = msg
             result = false
         }
-        if (mBinding.locationEditText.text.isNullOrBlank()) {
-            mBinding.locationTextInput.error = msg
-            result = false
-        }
+//        if (mBinding.locationEditText.text.isNullOrBlank()) {
+//            mBinding.locationTextInput.error = msg
+//            result = false
+//        }
         if (mBinding.feeEditText.text.isNullOrBlank()) {
             mBinding.feeTextInput.error = msg
             result = false
