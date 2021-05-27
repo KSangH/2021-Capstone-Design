@@ -22,6 +22,7 @@ class LendStateFragment(val state: Int) : Fragment() {
 
     private var mBinding: FragmentRentalDetailBinding? = null
     private lateinit var mAdapter: LendRecyclerAdapter
+    private var pageNum: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,8 +57,16 @@ class LendStateFragment(val state: Int) : Fragment() {
         super.onDestroyView()
     }
 
+    private fun pageUp() {
+        pageNum++
+    }
+
+    private fun pageReset() {
+        pageNum = 0
+    }
+
     private fun setLendList(state: Int) {
-        RetrofitManager.instance.requestReserveMyList(state) { code, data ->
+        RetrofitManager.instance.requestReserveMyList(state, pageNum) { code, data ->
             when (code) {
                 0 -> {
                     if (data != null) {
@@ -66,6 +75,7 @@ class LendStateFragment(val state: Int) : Fragment() {
                             "LendStateFragment - setList() : data is not null!!"
                         )
                         mAdapter.setList(data)
+                        pageUp()
                     } else {
                         Log.d(Constants.TAG, "LendStateFragment - setList() : data is null!!")
                     }

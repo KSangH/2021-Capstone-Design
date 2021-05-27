@@ -611,10 +611,10 @@ class RetrofitManager {
 
     // 예약내역(빌려준장비)
     fun requestReserveMyList(
-        state: Int,
+        state: Int, pagenum: Int,
         completion: (Int, reservationList: List<ReserveItem>?) -> Unit
     ) {
-        val req = ReqReserveList(state)
+        val req = ReqReserveList(state, pagenum)
         val call = service?.requestReserveMyList(req) ?: return
 
         call.enqueue(object : Callback<ResultReserveList> {
@@ -652,10 +652,10 @@ class RetrofitManager {
 
     // 예약내역(빌린장비)
     fun requestReserveList(
-        state: Int,
+        state: Int, pagenum: Int,
         completion: (Int, reservationList: List<ReserveItem>?) -> Unit
     ) {
-        val req = ReqReserveList(state)
+        val req = ReqReserveList(state, pagenum)
         val call = service?.requestReserveList(req) ?: return
 
         call.enqueue(object : Callback<ResultReserveList> {

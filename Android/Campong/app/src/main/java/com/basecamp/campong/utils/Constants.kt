@@ -132,6 +132,10 @@ object Keyword {
     const val QR_TYPE_RENTAL = 1
 
     const val QR_TYPE_RETURN = 2
+
+    const val RESERVESTATE = "reservestate"
+
+    const val PAGE_NUM = "pagenum"
 }
 
 object Preference {

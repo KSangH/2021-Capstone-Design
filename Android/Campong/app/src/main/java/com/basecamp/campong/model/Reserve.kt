@@ -19,7 +19,10 @@ data class ReqReserveRequest(
 
 data class ReqReserveList(
     @SerializedName(Keyword.REQUEST_STATE)
-    val requeststate: Int
+    val requeststate: Int,
+
+    @SerializedName(Keyword.PAGE_NUM)
+    val pageNum: Int
 )
 
 // 예약내역 Response

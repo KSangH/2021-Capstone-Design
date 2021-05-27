@@ -52,7 +52,10 @@ data class Post(
     val lon: String,
 
     @SerializedName(Keyword.LAT)
-    val lat: String
+    val lat: String,
+
+    @SerializedName(Keyword.RESERVESTATE)
+    val reservestate: Int
 )
 
 data class ReqUploadPost(
