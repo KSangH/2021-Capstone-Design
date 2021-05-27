@@ -77,3 +77,35 @@ data class ResultUserInfo(
     @SerializedName(Keyword.ERROR_CODE)
     val errCode: Int
 )
+
+data class ResultMypage(
+    @SerializedName(Keyword.USERNICK)
+    val usernick: String,
+
+    @SerializedName(Keyword.IMAGE_ID)
+    val image_id: Long?,
+
+    @SerializedName("num1")
+    val num1: Int,
+
+    @SerializedName("num2")
+    val num2: Int,
+
+    @SerializedName("num3")
+    val num3: Int,
+
+    @SerializedName("num4")
+    val num4: Int,
+
+    @SerializedName("num5")
+    val num5: Int,
+
+    @SerializedName(Keyword.ERROR)
+    val error: Boolean,
+
+    @SerializedName(Keyword.ERROR_MESSAGE)
+    val errInfo: String,
+
+    @SerializedName(Keyword.ERROR_CODE)
+    val errCode: Int
+)

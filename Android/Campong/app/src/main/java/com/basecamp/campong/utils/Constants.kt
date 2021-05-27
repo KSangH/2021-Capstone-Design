@@ -29,6 +29,9 @@ object API {
     // 로그아웃
     const val USER_LOGOUT: String = "/user/logout"
 
+    // 마이페이지
+    const val MY_PAGE: String = "/user/mypage"
+
     /* 게시물 관리 */
     // 게시물 목록 조회
     const val POST_LIST: String = "/post/list"
@@ -161,6 +164,8 @@ object RequestCode {
     const val ACCEPT_REQUEST = 300
     const val PICK_PHOTO = 400
     const val SELECT_LOCATION = 500
+    const val GO_TO_EDIT_PROFILE = 600
+    const val GO_TO_LEND_LIST = 601
 }
 
 object Map {

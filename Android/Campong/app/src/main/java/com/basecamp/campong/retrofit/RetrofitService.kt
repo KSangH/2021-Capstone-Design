@@ -55,6 +55,10 @@ interface RetrofitService {
     @POST(API.USER_INFO)
     fun requestUserInfo(): Call<ResultUserInfo>
 
+    // 마이페이지
+    @POST(API.MY_PAGE)
+    fun requestMyPage(): Call<ResultMypage>
+
     /* 이미지 */
     // 이미지 업로드
     @Multipart
@@ -165,6 +169,8 @@ interface RetrofitService {
         @Body body: ReqReserveState
     ): Call<ResultBase>
 
+    /* 네이버 지도 API */
+    // 역지오코딩
     @Headers(
         "${Map.KEY_ID}: ${BuildConfig.MAP_KEY_ID}",
         "${Map.KEY}: ${BuildConfig.MAP_KEY}"

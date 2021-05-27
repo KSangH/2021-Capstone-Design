@@ -1,5 +1,6 @@
 package com.basecamp.campong.view.fragments
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,10 +14,11 @@ import com.basecamp.campong.databinding.FragmentMypageBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
+import com.basecamp.campong.utils.RequestCode.GO_TO_EDIT_PROFILE
+import com.basecamp.campong.utils.RequestCode.GO_TO_LEND_LIST
 import com.basecamp.campong.view.EditProfileActivity
 import com.basecamp.campong.view.LendActivity
 import com.basecamp.campong.view.LoginActivity
-import com.basecamp.campong.view.SetMapActivity
 import com.bumptech.glide.Glide
 
 class MypageFragment : Fragment(), View.OnClickListener {
@@ -33,7 +35,7 @@ class MypageFragment : Fragment(), View.OnClickListener {
 
         mBinding = binding
 
-        getUserInfo()
+        getMyPageInfo()
 
         binding.goToEditProfileButton.setOnClickListener(this)
         binding.logoutButton.setOnClickListener(this)
@@ -54,7 +56,13 @@ class MypageFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        getUserInfo()
+        if (resultCode != RESULT_OK) return
+
+        when (requestCode) {
+            GO_TO_EDIT_PROFILE, GO_TO_LEND_LIST -> {
+                getMyPageInfo()
+            }
+        }
     }
 
     override fun onClick(v: View) {
@@ -63,9 +71,7 @@ class MypageFragment : Fragment(), View.OnClickListener {
                 goToEditProfile(v)
             }
             R.id.logoutButton -> {
-                // logout(v)
-                val intent = Intent(context, SetMapActivity::class.java)
-                startActivity(intent)
+                logout(v)
             }
             R.id.goToLendListButton -> {
                 goToLendList(v)
@@ -76,7 +82,7 @@ class MypageFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun getUserInfo() {
+    private fun getUserInfo() {
         RetrofitManager.instance.requestUserInfo { code, usernick, imageid ->
             when (code) {
                 0 -> {
@@ -100,27 +106,56 @@ class MypageFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    fun logout(view: View) {
-        Log.d(Constants.TAG, "MypageFragment : logout()")
+    private fun getMyPageInfo() {
+        RetrofitManager.instance.requestMyPageInfo { code, usernick, imageid, list ->
+            when (code) {
+                0 -> {
+                    if (mBinding != null) {
+                        if (usernick != null) {
+                            mBinding!!.nicknameTextView.text = usernick
+                        }
+                        if (imageid != null) {
+                            image_id = imageid
 
-            RetrofitManager.instance.requestLogout(
-            ) {
-                when (it) {
-                    0 -> {
-                        Toast.makeText(context, "로그아웃", Toast.LENGTH_SHORT).show()
-                        val loginIntent = Intent(context, LoginActivity::class.java)
-                        startActivity(loginIntent)
-                    }
-                    else -> {
-                        Toast.makeText(context, "로그아웃에 실패하였습니다.", Toast.LENGTH_SHORT)
-                            .show()
+                            val url = "${API.BASE_URL}/image/$image_id"
+
+                            Glide.with(this)
+                                .load(url)
+                                .centerCrop()
+                                .into(mBinding!!.profile)
+                        }
+                        // 예약 상태 표기
+                        mBinding!!.state1.text = list?.get(0).toString()
+                        mBinding!!.state3.text = list?.get(1).toString()
+                        mBinding!!.state4.text = list?.get(2).toString()
+                        mBinding!!.state5.text = list?.get(3).toString()
                     }
                 }
             }
+        }
+    }
+
+    fun logout(view: View) {
+        Log.d(Constants.TAG, "MypageFragment : logout()")
+
+        RetrofitManager.instance.requestLogout(
+        ) {
+            when (it) {
+                0 -> {
+                    Toast.makeText(context, "로그아웃", Toast.LENGTH_SHORT).show()
+                    val loginIntent = Intent(context, LoginActivity::class.java)
+                    startActivity(loginIntent)
+                }
+                else -> {
+                    Toast.makeText(context, "로그아웃에 실패하였습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
     }
 
     private fun goToLendList(view: View) {
         val intent = Intent(context, LendActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, GO_TO_LEND_LIST)
     }
 }

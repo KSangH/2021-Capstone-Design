@@ -297,6 +297,55 @@ class RetrofitManager {
         )
     }
 
+    // 마이페이지
+    fun requestMyPageInfo(completion: (Int, String?, Long?, List<Int>?) -> Unit) {
+        val call = service?.requestMyPage() ?: return
+
+        call.enqueue(object : Callback<ResultMypage> {
+            override fun onResponse(
+                call: Call<ResultMypage>,
+                response: Response<ResultMypage>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            val item = response.body()!!
+
+                            val usernick = item.usernick
+                            val imageid = item.image_id
+
+                            val list: List<Int> = listOf(
+                                item.num1,
+                                item.num2,
+                                item.num3,
+                                item.num4,
+                                item.num5
+                            )
+                            completion(0, usernick, imageid, list)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null, null, null)
+                            } else {
+                                completion(2, null, null, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null, null, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultMypage>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null, null, null)
+            }
+
+        })
+    }
+
     // 이미지 업로드
     fun requestUploadImage(file: File, completion: (Int, image_id: Long?) -> Unit) {
 
