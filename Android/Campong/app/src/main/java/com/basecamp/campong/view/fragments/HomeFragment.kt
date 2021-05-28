@@ -1,6 +1,6 @@
 package com.basecamp.campong.view.fragments
 
-import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -16,7 +16,8 @@ import com.basecamp.campong.databinding.FragmentHomeBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Preference
-import com.basecamp.campong.utils.RequestCode
+import com.basecamp.campong.utils.RequestCode.SELECT_MY_LOCATION
+import com.basecamp.campong.utils.RequestCode.WRITE_POST
 import com.basecamp.campong.utils.SharedPreferenceManager
 import com.basecamp.campong.view.ScanQrActivity
 import com.basecamp.campong.view.SearchActivity
@@ -27,7 +28,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     private var mBinding: FragmentHomeBinding? = null
     private lateinit var mAdapter: RecyclerAdapter
-    private var location: String? = null
     private var pageNum: Int = 0
 
     override fun onCreateView(
@@ -55,16 +55,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.searchButton.setOnClickListener(this)
         binding.locationButton.setOnClickListener(this)
         binding.locationButton.setOnClickListener(this)
-
-        // Preference에서 쿠키 가져오기
-        val myLocation: String =
-            SharedPreferenceManager.instance.getString(
-                Preference.SHARED_PREFERENCE_NAME_LOCATION, ""
-            ) as String
-
-        if (myLocation != "") {
-            binding.locationButton.text = myLocation
-        }
 
         return mBinding?.root
     }
@@ -100,7 +90,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     /* 게시물 등록 화면으로 이동 */
     private fun goToWritePost(view: View) {
         val intent = Intent(context, WritePostActivity::class.java)
-        startActivityForResult(intent, RequestCode.WRITE_POST)
+        startActivityForResult(intent, WRITE_POST)
     }
 
     /* 검색 화면으로 이동 */
@@ -125,7 +115,18 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     /* 서버에서 게시물 목록 가져오기 */
     private fun getPostList(pageNum: Int) {
-        RetrofitManager.instance.requestPostList(pageNum, location) { code, data ->
+
+        // Preference에서 쿠키 가져오기
+        val myLocation: String =
+            SharedPreferenceManager.instance.getString(
+                Preference.SHARED_PREFERENCE_NAME_LOCATION, ""
+            ) as String
+
+        if (myLocation != "") {
+            mBinding?.locationButton?.text = myLocation
+        }
+
+        RetrofitManager.instance.requestPostList(pageNum, myLocation) { code, data ->
             when (code) {
                 0 -> {
                     if (data != null) {
@@ -146,11 +147,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode == Activity.RESULT_OK) {
-            mAdapter.removeAll()
-            pageReset()
-            getPostList(pageNum)
+        if (resultCode != RESULT_OK) return
+        when (requestCode) {
+            WRITE_POST, SELECT_MY_LOCATION -> {
+                mAdapter.removeAll()
+                pageReset()
+                getPostList(pageNum)
+            }
         }
-
     }
 }

@@ -396,7 +396,7 @@ class RetrofitManager {
     ) {
         var call = service?.requestPostList(pagenum) ?: return
 
-        if (location != null) {
+        if (location != "") {
             call = service.requestPostList(pagenum, location)
         }
 
