@@ -1,6 +1,7 @@
 package com.basecamp.campong.view
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.basecamp.campong.LendPagerAdapter
 import com.basecamp.campong.databinding.ActivityLendBinding
@@ -14,6 +15,7 @@ class LendActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         mBinding = ActivityLendBinding.inflate(layoutInflater)
+        initToolbar()
 
         val tabLayout = mBinding.tabLayout
         val pager = mBinding.pager
@@ -25,5 +27,23 @@ class LendActivity : AppCompatActivity() {
         }.attach()
 
         setContentView(mBinding.root)
+    }
+
+    private fun initToolbar() {
+        val toolbar = mBinding.toolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

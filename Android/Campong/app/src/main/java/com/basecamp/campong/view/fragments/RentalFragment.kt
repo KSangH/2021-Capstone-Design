@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.basecamp.campong.RentalPagerAdapter
 import com.basecamp.campong.databinding.FragmentRentalBinding
+import com.basecamp.campong.view.MainActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
 class RentalFragment : Fragment() {
@@ -22,6 +23,7 @@ class RentalFragment : Fragment() {
         val binding = FragmentRentalBinding.inflate(inflater, container, false)
 
         mBinding = binding
+        initToolbar()
 
         return mBinding?.root
     }
@@ -38,6 +40,14 @@ class RentalFragment : Fragment() {
             }.attach()
         }
 
+    }
+
+    private fun initToolbar() {
+        val toolbar = mBinding?.toolbar
+        (activity as MainActivity).setSupportActionBar(toolbar)
+        val ab = (activity as MainActivity).supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onDestroyView() {
