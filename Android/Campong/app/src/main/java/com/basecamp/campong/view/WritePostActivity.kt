@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -63,6 +64,7 @@ class WritePostActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         mBinding = ActivityWritePostBinding.inflate(layoutInflater)
 
+        initToolbar()
         initAddPhotoButton()
 
         val chipGroup = mBinding.chipGroup
@@ -81,6 +83,24 @@ class WritePostActivity : AppCompatActivity(), OnMapReadyCallback {
             fm.beginTransaction().add(R.id.smallMap, mapFragment).commit()
         }
         mapFragment!!.getMapAsync(this)
+    }
+
+    private fun initToolbar() {
+        val toolbar = mBinding.writePostToolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initAddPhotoButton() {
