@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityShowPostBinding
 import com.basecamp.campong.model.Post
@@ -15,12 +16,20 @@ import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
 import com.bumptech.glide.Glide
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
 
-class ShowPostActivity : AppCompatActivity() {
+class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mBinding: ActivityShowPostBinding
+    private lateinit var naverMap: NaverMap
     private var postid: Long? = null
     private var post: Post? = null
+    private var marker: Marker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +45,19 @@ class ShowPostActivity : AppCompatActivity() {
         initToolbar()
 
         setContentView(mBinding.root)
+
+        // 지도 객체 가져오기
+        val fm: FragmentManager = supportFragmentManager
+        var mapFragment: MapFragment? = fm.findFragmentById(R.id.smallMap) as MapFragment
+        if (mapFragment == null) {
+            mapFragment = MapFragment.newInstance()
+            fm.beginTransaction().add(R.id.smallMap, mapFragment).commit()
+        }
+        mapFragment!!.getMapAsync(this)
     }
 
     private fun initToolbar() {
-        val toolbar = mBinding.posttoolbar
+        val toolbar = mBinding.toolbar
         setSupportActionBar(toolbar)
         val ab = supportActionBar
         ab?.setDisplayShowTitleEnabled(false)
@@ -71,6 +89,7 @@ class ShowPostActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    // 게시물 조회
     private fun getPost(postid: Long) {
         RetrofitManager.instance.requestPostView(postid) { code, mypost, post ->
             when (code) {
@@ -100,6 +119,9 @@ class ShowPostActivity : AppCompatActivity() {
                         mBinding.apply {
                             postItem = post
                         }
+
+                        setLocationToUI(post.lat.toDouble(), post.lon.toDouble())
+
                     }
                 }
                 else -> {
@@ -110,6 +132,7 @@ class ShowPostActivity : AppCompatActivity() {
         }
     }
 
+    // 예약하기
     private fun goToReserve() {
         val intent = Intent(this, ReqReserveActivity::class.java)
         intent.putExtra(Keyword.POST_ID, postid)
@@ -132,7 +155,25 @@ class ShowPostActivity : AppCompatActivity() {
         }
     }
 
+    // 예약내역 보기
     private fun goToReserveList() {
-        //  val intent = Intent(this, )
+        val intent = Intent(this, LendActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun setLocationToUI(lat: Double, lon: Double) {
+        if (marker == null) {
+            marker = Marker()
+        }
+        marker!!.position = LatLng(lat, lon)
+        marker!!.map = naverMap
+
+        val cameraUpdate = CameraUpdate.scrollTo(LatLng(lat, lon))
+        naverMap.moveCamera(cameraUpdate)
+    }
+
+    override fun onMapReady(naverMap: NaverMap) {
+        this.naverMap = naverMap
+
     }
 }
