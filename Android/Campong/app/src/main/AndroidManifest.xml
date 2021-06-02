@@ -42,15 +42,18 @@
         <activity
             android:name=".view.SignupActivity"
             android:parentActivityName=".view.LoginActivity" />
-        <activity android:name=".view.LoginActivity">
+        <activity android:name=".view.LoginActivity" />
+        <activity android:name=".view.MainActivity" />
+        <activity android:name=".SearchLocationActivity" />
+        <activity
+            android:name=".view.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity" />
-        <activity android:name=".SearchLocationActivity" />
     </application>
 
 </manifest>

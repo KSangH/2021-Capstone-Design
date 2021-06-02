@@ -150,6 +150,10 @@ object Preference {
     const val SHARED_PREFERENCE_NAME_COOKIE = "cookies"
 
     const val SHARED_PREFERENCE_NAME_LOCATION = "location"
+
+    const val SHARED_PREFERENCE_NAME_EMAIL = "email"
+
+    const val SHARED_PREFERENCE_NAME_PW = "pw"
 }
 
 object RentalState {
