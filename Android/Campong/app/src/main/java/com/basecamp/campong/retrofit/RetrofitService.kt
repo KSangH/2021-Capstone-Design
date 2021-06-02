@@ -78,6 +78,16 @@ interface RetrofitService {
         @Query("location") location: String? = null
     ): Call<ResultPostList>
 
+    // 내 게시물 목록 조회
+    @Headers("content-type: application/json")
+    @GET(API.POST_MYLIST)
+    fun requestPostMyList(
+        @Query("pagenum") pagenum: Int,
+        @Query("keyword") keyword: String? = null,
+        @Query("catename") catename: String? = null,
+        @Query("location") location: String? = null
+    ): Call<ResultPostList>
+
     /* 게시물 관리 */
     // 게시물 등록
     @Headers("content-type: application/json")

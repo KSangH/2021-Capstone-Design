@@ -483,6 +483,47 @@ class RetrofitManager {
         })
     }
 
+    // 내 게시물 목록 조회
+    fun requestPostMyList(
+        pagenum: Int,
+        completion: (Int, postList: List<Post>?) -> Unit
+    ) {
+        var call = service?.requestPostMyList(pagenum) ?: return
+
+        call.enqueue(object : Callback<ResultPostList> {
+
+            override fun onResponse(
+                call: Call<ResultPostList>,
+                response: Response<ResultPostList>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0, response.body()!!.item)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null)
+                            } else {
+                                completion(2, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultPostList>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null)
+            }
+
+        })
+    }
+
     // 게시물 등록
     fun requestUploadPost(
         catename: String,

@@ -36,6 +36,9 @@ object API {
     // 게시물 목록 조회
     const val POST_LIST: String = "/post/list"
 
+    // 내 게시물 목록 조회
+    const val POST_MYLIST: String = "/post/list/mypost"
+
     // 게시물 등록
     const val POST_UPLOAD: String = "/post/upload"
 

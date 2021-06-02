@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.basecamp.campong.R
+import com.basecamp.campong.RecyclerAdapter
 import com.basecamp.campong.databinding.FragmentMypageBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.API
@@ -25,6 +26,8 @@ class MypageFragment : Fragment(), View.OnClickListener {
 
     private var mBinding: FragmentMypageBinding? = null
     private var image_id: Long? = null
+    private lateinit var mAdapter: RecyclerAdapter
+    private var pageNum: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +39,7 @@ class MypageFragment : Fragment(), View.OnClickListener {
         mBinding = binding
 
         getMyPageInfo()
+        getPostList(pageNum)
 
         binding.goToEditProfileButton.setOnClickListener(this)
         binding.logoutButton.setOnClickListener(this)
@@ -157,5 +161,33 @@ class MypageFragment : Fragment(), View.OnClickListener {
     private fun goToLendList(view: View) {
         val intent = Intent(context, LendActivity::class.java)
         startActivityForResult(intent, GO_TO_LEND_LIST)
+    }
+
+    private fun pageUp() {
+        pageNum++
+    }
+
+    private fun pageReset() {
+        pageNum = 0
+    }
+
+    /* 서버에서 게시물 목록 가져오기 */
+    private fun getPostList(pageNum: Int) {
+        RetrofitManager.instance.requestPostMyList(pageNum) { code, data ->
+            when (code) {
+                0 -> {
+                    if (data != null) {
+                        Log.d(Constants.TAG, "MyPageFragment - getPostList() : data is not null!!")
+                        mAdapter.setList(data)
+                        pageUp() // 통신에 성공하면 다음 요청을 위해 pageNum++
+                    } else {
+                        Log.d(Constants.TAG, "MyPageFragment - getPostList() : data is null!!")
+                    }
+                }
+                else -> {
+                    Log.d(Constants.TAG, "MyPageFragment - getPostList() : 통신 실패")
+                }
+            }
+        }
     }
 }
