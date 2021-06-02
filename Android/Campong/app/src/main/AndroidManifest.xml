@@ -10,13 +10,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_campong"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_campong_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.SetMapActivity"></activity>
+        <activity android:name=".view.SetMapActivity" />
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
