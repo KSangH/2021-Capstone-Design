@@ -21,6 +21,7 @@ class ShowPostActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityShowPostBinding
     private var postid: Long? = null
     private var post: Post? = null
+    private var mypost: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +34,7 @@ class ShowPostActivity : AppCompatActivity() {
             getPost(postid!!)
         }
 
-        initToolbar()
+        if (mypost == true)initToolbar()
 
         setContentView(mBinding.root)
     }
