@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.basecamp.campong.R
@@ -56,14 +55,14 @@ class ShowPostActivity : AppCompatActivity() {
     }
 
 
-    override fun onOptionsItemSelected(item: MenuItem, view: View): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 return true
             }
             R.id.modify -> {
-                goToEditpost(view)
+                goToEditpost(item)
 
             }
             R.id.delete -> {
@@ -73,7 +72,7 @@ class ShowPostActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun goToEditpost(view: View) {
+    private fun goToEditpost(v: MenuItem) {
         val intent = Intent(applicationContext, EditPostActivity::class.java)
         startActivity(intent)
 
