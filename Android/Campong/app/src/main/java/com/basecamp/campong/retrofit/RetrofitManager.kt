@@ -523,14 +523,90 @@ class RetrofitManager {
 
     // 게시물 수정
     // postid, catename, title, contents, fee, lat, lon, location, imageid
-    fun requestUpdatePost() {
-        // TODO
+    fun requestUpdatePost(
+        postid: Long,
+        catename: String,
+        title: String,
+        contents: String,
+        fee: String,
+        lat: String,
+        lon: String,
+        location: String,
+        imageid: Long?, completion: (Int, postid: Long?) -> Unit
+    ) {
+        val req = ReqPostUpdate(postid, catename, title, contents, fee, lat, lon, location, imageid)
+        val call = service?.requestUpdatePost(req) ?: return
+
+
+        call.enqueue(object : Callback<ResultUploadPost> {
+            override fun onResponse(
+                call: Call<ResultUploadPost>,
+                response: Response<ResultUploadPost>
+            ) {
+                when (response.code()){
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0, response.body()!!.postid) // 성공시 업로드한 게시물을 확인하기 위한 postid
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null)
+                            } else {
+                                completion(2, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultUploadPost>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null)
+            }
+
+        })
     }
 
     // 게시물 삭제
     // postid
-    fun requestDeletePost() {
-        // TODO
+    fun requestDeletePost(postid: Long, completion: (Int) -> Unit) {
+        val req = ReqPostDelete(postid)
+        val call = service?.requestDeletePost(req) ?: return
+
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(
+                call: Call<ResultBase>,
+                response: Response<ResultBase>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+        })
     }
 
     /* 예약/대여/반납 */
