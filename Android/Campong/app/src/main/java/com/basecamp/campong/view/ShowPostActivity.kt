@@ -34,7 +34,9 @@ class ShowPostActivity : AppCompatActivity() {
             getPost(postid!!)
         }
 
-        if (mypost == true)initToolbar()
+        if (mypost == true){
+            initToolbar()
+        }
 
         setContentView(mBinding.root)
     }
