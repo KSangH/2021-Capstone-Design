@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityWritePostBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
+import com.basecamp.campong.utils.Keyword
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -26,6 +28,7 @@ class EditPostActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityWritePostBinding
     private var image_id: Long? = null
     private var category: String? = null
+    private var postid: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
@@ -199,5 +202,39 @@ class EditPostActivity : AppCompatActivity() {
     }
 
     // 게시물 수정하기
+    fun updatePost(view: View) {
+        if (checkNoBlank()) {
+            RetrofitManager.instance.requestUpdatePost(
+                postid!!,
+                category!!,
+                mBinding.titleEditText.text.toString(),
+                mBinding.contentEditText.text.toString(),
+                mBinding.feeEditText.text.toString(),
+                "37.541", "126.986", "종로구 종로2가", // TODO
+                image_id
+            ) { code, id ->
+                when (code) {
+                    0 -> {
+                        if (id != null) { // post id가 null이 아니면
+                            Toast.makeText(this, "게시물 수정 완료!", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(applicationContext, ShowPostActivity::class.java)
+                            intent.putExtra(Keyword.POST_ID, id)
+                            setResult(RESULT_OK)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            Log.d(
+                                Constants.TAG,
+                                "WritePostActivity : uploadPost() - Result : post id is null"
+                            )
+                        }
+                    }
+                    else -> {
+                        Toast.makeText(this, "게시물 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
 
 }
