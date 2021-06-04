@@ -68,8 +68,8 @@ class ShowPostActivity : AppCompatActivity() {
                 goToEditpost(item)
 
             }
-            R.id.delete -> {
-
+            R.id.delete ->{
+                deletePost()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -144,5 +144,23 @@ class ShowPostActivity : AppCompatActivity() {
 
     private fun goToReserveList() {
         //  val intent = Intent(this, )
+    }
+    
+    fun deletePost(){
+        RetrofitManager.instance.requestDeletePost(
+            postid!!
+        ) {
+            when (it) {
+                0 -> {
+                    Toast.makeText(applicationContext, "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    val mainIntent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(mainIntent)
+                }
+                else -> {
+                    Toast.makeText(applicationContext, "게시물 삭제를 실패하였습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
     }
 }
