@@ -7,8 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -44,21 +42,8 @@ class WritePostActivity : AppCompatActivity(), OnMapReadyCallback {
     private var category: String? = null
     private var baseAddress: String? = null
     private var marker: Marker? = null
-
-    private val mTextWatcher: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-
-        }
-
-    }
+    private var lat: Double? = -1.0
+    private var lon: Double? = -1.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -179,13 +164,13 @@ class WritePostActivity : AppCompatActivity(), OnMapReadyCallback {
             SELECT_LOCATION -> { // 위치 선택 후
                 if (requestCode == SELECT_LOCATION) {
                     if (resultCode == RESULT_OK) {
-                        val lat = data?.getDoubleExtra("lat", -1.0)
-                        val lon = data?.getDoubleExtra("lon", -1.0)
-                        baseAddress = data?.getStringExtra("baseAddress")
+                        lat = data?.getDoubleExtra("lat", -1.0)
+                        lon = data?.getDoubleExtra("lon", -1.0)
+                        baseAddress = data?.getStringExtra("baseAddr")
 
                         if (lat != null && lon != null) {
                             Log.d(Constants.TAG, "lat : $lat, lon: $lon")
-                            setLocationToUI(lat, lon)
+                            setLocationToUI(lat!!, lon!!)
                         }
                     }
                 }
@@ -295,7 +280,7 @@ class WritePostActivity : AppCompatActivity(), OnMapReadyCallback {
                 mBinding.titleEditText.text.toString(),
                 mBinding.contentEditText.text.toString(),
                 mBinding.feeEditText.text.toString(),
-                "37.541", "126.986", "종로구 종로2가", // TODO
+                lat.toString(), lon.toString(), baseAddress.toString(),
                 image_id
             ) { code, id ->
                 when (code) {

@@ -6,6 +6,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityMainBinding
+import com.basecamp.campong.utils.SharedPreferenceManager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
@@ -17,6 +18,9 @@ class MainActivity : AppCompatActivity() {
         mBinding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(mBinding.root)
+
+        // SharedPreference init
+        SharedPreferenceManager().init(applicationContext)
 
         // 네비게이션들을 담는 호스트
         val navHostFragment =

@@ -15,6 +15,7 @@ import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
+import com.basecamp.campong.utils.RequestCode.EDIT_POST
 import com.bumptech.glide.Glide
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
@@ -29,7 +30,6 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private var postid: Long? = null
     private var post: Post? = null
-    private var mypost: Boolean? = null
     private var marker: Marker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,10 +41,6 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
         if (postid != null) {
             getPost(postid!!)
-        }
-
-        if (mypost == true){
-            initToolbar()
         }
 
         setContentView(mBinding.root)
@@ -83,20 +79,21 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
                 return true
             }
             R.id.modify -> {
-                goToEditpost(item)
-
+                Log.d(Constants.TAG, "수정 클릭됨")
+                goToEditPost()
             }
-            R.id.delete ->{
+            R.id.delete -> {
                 deletePost()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun goToEditpost(v: MenuItem) {
-        val intent = Intent(applicationContext, EditPostActivity::class.java)
-        startActivity(intent)
-
+    private fun goToEditPost() {
+        val intent = Intent(this, EditPostActivity::class.java)
+        intent.putExtra(Keyword.POST_ID, postid)
+        startActivityForResult(intent, EDIT_POST)
+        // finish()
     }
 
     private fun getPost(postid: Long) {
@@ -105,6 +102,7 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
                 0 -> {
                     if (mypost != null) {
                         if (mypost) {
+                            initToolbar()
                             mBinding.button.text = "예약 내역 보기"
                             mBinding.button.setOnClickListener {
                                 goToReserveList()
@@ -129,7 +127,7 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
                             postItem = post
                         }
 
-                        setLocationToUI(post.lat.toDouble(), post.lon.toDouble())
+                        //setLocationToUI(post.lat.toDouble(), post.lon.toDouble())
 
                     }
                 }
@@ -186,20 +184,30 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    fun deletePost(){
+    private fun deletePost() {
         RetrofitManager.instance.requestDeletePost(
             postid!!
         ) {
             when (it) {
                 0 -> {
                     Toast.makeText(applicationContext, "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
-                    val mainIntent = Intent(applicationContext, MainActivity::class.java)
-                    startActivity(mainIntent)
+                    finish()
                 }
                 else -> {
                     Toast.makeText(applicationContext, "게시물 삭제를 실패하였습니다.", Toast.LENGTH_SHORT)
                         .show()
                 }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != RESULT_OK) return
+        when (requestCode) {
+            EDIT_POST -> {
+                getPost(postid!!)
             }
         }
     }

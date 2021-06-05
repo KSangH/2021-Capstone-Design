@@ -397,7 +397,7 @@ class RetrofitManager {
         var call = service?.requestPostList(pagenum) ?: return
 
         if (location != "") {
-            call = service.requestPostList(pagenum, location)
+            call = service.requestPostList(pagenum = pagenum, location = location)
         }
 
         call.enqueue(object : Callback<ResultPostList> {
@@ -612,7 +612,6 @@ class RetrofitManager {
     }
 
     // 게시물 수정
-    // postid, catename, title, contents, fee, lat, lon, location, imageid
     fun requestUpdatePost(
         postid: Long,
         catename: String,
@@ -626,7 +625,6 @@ class RetrofitManager {
     ) {
         val req = ReqPostUpdate(postid, catename, title, contents, fee, lat, lon, location, imageid)
         val call = service?.requestUpdatePost(req) ?: return
-
 
         call.enqueue(object : Callback<ResultUploadPost> {
             override fun onResponse(
@@ -662,7 +660,6 @@ class RetrofitManager {
     }
 
     // 게시물 삭제
-    // postid
     fun requestDeletePost(postid: Long, completion: (Int) -> Unit) {
         val req = ReqPostDelete(postid)
         val call = service?.requestDeletePost(req) ?: return

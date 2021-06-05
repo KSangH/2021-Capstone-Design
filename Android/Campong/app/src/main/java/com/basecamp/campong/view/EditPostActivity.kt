@@ -1,40 +1,66 @@
 package com.basecamp.campong.view
 
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.basecamp.campong.R
-import com.basecamp.campong.databinding.ActivityWritePostBinding
+import com.basecamp.campong.databinding.ActivityEditPostBinding
+import com.basecamp.campong.model.Post
 import com.basecamp.campong.retrofit.RetrofitManager
+import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
+import com.basecamp.campong.utils.RequestCode.PICK_PHOTO
+import com.basecamp.campong.utils.RequestCode.SELECT_LOCATION
+import com.bumptech.glide.Glide
+import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.MapFragment
+import com.naver.maps.map.NaverMap
+import com.naver.maps.map.OnMapReadyCallback
+import com.naver.maps.map.overlay.Marker
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class EditPostActivity : AppCompatActivity() {
-    private lateinit var mBinding: ActivityWritePostBinding
+class EditPostActivity : AppCompatActivity(), OnMapReadyCallback {
+    private lateinit var mBinding: ActivityEditPostBinding
+    private lateinit var naverMap: NaverMap
     private var image_id: Long? = null
     private var category: String? = null
     private var postid: Long? = null
+    private var post: Post? = null
+    private var baseAddress: String? = null
+    private var marker: Marker? = null
+    private var lat: Double? = -1.0
+    private var lon: Double? = -1.0
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        mBinding = ActivityWritePostBinding.inflate(layoutInflater)
+        mBinding = ActivityEditPostBinding.inflate(layoutInflater)
 
+        setContentView(mBinding.root)
+
+        postid = intent.getLongExtra(Keyword.POST_ID, -1)
+
+        if (postid != null) {
+            getPost(postid!!)
+        }
+
+        initToolbar()
         initAddPhotoButton()
 
         val chipGroup = mBinding.chipGroup
@@ -43,7 +69,40 @@ class EditPostActivity : AppCompatActivity() {
             category = getCategory(checkedId)
         }
 
-        setContentView(mBinding.root)
+        // 지도 객체 가져오기
+        val fm: FragmentManager = supportFragmentManager
+        var mapFragment: MapFragment? = fm.findFragmentById(R.id.smallMap) as MapFragment
+        if (mapFragment == null) {
+            mapFragment = MapFragment.newInstance()
+            fm.beginTransaction().add(R.id.smallMap, mapFragment).commit()
+        }
+        mapFragment!!.getMapAsync(this)
+    }
+
+    override fun onMapReady(naverMap: NaverMap) {
+        this.naverMap = naverMap
+
+        if (post != null) {
+            setLocationToUI(post!!.lat.toDouble(), post!!.lon.toDouble())
+        }
+    }
+
+    private fun initToolbar() {
+        val toolbar = mBinding.writePostToolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     // 갤러리 권한 요청, 갤러리 열기
@@ -84,37 +143,69 @@ class EditPostActivity : AppCompatActivity() {
     private fun navigatePhotos() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, 2000)
+        startActivityForResult(intent, PICK_PHOTO)
+    }
+
+    fun selectMapLocation(view: View) {
+        val intent = Intent(applicationContext, SetMapActivity::class.java)
+        startActivityForResult(intent, SELECT_LOCATION)
     }
 
     // 이미지 선택 후
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode != Activity.RESULT_OK) return
+        if (resultCode != RESULT_OK) return
 
         when (requestCode) {
-            2000 -> {
-                val selectedImageUri: Uri? = data?.data
-                if (selectedImageUri != null) {
+            PICK_PHOTO -> { // 이미지 선택 후
+                if (resultCode == RESULT_OK) {
+                    val selectedImageUri: Uri? = data?.data
+                    if (selectedImageUri != null) {
 
-                    try {
-                        val inputStream = contentResolver.openInputStream(data.data!!)
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-                        uploadImage(bitmap)
-                        mBinding.selectImageButton.setImageURI(selectedImageUri)
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
+                        try {
+                            val inputStream = contentResolver.openInputStream(data.data!!)
+                            val bitmap = BitmapFactory.decodeStream(inputStream)
+                            uploadImage(bitmap)
+                            mBinding.selectImageButton.setImageURI(selectedImageUri)
+                        } catch (e: FileNotFoundException) {
+                            e.printStackTrace()
+                        }
+
+                    } else {
+                        Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                     }
-
                 } else {
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
+
             }
-            else -> {
-                Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+            SELECT_LOCATION -> { // 위치 선택 후
+                if (requestCode == SELECT_LOCATION) {
+                    if (resultCode == RESULT_OK) {
+                        lat = data?.getDoubleExtra("lat", -1.0)
+                        lon = data?.getDoubleExtra("lon", -1.0)
+                        baseAddress = data?.getStringExtra("baseAddr")
+
+                        if (lat != null && lon != null) {
+                            Log.d(Constants.TAG, "lat : $lat, lon: $lon")
+                            setLocationToUI(lat!!, lon!!)
+                        }
+                    }
+                }
             }
         }
+    }
+
+    private fun setLocationToUI(lat: Double, lon: Double) {
+        if (marker == null) {
+            marker = Marker()
+        }
+        marker!!.position = LatLng(lat, lon)
+        marker!!.map = naverMap
+
+        val cameraUpdate = CameraUpdate.scrollTo(LatLng(lat, lon))
+        naverMap.moveCamera(cameraUpdate)
     }
 
     private fun getImageFile(bitmap: Bitmap, name: String): File {
@@ -190,10 +281,10 @@ class EditPostActivity : AppCompatActivity() {
             mBinding.contentTextInput.error = msg
             result = false
         }
-//        if (mBinding.locationEditText.text.isNullOrBlank()) {
-//            mBinding.locationTextInput.error = msg
-//            result = false
-//        }
+        if (baseAddress.isNullOrBlank()) {
+            Toast.makeText(this, "거래 위치를 선택해주세요.(필수)", Toast.LENGTH_SHORT).show()
+            result = false
+        }
         if (mBinding.feeEditText.text.isNullOrBlank()) {
             mBinding.feeTextInput.error = msg
             result = false
@@ -210,17 +301,14 @@ class EditPostActivity : AppCompatActivity() {
                 mBinding.titleEditText.text.toString(),
                 mBinding.contentEditText.text.toString(),
                 mBinding.feeEditText.text.toString(),
-                "37.541", "126.986", "종로구 종로2가", // TODO
+                lat.toString(), lon.toString(), baseAddress.toString(),
                 image_id
             ) { code, id ->
                 when (code) {
                     0 -> {
                         if (id != null) { // post id가 null이 아니면
                             Toast.makeText(this, "게시물 수정 완료!", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(applicationContext, ShowPostActivity::class.java)
-                            intent.putExtra(Keyword.POST_ID, id)
                             setResult(RESULT_OK)
-                            startActivity(intent)
                             finish()
                         } else {
                             Log.d(
@@ -232,6 +320,35 @@ class EditPostActivity : AppCompatActivity() {
                     else -> {
                         Toast.makeText(this, "게시물 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show()
                     }
+                }
+            }
+        }
+    }
+
+    private fun getPost(postid: Long) {
+        RetrofitManager.instance.requestPostView(postid) { code, _, post ->
+            when (code) {
+                0 -> {
+                    if (post != null) {
+                        this.post = post
+                        category = post.catename
+                        image_id = post.imageid
+                        baseAddress = post.location
+                        val url = "${API.BASE_URL}/image/${post.imageid}"
+
+                        Glide.with(this)
+                            .load(url)
+                            .centerCrop()
+                            .into(mBinding.selectImageButton)
+
+                        mBinding.apply {
+                            postItem = post
+                        }
+                    }
+                }
+                else -> {
+                    Log.d(Constants.TAG, "ShowPostActivity - getPost() : 게시물을 불러오지 못했습니다.")
+                    Toast.makeText(this, "게시물을 불러오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
