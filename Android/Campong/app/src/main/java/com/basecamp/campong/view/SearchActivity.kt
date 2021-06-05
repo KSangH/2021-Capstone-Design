@@ -66,6 +66,8 @@ class SearchActivity : AppCompatActivity() {
 
     fun search(view: View) {
         val keyword = mBinding.searchInput.text.toString()
+        mAdapter.removeAll()
+        pageReset()
         requestSearch(pageNum, keyword, category)
     }
 

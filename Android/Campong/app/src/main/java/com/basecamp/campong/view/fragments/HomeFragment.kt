@@ -30,6 +30,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private var mBinding: FragmentHomeBinding? = null
     private lateinit var mAdapter: RecyclerAdapter
     private var pageNum: Int = 0
+    private var myLocation: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +42,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         mBinding = binding
 
         setHasOptionsMenu(true)
+
+        getMyLocation()
 
         mAdapter = RecyclerAdapter()
 
@@ -121,7 +124,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     /* 나의 위치 설정 화면으로 이동 */
     private fun goToSetMyLocation(view: View) {
         val intent = Intent(context, SearchLocationActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, SELECT_MY_LOCATION)
     }
 
     private fun pageUp() {
@@ -132,18 +135,19 @@ class HomeFragment : Fragment(), View.OnClickListener {
         pageNum = 0
     }
 
-    /* 서버에서 게시물 목록 가져오기 */
-    private fun getPostList(pageNum: Int) {
-
+    private fun getMyLocation() {
         // Preference에서 위치 가져오기
-        val myLocation: String =
-            SharedPreferenceManager.instance.getString(
-                Preference.SHARED_PREFERENCE_NAME_LOCATION, ""
-            ) as String
+        myLocation = SharedPreferenceManager.instance.getString(
+            Preference.SHARED_PREFERENCE_NAME_LOCATION, ""
+        ) as String
 
-        if (myLocation != "") {
+        if (!myLocation.isNullOrEmpty()) {
             mBinding?.locationButton?.text = myLocation
         }
+    }
+
+    /* 서버에서 게시물 목록 가져오기 */
+    private fun getPostList(pageNum: Int) {
 
         RetrofitManager.instance.requestPostList(pageNum, myLocation) { code, data ->
             when (code) {
@@ -168,7 +172,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         if (resultCode != RESULT_OK) return
         when (requestCode) {
-            WRITE_POST, SELECT_MY_LOCATION -> {
+            WRITE_POST -> {
+                mAdapter.removeAll()
+                pageReset()
+                getPostList(pageNum)
+            }
+            SELECT_MY_LOCATION -> {
+                getMyLocation()
                 mAdapter.removeAll()
                 pageReset()
                 getPostList(pageNum)
