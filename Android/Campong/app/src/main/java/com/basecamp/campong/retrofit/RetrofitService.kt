@@ -106,13 +106,15 @@ interface RetrofitService {
     // 게시물 수정
     @Headers("content-type: application/json")
     @POST(API.POST_UPDATE)
-    fun requestUpdatePost(        // TODO
+    fun requestUpdatePost(
+        @Body body: ReqPostUpdate
     ): Call<ResultUploadPost>
 
     // 게시물 삭제
     @Headers("content-type: application/json")
     @POST(API.POST_DELETE)
-    fun requestDeletePost(        // TODO
+    fun requestDeletePost(
+        @Body body: ReqPostDelete
     ): Call<ResultBase>
 
     /* 예약/대여/반납 */

@@ -29,6 +29,7 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var naverMap: NaverMap
     private var postid: Long? = null
     private var post: Post? = null
+    private var mypost: Boolean? = null
     private var marker: Marker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +43,9 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
             getPost(postid!!)
         }
 
-        initToolbar()
+        if (mypost == true){
+            initToolbar()
+        }
 
         setContentView(mBinding.root)
 
@@ -80,16 +83,22 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
                 return true
             }
             R.id.modify -> {
+                goToEditpost(item)
 
             }
-            R.id.delete -> {
-
+            R.id.delete ->{
+                deletePost()
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    // 게시물 조회
+    private fun goToEditpost(v: MenuItem) {
+        val intent = Intent(applicationContext, EditPostActivity::class.java)
+        startActivity(intent)
+
+    }
+
     private fun getPost(postid: Long) {
         RetrofitManager.instance.requestPostView(postid) { code, mypost, post ->
             when (code) {
@@ -175,5 +184,23 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
 
+    }
+
+    fun deletePost(){
+        RetrofitManager.instance.requestDeletePost(
+            postid!!
+        ) {
+            when (it) {
+                0 -> {
+                    Toast.makeText(applicationContext, "게시물이 삭제되었습니다.", Toast.LENGTH_SHORT).show()
+                    val mainIntent = Intent(applicationContext, MainActivity::class.java)
+                    startActivity(mainIntent)
+                }
+                else -> {
+                    Toast.makeText(applicationContext, "게시물 삭제를 실패하였습니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        }
     }
 }
