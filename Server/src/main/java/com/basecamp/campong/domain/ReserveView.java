@@ -47,5 +47,5 @@ public class ReserveView {
     // 빌린 사람
     private long borrowuserid;
 
-    private long usernick;
+    private String usernick;
 }
