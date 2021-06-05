@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.basecamp.campong.R
 import com.basecamp.campong.RecyclerAdapter
 import com.basecamp.campong.databinding.FragmentMypageBinding
@@ -39,12 +41,37 @@ class MypageFragment : Fragment(), View.OnClickListener {
         mBinding = binding
 
         getMyPageInfo()
+
+        mAdapter = RecyclerAdapter()
         getPostList(pageNum)
 
         binding.goToEditProfileButton.setOnClickListener(this)
         binding.logoutButton.setOnClickListener(this)
         binding.goToLendListButton.setOnClickListener(this)
         binding.lendListButton.setOnClickListener(this)
+
+        binding.recyclerview.apply {
+            adapter = mAdapter
+            layoutManager = LinearLayoutManager(context)
+
+            // 스크롤 리스너
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+
+                    // 현재 화면에 보이는 아이템 중 마지막 위치
+                    val lastVisibleItemPosition: Int =
+                        (recyclerView.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition()
+                    // 마지막 아이템 위치
+                    val itemTotalCount = recyclerView.adapter?.itemCount?.minus(1)
+
+                    // 스크롤이 마지막인 경우 더 불러오기
+                    if (lastVisibleItemPosition == itemTotalCount) {
+                        getPostList(pageNum)
+                    }
+                }
+            })
+        }
 
         return mBinding?.root
     }
