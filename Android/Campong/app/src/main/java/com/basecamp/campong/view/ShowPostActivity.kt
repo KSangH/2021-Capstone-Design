@@ -27,10 +27,12 @@ import com.naver.maps.map.overlay.Marker
 class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mBinding: ActivityShowPostBinding
-    private lateinit var naverMap: NaverMap
+    private var naverMap: NaverMap? = null
     private var postid: Long? = null
     private var post: Post? = null
     private var marker: Marker? = null
+    private var lat: Double? = null
+    private var lon: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -93,7 +95,6 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
         val intent = Intent(this, EditPostActivity::class.java)
         intent.putExtra(Keyword.POST_ID, postid)
         startActivityForResult(intent, EDIT_POST)
-        // finish()
     }
 
     private fun getPost(postid: Long) {
@@ -127,8 +128,11 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
                             postItem = post
                         }
 
-                        //setLocationToUI(post.lat.toDouble(), post.lon.toDouble())
-
+                        // 네이버 맵 준비 완료인 경우
+                        if (naverMap != null) {
+                            setLocationToUI(post.lat.toDouble(), post.lon.toDouble())
+                            // 완료되지 않은 경우 onMapReady callback에서 실행
+                        }
                     }
                 }
                 else -> {
@@ -176,12 +180,15 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
         marker!!.map = naverMap
 
         val cameraUpdate = CameraUpdate.scrollTo(LatLng(lat, lon))
-        naverMap.moveCamera(cameraUpdate)
+        naverMap?.moveCamera(cameraUpdate)
     }
 
     override fun onMapReady(naverMap: NaverMap) {
         this.naverMap = naverMap
 
+        if (lat != null && lon != null) {
+            setLocationToUI(lat!!, lon!!)
+        }
     }
 
     private fun deletePost() {

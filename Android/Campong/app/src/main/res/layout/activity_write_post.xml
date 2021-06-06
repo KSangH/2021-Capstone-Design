@@ -234,15 +234,6 @@
                 android:text="거래 위치 설정"
                 app:cornerRadius="20dp" />
 
-            <fragment
-                android:id="@+id/smallMap"
-                android:name="com.naver.maps.map.MapFragment"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="20dp" />
-
         </LinearLayout>
 
     </ScrollView>

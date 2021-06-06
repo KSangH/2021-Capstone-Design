@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentManager
 import com.basecamp.campong.R
 import com.basecamp.campong.databinding.ActivityEditPostBinding
 import com.basecamp.campong.model.Post
@@ -24,18 +23,14 @@ import com.basecamp.campong.utils.Keyword
 import com.basecamp.campong.utils.RequestCode.PICK_PHOTO
 import com.basecamp.campong.utils.RequestCode.SELECT_LOCATION
 import com.bumptech.glide.Glide
-import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.CameraUpdate
-import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
-import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class EditPostActivity : AppCompatActivity(), OnMapReadyCallback {
+class EditPostActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityEditPostBinding
     private lateinit var naverMap: NaverMap
     private var image_id: Long? = null
@@ -68,25 +63,7 @@ class EditPostActivity : AppCompatActivity(), OnMapReadyCallback {
         chipGroup.setOnCheckedChangeListener { _, checkedId ->
             category = getCategory(checkedId)
         }
-
-        // 지도 객체 가져오기
-        val fm: FragmentManager = supportFragmentManager
-        var mapFragment: MapFragment? = fm.findFragmentById(R.id.smallMap) as MapFragment
-        if (mapFragment == null) {
-            mapFragment = MapFragment.newInstance()
-            fm.beginTransaction().add(R.id.smallMap, mapFragment).commit()
-        }
-        mapFragment!!.getMapAsync(this)
     }
-
-    override fun onMapReady(naverMap: NaverMap) {
-        this.naverMap = naverMap
-
-        if (post != null) {
-            setLocationToUI(post!!.lat.toDouble(), post!!.lon.toDouble())
-        }
-    }
-
     private fun initToolbar() {
         val toolbar = mBinding.writePostToolbar
         setSupportActionBar(toolbar)
@@ -189,23 +166,12 @@ class EditPostActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         if (lat != null && lon != null) {
                             Log.d(Constants.TAG, "lat : $lat, lon: $lon")
-                            setLocationToUI(lat!!, lon!!)
+                            mBinding.setMapLocationButton.text = "$baseAddress 에서 거래"
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun setLocationToUI(lat: Double, lon: Double) {
-        if (marker == null) {
-            marker = Marker()
-        }
-        marker!!.position = LatLng(lat, lon)
-        marker!!.map = naverMap
-
-        val cameraUpdate = CameraUpdate.scrollTo(LatLng(lat, lon))
-        naverMap.moveCamera(cameraUpdate)
     }
 
     private fun getImageFile(bitmap: Bitmap, name: String): File {
