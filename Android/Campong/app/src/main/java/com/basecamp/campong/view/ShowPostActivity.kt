@@ -16,6 +16,7 @@ import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
 import com.basecamp.campong.utils.RequestCode.EDIT_POST
+import com.basecamp.campong.utils.RequestCode.GO_TO_RESERVE
 import com.bumptech.glide.Glide
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraUpdate
@@ -77,6 +78,7 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
+                setResult(RESULT_OK)
                 finish()
                 return true
             }
@@ -109,9 +111,14 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
                                 goToReserveList()
                             }
                         } else {
-                            mBinding.button.text = "예약하기"
-                            mBinding.button.setOnClickListener {
-                                goToReserve()
+                            if (post!!.reservestate == 1) {
+                                mBinding.button.text = "예약 완료"
+                                mBinding.button.isEnabled = false
+                            } else {
+                                mBinding.button.text = "예약하기"
+                                mBinding.button.setOnClickListener {
+                                    goToReserve()
+                                }
                             }
                         }
                     }
@@ -156,7 +163,7 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
                         intent.putExtra(Keyword.LOCATION, post!!.location)
                         intent.putExtra(Keyword.FEE, post!!.fee)
                         intent.putExtra(Keyword.IMAGE_ID, post!!.imageid)
-                        startActivity(intent)
+                        startActivityForResult(intent, GO_TO_RESERVE)
                     }
                 }
                 else -> {
@@ -215,6 +222,12 @@ class ShowPostActivity : AppCompatActivity(), OnMapReadyCallback {
         when (requestCode) {
             EDIT_POST -> {
                 getPost(postid!!)
+            }
+            GO_TO_RESERVE -> {
+                mBinding.button.apply {
+                    text = "예약 완료"
+                    isEnabled = false
+                }
             }
         }
     }

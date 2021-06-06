@@ -34,12 +34,18 @@ class LendStateFragment(val state: Int) : Fragment() {
 
         mBinding = binding
 
+        mAdapter.removeAll()
+        pageReset()
         mAdapter = LendRecyclerAdapter()
         mAdapter.setOnItemClickListener(object : LendRecyclerAdapter.ClickListener {
-            override fun onBaseItemClicked(view: View, reserveItem: ReserveItem) {
+            override fun onWaitItemClicked(view: View, reserveItem: ReserveItem) {
                 val intent = Intent(context, AcceptActivity::class.java)
                 intent.putExtra(Keyword.RESERVE_ID, reserveItem.reserveid)
                 startActivityForResult(intent, RequestCode.ACCEPT_REQUEST)
+            }
+
+            override fun onBaseItemClicked(view: View, reserveItem: ReserveItem) {
+                // TODO
             }
 
         })
@@ -85,7 +91,10 @@ class LendStateFragment(val state: Int) : Fragment() {
     }
 
     private fun setLendList(state: Int) {
-        RetrofitManager.instance.requestReserveMyList(state, pageNum) { code, data ->
+        RetrofitManager.instance.requestReserveMyList(
+            state = state,
+            pagenum = pageNum
+        ) { code, data ->
             when (code) {
                 0 -> {
                     if (data != null) {
@@ -111,6 +120,7 @@ class LendStateFragment(val state: Int) : Fragment() {
 
         if (requestCode == RequestCode.ACCEPT_REQUEST) {
             if (resultCode == RESULT_OK) {
+                pageReset()
                 mAdapter.removeAll()
                 setLendList(state)
             }

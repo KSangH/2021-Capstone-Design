@@ -23,18 +23,12 @@
             app:contentInsetStart="0dp"
             app:layout_constraintTop_toTopOf="parent">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/CampongLogo"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:layout_centerInParent="true"
-                    android:src="@drawable/ic_campong_logo" />
-
-            </RelativeLayout>
+            <ImageView
+                android:id="@+id/CampongLogo"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_campong_logo" />
         </androidx.appcompat.widget.Toolbar>
 
         <ScrollView
@@ -168,7 +162,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/dateinfo" />
 
                 <TextView
-                    android:id="@+id/price"
+                    android:id="@+id/feeTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/town"
@@ -178,11 +172,22 @@
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/priceelse"
+                    app:layout_constraintEnd_toStartOf="@+id/unit"
                     app:layout_constraintTop_toBottomOf="@+id/town" />
 
                 <TextView
-                    android:id="@+id/priceelse"
+                    android:id="@+id/unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="원"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/feeTextView"
+                    app:layout_constraintEnd_toStartOf="@+id/feeElse" />
+
+                <TextView
+                    android:id="@+id/feeElse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="5dp"
@@ -191,7 +196,7 @@
                     android:textColor="#818181"
                     android:textSize="19sp"
                     android:textStyle="bold"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/price"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/feeTextView"
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <fragment
@@ -202,7 +207,7 @@
                     android:layout_marginHorizontal="30dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
-                    app:layout_constraintTop_toBottomOf="@+id/priceelse" />
+                    app:layout_constraintTop_toBottomOf="@+id/feeElse" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

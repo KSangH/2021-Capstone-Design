@@ -46,6 +46,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         getMyLocation()
 
         mAdapter = RecyclerAdapter()
+        mAdapter.removeAll()
+        pageReset()
 
         getPostList(pageNum) // 게시물 목록 조회
 
@@ -149,7 +151,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
     /* 서버에서 게시물 목록 가져오기 */
     private fun getPostList(pageNum: Int) {
 
-        RetrofitManager.instance.requestPostList(pageNum, myLocation) { code, data ->
+        RetrofitManager.instance.requestPostList(
+            pagenum = pageNum,
+            location = myLocation
+        ) { code, data ->
             when (code) {
                 0 -> {
                     if (data != null) {
@@ -179,6 +184,11 @@ class HomeFragment : Fragment(), View.OnClickListener {
             }
             SELECT_MY_LOCATION -> {
                 getMyLocation()
+                mAdapter.removeAll()
+                pageReset()
+                getPostList(pageNum)
+            }
+            else -> {
                 mAdapter.removeAll()
                 pageReset()
                 getPostList(pageNum)

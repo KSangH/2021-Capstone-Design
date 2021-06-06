@@ -2,6 +2,7 @@ package com.basecamp.campong.view.fragments
 
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,8 +18,10 @@ import com.basecamp.campong.databinding.FragmentMypageBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
+import com.basecamp.campong.utils.Preference
 import com.basecamp.campong.utils.RequestCode.GO_TO_EDIT_PROFILE
 import com.basecamp.campong.utils.RequestCode.GO_TO_LEND_LIST
+import com.basecamp.campong.utils.SharedPreferenceManager
 import com.basecamp.campong.view.EditProfileActivity
 import com.basecamp.campong.view.LendActivity
 import com.basecamp.campong.view.LoginActivity
@@ -174,12 +177,38 @@ class MypageFragment : Fragment(), View.OnClickListener {
             when (it) {
                 0 -> {
                     Toast.makeText(context, "로그아웃", Toast.LENGTH_SHORT).show()
+
+                    // 이메일, 패스워드 삭제
+                    val preferences = SharedPreferenceManager.instance
+                    val editor: SharedPreferences.Editor = preferences.edit()
+                    editor.putString(Preference.SHARED_PREFERENCE_NAME_EMAIL, null)
+                    editor.putString(Preference.SHARED_PREFERENCE_NAME_PW, null)
+                    editor.putString(Preference.SHARED_PREFERENCE_NAME_LOCATION, null)
+                    editor.putStringSet(Preference.SHARED_PREFERENCE_NAME_COOKIE, null)
+                    editor.apply()
+
+                    activity?.finish()
+
                     val loginIntent = Intent(context, LoginActivity::class.java)
                     startActivity(loginIntent)
                 }
                 else -> {
                     Toast.makeText(context, "로그아웃에 실패하였습니다.", Toast.LENGTH_SHORT)
                         .show()
+
+                    // 이메일, 패스워드 삭제
+                    val preferences = SharedPreferenceManager.instance
+                    val editor: SharedPreferences.Editor = preferences.edit()
+                    editor.putString(Preference.SHARED_PREFERENCE_NAME_EMAIL, null)
+                    editor.putString(Preference.SHARED_PREFERENCE_NAME_PW, null)
+                    editor.putString(Preference.SHARED_PREFERENCE_NAME_LOCATION, null)
+                    editor.putStringSet(Preference.SHARED_PREFERENCE_NAME_COOKIE, null)
+                    editor.apply()
+
+                    activity?.finish()
+
+                    val loginIntent = Intent(context, LoginActivity::class.java)
+                    startActivity(loginIntent)
                 }
             }
         }

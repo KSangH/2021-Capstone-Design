@@ -21,8 +21,6 @@ import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
 import com.basecamp.campong.utils.RequestCode.PICK_PHOTO
 import com.basecamp.campong.utils.RequestCode.SELECT_LOCATION
-import com.naver.maps.map.NaverMap
-import com.naver.maps.map.overlay.Marker
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -32,11 +30,9 @@ import java.io.OutputStream
 class WritePostActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityWritePostBinding
-    private lateinit var naverMap: NaverMap
     private var image_id: Long? = null
     private var category: String? = null
     private var baseAddress: String? = null
-    private var marker: Marker? = null
     private var lat: Double? = -1.0
     private var lon: Double? = -1.0
 

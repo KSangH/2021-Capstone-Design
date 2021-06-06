@@ -134,7 +134,7 @@ class LendRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onClick(v: View?) {
             if (v != null) {
-                clickListener.onBaseItemClicked(v, reservationList[adapterPosition])
+                clickListener.onWaitItemClicked(v, reservationList[adapterPosition])
             }
         }
     }
@@ -216,9 +216,8 @@ class LendRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // 클릭리스너
     interface ClickListener {
+        fun onWaitItemClicked(view: View, reserveItem: ReserveItem)
         fun onBaseItemClicked(view: View, reserveItem: ReserveItem)
-//        fun onRentalQRClicked(view: View, reserveItem: ReserveItem)
-//        fun onReturnQRClicked(view: View, reserveItem: ReserveItem)
     }
 
     fun setOnItemClickListener(clickListener: ClickListener) {

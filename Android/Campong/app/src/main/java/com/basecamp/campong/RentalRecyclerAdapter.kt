@@ -102,6 +102,7 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun removeAll() {
         this.reservationList.clear()
+        notifyDataSetChanged()
     }
 
     // 승인 대기

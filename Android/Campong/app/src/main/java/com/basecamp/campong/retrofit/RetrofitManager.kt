@@ -316,8 +316,7 @@ class RetrofitManager {
                             val imageid = item.image_id
 
                             val list: List<Int> = listOf(
-                                item.num1,
-                                item.num2,
+                                item.num1 + item.num2,
                                 item.num3,
                                 item.num4,
                                 item.num5
@@ -631,7 +630,7 @@ class RetrofitManager {
                 call: Call<ResultUploadPost>,
                 response: Response<ResultUploadPost>
             ) {
-                when (response.code()){
+                when (response.code()) {
                     200 -> {
                         Log.d(TAG, response.raw().toString())
                         if (response.body()?.error == false) { // 성공

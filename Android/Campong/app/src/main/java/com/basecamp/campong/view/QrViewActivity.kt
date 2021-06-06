@@ -20,21 +20,33 @@ class QrViewActivity : AppCompatActivity() {
 
         mBinding = ActivityQrViewBinding.inflate(layoutInflater)
 
+        initToolbar()
         init(intent)
         setUpQR(
             intent.getLongExtra(Keyword.RESERVE_ID, -1),
             intent.getIntExtra(Keyword.QR_TYPE, -1)
         )
 
+        setResult(RESULT_OK)
+
         setContentView(mBinding.root)
+    }
+
+    private fun initToolbar() {
+        val toolbar = mBinding.toolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun init(intent: Intent) {
         mBinding.title.text = intent.getStringExtra(Keyword.TITLE)
         mBinding.town.text = intent.getStringExtra(Keyword.LOCATION)
-        mBinding.price.text = intent.getStringExtra(Keyword.FEE)
+        mBinding.price.text = "${intent.getStringExtra(Keyword.FEE)}원"
         mBinding.startdate.text = intent.getStringExtra(Keyword.RENTAL_DATE)
         mBinding.enddate.text = intent.getStringExtra(Keyword.RETURN_DATE)
+        mBinding.usernickTextView.text = intent.getStringExtra(Keyword.USERNICK)
     }
 
     private fun setUpQR(reserveid: Long, qrType: Int) {

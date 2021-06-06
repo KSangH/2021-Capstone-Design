@@ -172,10 +172,12 @@ object RequestCode {
     const val WRITE_POST = 200
     const val EDIT_POST = 201
     const val ACCEPT_REQUEST = 300
+    const val RESERVE_ITEM = 301
     const val PICK_PHOTO = 400
     const val SELECT_LOCATION = 500
     const val GO_TO_EDIT_PROFILE = 600
     const val GO_TO_LEND_LIST = 601
+    const val GO_TO_RESERVE = 602
 }
 
 object Map {

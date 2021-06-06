@@ -1,5 +1,6 @@
 package com.basecamp.campong.view.fragments
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.basecamp.campong.model.ReserveItem
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
+import com.basecamp.campong.utils.RequestCode.RESERVE_ITEM
 import com.basecamp.campong.view.QrViewActivity
 import com.basecamp.campong.view.ShowPostActivity
 
@@ -34,6 +36,8 @@ class RentalStateFragment(val state: Int) : Fragment() {
         mBinding = binding
 
         mAdapter = RentalRecyclerAdapter()
+        mAdapter.removeAll()
+        pageReset()
         mAdapter.setOnItemClickListener(object : RentalRecyclerAdapter.RentalClickListener {
             // 해당 post로 이동
             override fun onBaseItemClicked(view: View) {
@@ -52,7 +56,8 @@ class RentalStateFragment(val state: Int) : Fragment() {
                 intent.putExtra(Keyword.FEE, reserveItem.fee)
                 intent.putExtra(Keyword.RENTAL_DATE, reserveItem.rentaldate)
                 intent.putExtra(Keyword.RETURN_DATE, reserveItem.returndate)
-                startActivity(intent)
+                intent.putExtra(Keyword.USERNICK, reserveItem.usernick)
+                startActivityForResult(intent, RESERVE_ITEM)
             }
 
             // 반납 QR 화면으로 이동
@@ -65,7 +70,8 @@ class RentalStateFragment(val state: Int) : Fragment() {
                 intent.putExtra(Keyword.FEE, reserveItem.fee)
                 intent.putExtra(Keyword.RENTAL_DATE, reserveItem.rentaldate)
                 intent.putExtra(Keyword.RETURN_DATE, reserveItem.returndate)
-                startActivity(intent)
+                intent.putExtra(Keyword.USERNICK, reserveItem.usernick)
+                startActivityForResult(intent, RESERVE_ITEM)
             }
 
         })
@@ -112,7 +118,10 @@ class RentalStateFragment(val state: Int) : Fragment() {
     }
 
     private fun setRentalList(state: Int) {
-        RetrofitManager.instance.requestReserveList(state, pageNum) { code, data ->
+        RetrofitManager.instance.requestReserveList(
+            state = state,
+            pagenum = pageNum
+        ) { code, data ->
             when (code) {
                 0 -> {
                     if (data != null) {
@@ -129,6 +138,19 @@ class RentalStateFragment(val state: Int) : Fragment() {
                 else -> {
                     Log.d(Constants.TAG, "RentalStateFragment - setList() : 통신 실패")
                 }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != RESULT_OK) return
+        when (requestCode) {
+            RESERVE_ITEM -> {
+                mAdapter.removeAll()
+                pageReset()
+                setRentalList(state)
             }
         }
     }
