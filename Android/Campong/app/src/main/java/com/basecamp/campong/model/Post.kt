@@ -2,6 +2,7 @@ package com.basecamp.campong.model
 
 import com.basecamp.campong.utils.Keyword
 import com.google.gson.annotations.SerializedName
+import java.time.LocalDateTime
 
 data class ResultPostList(
     @SerializedName("num")
@@ -40,7 +41,7 @@ data class Post(
     val imageid: Long?,
 
     @SerializedName(Keyword.UPLOAD_DATE)
-    val uploaddate: String,
+    val uploaddate: LocalDateTime,
 
     @SerializedName(Keyword.FEE)
     val fee: String,

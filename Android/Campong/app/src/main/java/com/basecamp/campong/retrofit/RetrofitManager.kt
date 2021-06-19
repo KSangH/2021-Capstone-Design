@@ -438,14 +438,15 @@ class RetrofitManager {
         pagenum: Int, keyword: String?, catename: String?,
         completion: (Int, postList: List<Post>?) -> Unit
     ) {
-        var call = service?.requestPostList(pagenum) ?: return
+        var call = service?.requestPostList(pagenum = pagenum) ?: return
 
         if (keyword != null && catename != null) {
-            call = service.requestPostList(pagenum, keyword, catename)
+            call =
+                service.requestPostList(pagenum = pagenum, keyword = keyword, catename = catename)
         } else if (keyword != null) {
-            call = service.requestPostList(pagenum, keyword)
+            call = service.requestPostList(pagenum = pagenum, keyword = keyword)
         } else if (catename != null) {
-            call = service.requestPostList(pagenum, catename)
+            call = service.requestPostList(pagenum = pagenum, catename = catename)
         }
 
         call.enqueue(object : Callback<ResultPostList> {
