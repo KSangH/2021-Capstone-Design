@@ -26,6 +26,7 @@ class ReceivedCookiesInterceptor : Interceptor {
             // Preference에 쿠키 저장
             val preferences = SharedPreferenceManager.instance
             val editor: SharedPreferences.Editor = preferences.edit()
+            editor.putStringSet(Preference.SHARED_PREFERENCE_NAME_COOKIE, null)
             editor.putStringSet(Preference.SHARED_PREFERENCE_NAME_COOKIE, cookies)
             editor.apply()
         }

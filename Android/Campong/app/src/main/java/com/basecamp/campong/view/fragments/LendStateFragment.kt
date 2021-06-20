@@ -18,6 +18,7 @@ import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
 import com.basecamp.campong.utils.RequestCode
 import com.basecamp.campong.view.AcceptActivity
+import com.basecamp.campong.view.ReserveViewActivity
 
 class LendStateFragment(val state: Int) : Fragment() {
 
@@ -34,9 +35,9 @@ class LendStateFragment(val state: Int) : Fragment() {
 
         mBinding = binding
 
-        mAdapter.removeAll()
-        pageReset()
         mAdapter = LendRecyclerAdapter()
+        pageReset()
+        mAdapter.removeAll()
         mAdapter.setOnItemClickListener(object : LendRecyclerAdapter.ClickListener {
             override fun onWaitItemClicked(view: View, reserveItem: ReserveItem) {
                 val intent = Intent(context, AcceptActivity::class.java)
@@ -45,7 +46,10 @@ class LendStateFragment(val state: Int) : Fragment() {
             }
 
             override fun onBaseItemClicked(view: View, reserveItem: ReserveItem) {
-                // TODO
+                Log.d(Constants.TAG, "onBaseItemClicked")
+                val intent = Intent(context, ReserveViewActivity::class.java)
+                intent.putExtra(Keyword.RESERVE_ID, reserveItem.reserveid)
+                startActivity(intent)
             }
 
         })

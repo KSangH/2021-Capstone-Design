@@ -18,7 +18,7 @@ import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
 import com.basecamp.campong.utils.RequestCode.RESERVE_ITEM
 import com.basecamp.campong.view.QrViewActivity
-import com.basecamp.campong.view.ShowPostActivity
+import com.basecamp.campong.view.ReserveViewActivity
 
 class RentalStateFragment(val state: Int) : Fragment() {
 
@@ -40,9 +40,9 @@ class RentalStateFragment(val state: Int) : Fragment() {
         pageReset()
         mAdapter.setOnItemClickListener(object : RentalRecyclerAdapter.RentalClickListener {
             // 해당 post로 이동
-            override fun onBaseItemClicked(view: View) {
-                val intent = Intent(context, ShowPostActivity::class.java)
-                intent.putExtra(Keyword.POST_ID, -1) // TODO
+            override fun onBaseItemClicked(view: View, reserveItem: ReserveItem) {
+                val intent = Intent(context, ReserveViewActivity::class.java)
+                intent.putExtra(Keyword.RESERVE_ID, reserveItem.reserveid)
                 startActivity(intent)
             }
 

@@ -11,10 +11,8 @@ import com.basecamp.campong.databinding.RvItemBinding
 import com.basecamp.campong.model.Post
 import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Keyword
-import com.basecamp.campong.utils.timeDiff
 import com.basecamp.campong.view.ShowPostActivity
 import com.bumptech.glide.Glide
-import java.time.ZoneId
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.MainViewHolder>() {
 
@@ -45,10 +43,10 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.MainViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
-            val uploadTime: Long = post.uploaddate.atZone(ZoneId.of("Asia/Seoul")).toEpochSecond()
+            //val uploadTime: Long = post.uploaddate.atZone(ZoneId.of("Asia/Seoul")).toEpochSecond()
 
             binding.apply {
-                uploadDateTextView.text = timeDiff(uploadTime)
+                //uploadDateTextView.text = timeDiff(uploadTime)
                 postItem = post
             }
 

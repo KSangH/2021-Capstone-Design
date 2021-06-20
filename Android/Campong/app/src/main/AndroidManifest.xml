@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Campong"
         android:usesCleartextTraffic="true">
+        <activity android:name=".view.ReserveViewActivity" />
         <activity android:name=".view.SetMapActivity" />
 
         <meta-data

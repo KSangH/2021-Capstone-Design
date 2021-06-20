@@ -140,7 +140,12 @@ class LendRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     inner class Item02Holder(val binding: RvItemType02Binding) :
-        RecyclerView.ViewHolder(binding.root) {
+        RecyclerView.ViewHolder(binding.root),
+        View.OnClickListener {
+
+        init {
+            itemView.setOnClickListener(this)
+        }
 
         fun bind(item: ReserveItem) {
             binding.apply {
@@ -153,6 +158,12 @@ class LendRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 .load(url)
                 .centerCrop()
                 .into(binding.imageView)
+        }
+
+        override fun onClick(v: View?) {
+            if (v != null) {
+                clickListener.onBaseItemClicked(v, reservationList[adapterPosition])
+            }
         }
     }
 
