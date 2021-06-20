@@ -183,7 +183,7 @@ public class PostService {
             return result.setError(1008, "존재하지 않는 닉네임입니다.");
         }
 
-        List<PostView> listByUser = postReadRepository.findAllByUsernick(usernick,PageRequest.of(pagenum, 10)).getContent();
+        List<PostView> listByUser = postReadRepository.findAllByUsernickOrderByPostidDesc(usernick,PageRequest.of(pagenum, 10)).getContent();
         result.put("num", listByUser.size());
 
         // 보낼 데이터 편집
@@ -204,7 +204,7 @@ public class PostService {
             result.setError(2009, "존재하지 않는 사용자입니다.");
         }
 
-        List<PostView> listByUser = postReadRepository.findAllByUserid(id,PageRequest.of(pagenum, 10)).getContent();
+        List<PostView> listByUser = postReadRepository.findAllByUseridOrderByPostidDesc(id,PageRequest.of(pagenum, 10)).getContent();
         result.put("num", listByUser.size());
 
         // 보낼 데이터 편집

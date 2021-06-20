@@ -18,8 +18,8 @@ public interface PostReadRepository extends JpaRepository<PostView, Long> {
     Page<PostView> filteredPost(@Param("category") String category, @Param("location") String location, @Param("keyword") String keyword, Pageable pageable);
 
     //usernick으로 게시글 목록조회
-    Page<PostView> findAllByUsernick(String usernick, Pageable pageable);
+    Page<PostView> findAllByUsernickOrderByPostidDesc(String usernick, Pageable pageable);
 
     //userid로 게시글 목록 조회
-    Page<PostView> findAllByUserid(long id, Pageable pageable);
+    Page<PostView> findAllByUseridOrderByPostidDesc(long id, Pageable pageable);
 }
