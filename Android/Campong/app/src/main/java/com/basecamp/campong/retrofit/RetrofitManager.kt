@@ -297,6 +297,54 @@ class RetrofitManager {
         )
     }
 
+    // 마이페이지
+    fun requestMyPageInfo(completion: (Int, String?, Long?, List<Int>?) -> Unit) {
+        val call = service?.requestMyPage() ?: return
+
+        call.enqueue(object : Callback<ResultMypage> {
+            override fun onResponse(
+                call: Call<ResultMypage>,
+                response: Response<ResultMypage>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            val item = response.body()!!
+
+                            val usernick = item.usernick
+                            val imageid = item.image_id
+
+                            val list: List<Int> = listOf(
+                                item.num1 + item.num2,
+                                item.num3,
+                                item.num4,
+                                item.num5
+                            )
+                            completion(0, usernick, imageid, list)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null, null, null)
+                            } else {
+                                completion(2, null, null, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null, null, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultMypage>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null, null, null)
+            }
+
+        })
+    }
+
     // 이미지 업로드
     fun requestUploadImage(file: File, completion: (Int, image_id: Long?) -> Unit) {
 
@@ -347,8 +395,8 @@ class RetrofitManager {
     ) {
         var call = service?.requestPostList(pagenum) ?: return
 
-        if (location != null) {
-            call = service.requestPostList(pagenum, location)
+        if (location != "") {
+            call = service.requestPostList(pagenum = pagenum, location = location)
         }
 
         call.enqueue(object : Callback<ResultPostList> {
@@ -390,15 +438,57 @@ class RetrofitManager {
         pagenum: Int, keyword: String?, catename: String?,
         completion: (Int, postList: List<Post>?) -> Unit
     ) {
-        var call = service?.requestPostList(pagenum) ?: return
+        var call = service?.requestPostList(pagenum = pagenum) ?: return
 
         if (keyword != null && catename != null) {
-            call = service.requestPostList(pagenum, keyword, catename)
+            call =
+                service.requestPostList(pagenum = pagenum, keyword = keyword, catename = catename)
         } else if (keyword != null) {
-            call = service.requestPostList(pagenum, keyword)
+            call = service.requestPostList(pagenum = pagenum, keyword = keyword)
         } else if (catename != null) {
-            call = service.requestPostList(pagenum, catename)
+            call = service.requestPostList(pagenum = pagenum, catename = catename)
         }
+
+        call.enqueue(object : Callback<ResultPostList> {
+
+            override fun onResponse(
+                call: Call<ResultPostList>,
+                response: Response<ResultPostList>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0, response.body()!!.item)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null)
+                            } else {
+                                completion(2, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultPostList>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null)
+            }
+
+        })
+    }
+
+    // 내 게시물 목록 조회
+    fun requestPostMyList(
+        pagenum: Int,
+        completion: (Int, postList: List<Post>?) -> Unit
+    ) {
+        var call = service?.requestPostMyList(pagenum) ?: return
 
         call.enqueue(object : Callback<ResultPostList> {
 
@@ -522,15 +612,88 @@ class RetrofitManager {
     }
 
     // 게시물 수정
-    // postid, catename, title, contents, fee, lat, lon, location, imageid
-    fun requestUpdatePost() {
-        // TODO
+    fun requestUpdatePost(
+        postid: Long,
+        catename: String,
+        title: String,
+        contents: String,
+        fee: String,
+        lat: String,
+        lon: String,
+        location: String,
+        imageid: Long?, completion: (Int, postid: Long?) -> Unit
+    ) {
+        val req = ReqPostUpdate(postid, catename, title, contents, fee, lat, lon, location, imageid)
+        val call = service?.requestUpdatePost(req) ?: return
+
+        call.enqueue(object : Callback<ResultUploadPost> {
+            override fun onResponse(
+                call: Call<ResultUploadPost>,
+                response: Response<ResultUploadPost>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0, response.body()!!.postid) // 성공시 업로드한 게시물을 확인하기 위한 postid
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1, null)
+                            } else {
+                                completion(2, null)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultUploadPost>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1, null)
+            }
+
+        })
     }
 
     // 게시물 삭제
-    // postid
-    fun requestDeletePost() {
-        // TODO
+    fun requestDeletePost(postid: Long, completion: (Int) -> Unit) {
+        val req = ReqPostDelete(postid)
+        val call = service?.requestDeletePost(req) ?: return
+
+        call.enqueue(object : Callback<ResultBase> {
+            override fun onResponse(
+                call: Call<ResultBase>,
+                response: Response<ResultBase>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body()?.error == false) { // 성공
+                            completion(0)
+                        } else {
+                            if (response.body()?.errCode == 1007) {
+                                completion(1)
+                            } else {
+                                completion(2)
+                            }
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultBase>, t: Throwable) {
+                Log.d(TAG, t.toString())
+                completion(-1)
+            }
+        })
     }
 
     /* 예약/대여/반납 */
@@ -611,10 +774,10 @@ class RetrofitManager {
 
     // 예약내역(빌려준장비)
     fun requestReserveMyList(
-        state: Int,
+        state: Int, pagenum: Int,
         completion: (Int, reservationList: List<ReserveItem>?) -> Unit
     ) {
-        val req = ReqReserveList(state)
+        val req = ReqReserveList(state, pagenum)
         val call = service?.requestReserveMyList(req) ?: return
 
         call.enqueue(object : Callback<ResultReserveList> {
@@ -652,10 +815,10 @@ class RetrofitManager {
 
     // 예약내역(빌린장비)
     fun requestReserveList(
-        state: Int,
+        state: Int, pagenum: Int,
         completion: (Int, reservationList: List<ReserveItem>?) -> Unit
     ) {
-        val req = ReqReserveList(state)
+        val req = ReqReserveList(state, pagenum)
         val call = service?.requestReserveList(req) ?: return
 
         call.enqueue(object : Callback<ResultReserveList> {
@@ -871,5 +1034,93 @@ class RetrofitManager {
             }
 
         })
+    }
+
+    fun requestReverseGeocoding(
+        lat: Double,
+        lon: Double,
+        completion: (Int, String?, String?, String?) -> Unit
+    ) {
+        val coords = "$lon,$lat"
+        val call = service?.requestReverseGeocoding(coords) ?: return
+
+        call.enqueue(object : Callback<ResultReverseGeocoding> {
+            override fun onResponse(
+                call: Call<ResultReverseGeocoding>,
+                response: Response<ResultReverseGeocoding>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        Log.d(TAG, response.raw().toString())
+                        if (response.body() != null) {
+
+                            var addr: String? = null
+                            var roadaddr: String? = null
+                            var baseaddr: String? = null
+
+                            for (item in response.body()!!.results) {
+                                when (item.name) {
+                                    "addr" -> { // 지번주소
+                                        if (item.region.area1.name != "") {
+                                            addr = item.region.area1.name
+                                        }
+                                        if (item.region.area2.name != "") {
+                                            addr += " ${item.region.area2.name}"
+                                        }
+                                        if (item.region.area3.name != "") {
+                                            addr += " ${item.region.area3.name}"
+                                        }
+                                        if (item.region.area4.name != "") {
+                                            addr += " ${item.region.area4.name}"
+                                        }
+
+                                        baseaddr = addr
+
+                                        if (item.land.number1 != "") {
+                                            addr += " ${item.land.number1}"
+                                        }
+                                        if (item.land.number2 != "") {
+                                            addr += "-${item.land.number2}"
+                                        }
+                                    }
+                                    "roadaddr" -> { // 도로명 주소
+                                        if (item.region.area1.name != "") {
+                                            roadaddr = item.region.area1.name
+                                        }
+                                        if (item.region.area2.name != "") {
+                                            roadaddr += " ${item.region.area2.name}"
+                                        }
+                                        if (item.region.area3.name != "") {
+                                            roadaddr += " ${item.region.area3.name}"
+                                        }
+                                        if (item.region.area4.name != "") {
+                                            roadaddr += " ${item.region.area4.name}"
+                                        }
+
+                                        if (item.land.name != "") {
+                                            roadaddr += " ${item.land.name}"
+                                        }
+                                        if (item.land.number1 != "") {
+                                            roadaddr += " ${item.land.number1}"
+                                        }
+                                    }
+                                }
+                            }
+                            completion(0, baseaddr, addr, roadaddr)
+                        }
+                    }
+                    else -> {
+                        Log.d(TAG, response.code().toString())
+                        completion(-1, null, null, null)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ResultReverseGeocoding>, t: Throwable) {
+                completion(-1, null, null, null)
+            }
+
+        })
+
     }
 }

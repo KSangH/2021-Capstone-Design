@@ -7,9 +7,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -20,36 +19,28 @@ import com.basecamp.campong.databinding.ActivityWritePostBinding
 import com.basecamp.campong.retrofit.RetrofitManager
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
+import com.basecamp.campong.utils.RequestCode.PICK_PHOTO
+import com.basecamp.campong.utils.RequestCode.SELECT_LOCATION
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
+
 
 class WritePostActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityWritePostBinding
     private var image_id: Long? = null
     private var category: String? = null
-
-    private val mTextWatcher: TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-        }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-
-        }
-
-    }
+    private var baseAddress: String? = null
+    private var lat: Double? = -1.0
+    private var lon: Double? = -1.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = ActivityWritePostBinding.inflate(layoutInflater)
 
+        initToolbar()
         initAddPhotoButton()
 
         val chipGroup = mBinding.chipGroup
@@ -59,6 +50,24 @@ class WritePostActivity : AppCompatActivity() {
         }
 
         setContentView(mBinding.root)
+    }
+
+    private fun initToolbar() {
+        val toolbar = mBinding.writePostToolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initAddPhotoButton() {
@@ -98,35 +107,55 @@ class WritePostActivity : AppCompatActivity() {
     private fun navigatePhotos() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
-        startActivityForResult(intent, 2000)
+        startActivityForResult(intent, PICK_PHOTO)
     }
 
-    // 이미지 선택 후
+    fun selectMapLocation(view: View) {
+        val intent = Intent(applicationContext, SetMapActivity::class.java)
+        startActivityForResult(intent, SELECT_LOCATION)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode != Activity.RESULT_OK) return
 
         when (requestCode) {
-            2000 -> {
-                val selectedImageUri: Uri? = data?.data
-                if (selectedImageUri != null) {
+            PICK_PHOTO -> { // 이미지 선택 후
+                if (resultCode == RESULT_OK) {
+                    val selectedImageUri: Uri? = data?.data
+                    if (selectedImageUri != null) {
 
-                    try {
-                        val inputStream = contentResolver.openInputStream(data.data!!)
-                        val bitmap = BitmapFactory.decodeStream(inputStream)
-                        uploadImage(bitmap)
-                        mBinding.selectImageButton.setImageURI(selectedImageUri)
-                    } catch (e: FileNotFoundException) {
-                        e.printStackTrace()
+                        try {
+                            val inputStream = contentResolver.openInputStream(data.data!!)
+                            val bitmap = BitmapFactory.decodeStream(inputStream)
+                            uploadImage(bitmap)
+                            mBinding.selectImageButton.setImageURI(selectedImageUri)
+                        } catch (e: FileNotFoundException) {
+                            e.printStackTrace()
+                        }
+
+                    } else {
+                        Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                     }
-
                 } else {
                     Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
                 }
+
             }
-            else -> {
-                Toast.makeText(this, "사진을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+            SELECT_LOCATION -> { // 위치 선택 후
+                if (requestCode == SELECT_LOCATION) {
+                    if (resultCode == RESULT_OK) {
+                        lat = data?.getDoubleExtra("lat", -1.0)
+                        lon = data?.getDoubleExtra("lon", -1.0)
+                        baseAddress = data?.getStringExtra("baseAddr")
+
+                        if (lat != null && lon != null) {
+                            Log.d(Constants.TAG, "lat : $lat, lon: $lon")
+                            mBinding.setMapLocationButton.text = "$baseAddress 에서 거래"
+                        }
+                    }
+                }
             }
         }
     }
@@ -203,8 +232,8 @@ class WritePostActivity : AppCompatActivity() {
             mBinding.contentTextInput.error = msg
             result = false
         }
-        if (mBinding.locationEditText.text.isNullOrBlank()) {
-            mBinding.locationTextInput.error = msg
+        if (baseAddress.isNullOrBlank()) {
+            Toast.makeText(this, "거래 위치를 선택해주세요.(필수)", Toast.LENGTH_SHORT).show()
             result = false
         }
         if (mBinding.feeEditText.text.isNullOrBlank()) {
@@ -214,6 +243,7 @@ class WritePostActivity : AppCompatActivity() {
         return result
     }
 
+
     fun uploadPost(view: View) {
         if (checkNoBlank()) {
             RetrofitManager.instance.requestUploadPost(
@@ -221,7 +251,7 @@ class WritePostActivity : AppCompatActivity() {
                 mBinding.titleEditText.text.toString(),
                 mBinding.contentEditText.text.toString(),
                 mBinding.feeEditText.text.toString(),
-                "37.541", "126.986", "종로구 종로2가", // TODO
+                lat.toString(), lon.toString(), baseAddress.toString(),
                 image_id
             ) { code, id ->
                 when (code) {

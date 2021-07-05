@@ -29,9 +29,15 @@ object API {
     // 로그아웃
     const val USER_LOGOUT: String = "/user/logout"
 
+    // 마이페이지
+    const val MY_PAGE: String = "/user/mypage"
+
     /* 게시물 관리 */
     // 게시물 목록 조회
     const val POST_LIST: String = "/post/list"
+
+    // 내 게시물 목록 조회
+    const val POST_MYLIST: String = "/post/list/mypost"
 
     // 게시물 등록
     const val POST_UPLOAD: String = "/post/upload"
@@ -132,6 +138,10 @@ object Keyword {
     const val QR_TYPE_RENTAL = 1
 
     const val QR_TYPE_RETURN = 2
+
+    const val RESERVESTATE = "reservestate"
+
+    const val PAGE_NUM = "pagenum"
 }
 
 object Preference {
@@ -142,6 +152,11 @@ object Preference {
     // Preference Key 값
     const val SHARED_PREFERENCE_NAME_COOKIE = "cookies"
 
+    const val SHARED_PREFERENCE_NAME_LOCATION = "location"
+
+    const val SHARED_PREFERENCE_NAME_EMAIL = "email"
+
+    const val SHARED_PREFERENCE_NAME_PW = "pw"
 }
 
 object RentalState {
@@ -153,6 +168,22 @@ object RentalState {
 }
 
 object RequestCode {
-    const val WRITE_POST = 100
+    const val SELECT_MY_LOCATION = 100
+    const val WRITE_POST = 200
+    const val EDIT_POST = 201
     const val ACCEPT_REQUEST = 300
+    const val RESERVE_ITEM = 301
+    const val PICK_PHOTO = 400
+    const val SELECT_LOCATION = 500
+    const val GO_TO_EDIT_PROFILE = 600
+    const val GO_TO_LEND_LIST = 601
+    const val GO_TO_RESERVE = 602
+}
+
+object Map {
+    const val BASE_URL: String = "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc"
+
+    const val KEY_ID: String = "X-NCP-APIGW-API-KEY-ID"
+
+    const val KEY: String = "X-NCP-APIGW-API-KEY"
 }

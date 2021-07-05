@@ -102,6 +102,7 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun removeAll() {
         this.reservationList.clear()
+        notifyDataSetChanged()
     }
 
     // 승인 대기
@@ -129,7 +130,7 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onClick(v: View?) {
             if (v != null) {
-                clickListener.onBaseItemClicked(v)
+                clickListener.onBaseItemClicked(v, reservationList[adapterPosition])
             }
         }
     }
@@ -168,7 +169,7 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onClick(v: View?) {
             if (v != null) {
-                clickListener.onBaseItemClicked(v)
+                clickListener.onBaseItemClicked(v, reservationList[adapterPosition])
             }
         }
     }
@@ -197,7 +198,7 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onClick(v: View?) {
             if (v != null) {
-                clickListener.onBaseItemClicked(v)
+                clickListener.onBaseItemClicked(v, reservationList[adapterPosition])
             }
         }
     }
@@ -226,14 +227,14 @@ class RentalRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         override fun onClick(v: View?) {
             if (v != null) {
-                clickListener.onBaseItemClicked(v)
+                clickListener.onBaseItemClicked(v, reservationList[adapterPosition])
             }
         }
     }
 
     // 클릭리스너
     interface RentalClickListener {
-        fun onBaseItemClicked(view: View)
+        fun onBaseItemClicked(view: View, reserveItem: ReserveItem)
         fun onRentalQRClicked(view: View, reserveItem: ReserveItem)
         fun onReturnQRClicked(view: View, reserveItem: ReserveItem)
     }

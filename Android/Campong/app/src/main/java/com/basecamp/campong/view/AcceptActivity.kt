@@ -7,8 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.basecamp.campong.databinding.ActivityAcceptBinding
 import com.basecamp.campong.retrofit.RetrofitManager
+import com.basecamp.campong.utils.API
 import com.basecamp.campong.utils.Constants
 import com.basecamp.campong.utils.Keyword
+import com.bumptech.glide.Glide
 
 class AcceptActivity : AppCompatActivity() {
 
@@ -22,17 +24,35 @@ class AcceptActivity : AppCompatActivity() {
 
         reserveid = intent.getLongExtra(Keyword.RESERVE_ID, -1)
 
+        initToolbar()
         getReserveItem()
 
         setContentView(mBinding.root)
     }
 
-    fun getReserveItem() {
+    private fun initToolbar() {
+        val toolbar = mBinding.toolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun getReserveItem() {
         RetrofitManager.instance.requestReserveView(reserveid!!) { code, reserveItem ->
             when (code) {
                 0 -> {
-                    mBinding.apply {
-                        this.reserveItem = reserveItem
+                    if (reserveItem != null) {
+                        val url = "${API.BASE_URL}/image/${reserveItem.imageid}"
+
+                        Glide.with(this)
+                            .load(url)
+                            .centerCrop()
+                            .into(mBinding.imageView)
+
+                        mBinding.apply {
+                            this.reserveItem = reserveItem
+                        }
                     }
                 }
                 else -> {

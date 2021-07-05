@@ -52,7 +52,10 @@ data class Post(
     val lon: String,
 
     @SerializedName(Keyword.LAT)
-    val lat: String
+    val lat: String,
+
+    @SerializedName(Keyword.RESERVESTATE)
+    val reservestate: Int
 )
 
 data class ReqUploadPost(
@@ -116,3 +119,38 @@ data class ResultPostView(
     @SerializedName(Keyword.ERROR_CODE)
     val errCode: Int
 )
+
+data class ReqPostUpdate(
+    @SerializedName(Keyword.POST_ID)
+    val postid: Long,
+
+    @SerializedName(Keyword.CATENAME)
+    val catename: String,
+
+    @SerializedName(Keyword.TITLE)
+    val title: String,
+
+    @SerializedName(Keyword.CONTENTS)
+    val contents: String,
+
+    @SerializedName(Keyword.FEE)
+    val fee: String,
+
+    @SerializedName(Keyword.LAT)
+    val lat: String,
+
+    @SerializedName(Keyword.LON)
+    val lon: String,
+
+    @SerializedName(Keyword.LOCATION)
+    val location: String,
+
+    @SerializedName(Keyword.IMAGE_ID)
+    val imageid: Long?
+)
+
+data class ReqPostDelete(
+    @SerializedName(Keyword.POST_ID)
+    val postid: Long
+)
+

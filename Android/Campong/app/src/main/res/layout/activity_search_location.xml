@@ -6,7 +6,7 @@
     android:padding="20dp">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/Lsearchtoolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
@@ -23,7 +23,7 @@
         android:layoutDirection="rtl"
         android:queryHint="동읍면을 입력하세요"
         app:defaultQueryHint="동읍면을 입력하세요"
-        app:layout_constraintTop_toBottomOf="@id/Lsearchtoolbar"/>
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/locationRecyclerView"

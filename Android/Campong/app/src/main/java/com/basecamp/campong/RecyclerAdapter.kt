@@ -43,7 +43,10 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.MainViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(post: Post) {
+            //val uploadTime: Long = post.uploaddate.atZone(ZoneId.of("Asia/Seoul")).toEpochSecond()
+
             binding.apply {
+                //uploadDateTextView.text = timeDiff(uploadTime)
                 postItem = post
             }
 

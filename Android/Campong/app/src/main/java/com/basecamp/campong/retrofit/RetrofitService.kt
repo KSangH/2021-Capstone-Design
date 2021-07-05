@@ -1,7 +1,9 @@
 package com.basecamp.campong.retrofit
 
+import com.basecamp.campong.BuildConfig
 import com.basecamp.campong.model.*
 import com.basecamp.campong.utils.API
+import com.basecamp.campong.utils.Map
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -53,6 +55,10 @@ interface RetrofitService {
     @POST(API.USER_INFO)
     fun requestUserInfo(): Call<ResultUserInfo>
 
+    // 마이페이지
+    @POST(API.MY_PAGE)
+    fun requestMyPage(): Call<ResultMypage>
+
     /* 이미지 */
     // 이미지 업로드
     @Multipart
@@ -66,6 +72,16 @@ interface RetrofitService {
     @Headers("content-type: application/json")
     @GET(API.POST_LIST)
     fun requestPostList(
+        @Query("pagenum") pagenum: Int,
+        @Query("keyword") keyword: String? = null,
+        @Query("catename") catename: String? = null,
+        @Query("location") location: String? = null
+    ): Call<ResultPostList>
+
+    // 내 게시물 목록 조회
+    @Headers("content-type: application/json")
+    @GET(API.POST_MYLIST)
+    fun requestPostMyList(
         @Query("pagenum") pagenum: Int,
         @Query("keyword") keyword: String? = null,
         @Query("catename") catename: String? = null,
@@ -90,13 +106,15 @@ interface RetrofitService {
     // 게시물 수정
     @Headers("content-type: application/json")
     @POST(API.POST_UPDATE)
-    fun requestUpdatePost(        // TODO
+    fun requestUpdatePost(
+        @Body body: ReqPostUpdate
     ): Call<ResultUploadPost>
 
     // 게시물 삭제
     @Headers("content-type: application/json")
     @POST(API.POST_DELETE)
-    fun requestDeletePost(        // TODO
+    fun requestDeletePost(
+        @Body body: ReqPostDelete
     ): Call<ResultBase>
 
     /* 예약/대여/반납 */
@@ -162,4 +180,17 @@ interface RetrofitService {
     fun requestStateCancel(
         @Body body: ReqReserveState
     ): Call<ResultBase>
+
+    /* 네이버 지도 API */
+    // 역지오코딩
+    @Headers(
+        "${Map.KEY_ID}: ${BuildConfig.MAP_KEY_ID}",
+        "${Map.KEY}: ${BuildConfig.MAP_KEY}"
+    )
+    @GET(Map.BASE_URL)
+    fun requestReverseGeocoding(
+        @Query("coords", encoded = true) coords: String,
+        @Query("orders", encoded = true) orders: String = "addr,roadaddr",
+        @Query("output") output: String = "json"
+    ): Call<ResultReverseGeocoding>
 }

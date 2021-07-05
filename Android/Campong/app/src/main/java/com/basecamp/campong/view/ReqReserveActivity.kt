@@ -32,11 +32,19 @@ class ReqReserveActivity : AppCompatActivity() {
 
         postid = intent.getLongExtra(Keyword.POST_ID, -1)
 
-
+        initToolbar()
         buildUI()
         setUpDefaultDate()
 
         setContentView(mBinding.root)
+    }
+
+    private fun initToolbar() {
+        val toolbar = mBinding.toolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun buildUI() {
@@ -49,7 +57,7 @@ class ReqReserveActivity : AppCompatActivity() {
 
         mBinding.title.text = intent.getStringExtra(Keyword.TITLE)
         mBinding.town.text = intent.getStringExtra(Keyword.LOCATION)
-        mBinding.price.text = intent.getStringExtra(Keyword.FEE)
+        mBinding.price.text = "${intent.getStringExtra(Keyword.FEE)}원"
     }
 
     // 날짜 기본값 설정
@@ -154,6 +162,7 @@ class ReqReserveActivity : AppCompatActivity() {
                 0 -> {
                     Log.d(Constants.TAG, "ReqReserveActivity - requestReserve() : 예약 성공")
                     Toast.makeText(this, "예약에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+                    setResult(RESULT_OK)
                     finish()
                 }
                 else -> {

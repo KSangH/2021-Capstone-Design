@@ -25,6 +25,8 @@ class SignupActivity : AppCompatActivity() {
 
         mBinding = ActivitySignupBinding.inflate(layoutInflater)
 
+        initToolbar()
+
         setContentView(mBinding.root)
 
         mBinding.emailEditText.addTextChangedListener(object : TextWatcher {
@@ -46,6 +48,14 @@ class SignupActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun initToolbar() {
+        val toolbar = mBinding.toolbar
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar
+        ab?.setDisplayShowTitleEnabled(false)
+        ab?.setDisplayHomeAsUpEnabled(true)
     }
 
     fun checkEmail(view: View) {

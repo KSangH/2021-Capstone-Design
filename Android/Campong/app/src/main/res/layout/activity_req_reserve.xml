@@ -17,20 +17,12 @@
         tools:context=".view.ReqReserveActivity">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/sendrequesttoolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
             app:contentInsetStart="0dp"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="#00FFFFFF"
-                app:srcCompat="@drawable/ic_arrow" />
-        </androidx.appcompat.widget.Toolbar>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
@@ -43,7 +35,7 @@
             app:cardCornerRadius="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sendrequesttoolbar">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <ImageView
                 android:id="@+id/imageView"
@@ -57,8 +49,9 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="30dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="5dp"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -69,6 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -81,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_marginHorizontal="2dp"
+            android:layout_marginTop="5dp"
             android:text="에서 거래"
             android:textColor="@color/black"
             android:textSize="15sp"
@@ -118,6 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
             android:text="대여일자"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@+id/rentalDateTextView"
@@ -128,6 +124,7 @@
             android:id="@+id/returnDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:layout_marginTop="10dp"
             android:text="반납일자"
             android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="@+id/returnDateTextView"
