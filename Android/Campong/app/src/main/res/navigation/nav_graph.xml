@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.basecamp.campong.view.fragments.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+
+    <activity
+        android:id="@+id/searchActivity"
+        android:name="com.basecamp.campong.view.SearchActivity"
+        android:label="activity_search"
+        tools:layout="@layout/activity_search" />
+
+    <fragment
+        android:id="@+id/rentalFragment"
+        android:name="com.basecamp.campong.view.fragments.RentalFragment"
+        android:label="fragment_rental"
+        tools:layout="@layout/fragment_rental" />
+
+    <fragment
+        android:id="@+id/communityFragment"
+        android:name="com.basecamp.campong.view.fragments.CommunityFragment"
+        android:label="fragment_community"
+        tools:layout="@layout/fragment_community" />
+
+    <fragment
+        android:id="@+id/mypageFragment"
+        android:name="com.basecamp.campong.view.fragments.MypageFragment"
+        android:label="fragment_mypage"
+        tools:layout="@layout/fragment_mypage" />
+
+</navigation>
